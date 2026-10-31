@@ -156,10 +156,30 @@ main.wrap>nav button[data-tab]{font-size:13px!important;line-height:13px!importa
 .exact-header-links{top:72%!important;height:27%!important;z-index:2}
 body:has(.exact-header:not([hidden])) main.wrap{margin-top:0!important;padding-top:0!important}
 body:has(.exact-header:not([hidden])) main.wrap>section{margin-top:0!important}
+
+/* Нови реални компактни бутони. Оригиналният служебен надпис и изрязаната лента се покриват, а не се режат отново. */
+.exact-header{aspect-ratio:2170/320!important;isolation:isolate}
+.exact-header img{left:0!important;width:100%!important;top:-33%!important;height:182%!important;object-fit:fill!important}
+.exact-header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:27%;background:linear-gradient(180deg,#062345,#041a34);z-index:1;pointer-events:none}
+.exact-header-links{left:1%!important;right:1%!important;top:auto!important;bottom:1.5%!important;height:23%!important;z-index:3;display:grid!important;gap:.45%!important;padding:0!important}
+.exact-header-links button{display:flex!important;align-items:center;justify-content:center;gap:.4em;background:#082849!important;border:1px solid #225078!important;border-radius:6px!important;color:white!important;font:700 clamp(10px,1.05vw,18px)/1.1 Arial,sans-serif!important;cursor:pointer;white-space:nowrap}
+.exact-header-links button:first-child{background:#0764ed!important;border-color:#4c91ff!important}
+.exact-header-links button:nth-child(6){background:#e50926!important;border-color:#e50926!important}
+.exact-header-links button::before{font-size:1.2em;line-height:1}
+.exact-header-links button:nth-child(1)::before{content:"⌂"}
+.exact-header-links button:nth-child(2)::before{content:"⚙"}
+.exact-header-links button:nth-child(3)::before{content:"▥"}
+.exact-header-links button:nth-child(4)::before{content:"♟"}
+.exact-header-links button:nth-child(5)::before{content:"✉"}
+.exact-header-links button:nth-child(6)::before{content:"▣"}
+.exact-header-links button:nth-child(7)::before{content:"▷"}
+.exact-header-links button:nth-child(8)::before{content:"♙"}
+.exact-header-profile{position:absolute;right:1.5%;top:6%;z-index:4;background:#061c37;border:1px solid #2a5276;color:#fff;border-radius:7px;padding:clamp(5px,.55vw,10px) clamp(8px,.8vw,15px);font:700 clamp(10px,.85vw,15px)/1.1 Arial,sans-serif;box-shadow:0 0 0 8px #08213b77;white-space:nowrap}
+@media(max-width:760px){.exact-header-links button{font-size:8px!important;gap:0}.exact-header-links button::before{display:none}.exact-header-profile{font-size:9px;right:1%;top:5%}}
 </style>
 </head>
 <body>
-<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-links"><button data-exact="home" aria-label="Начало"></button><button data-exact-info="За нас" aria-label="За нас"></button><button data-exact-info="Услуги" aria-label="Услуги"></button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори"></button><button data-exact="contacts" aria-label="Контакти с нас"></button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация"></button><button data-exact="home" aria-label="Демо"></button><button data-exact-info="Вход" aria-label="Вход"></button></div></div>
+<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-profile" aria-label="Потребителски панел">♙ Димитър Лалев &nbsp; 🔔³ &nbsp; ⚙</div><div class="exact-header-links"><button data-exact="home" aria-label="Начало">Начало</button><button data-exact-info="За нас" aria-label="За нас">За нас</button><button data-exact-info="Услуги" aria-label="Услуги">Услуги</button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори">Бизнес партньори</button><button data-exact="contacts" aria-label="Контакти с нас">Контакти с нас</button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация">Заявете консултация</button><button data-exact="home" aria-label="Демо">Демо</button><button data-exact-info="Вход" aria-label="Вход">Вход</button></div></div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><button type="button" data-info="Вход">♙ Вход</button></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
