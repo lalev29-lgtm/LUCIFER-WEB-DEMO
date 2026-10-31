@@ -1125,22 +1125,14 @@ body > #exact-header.lucifer-header-rebuilt .exact-header-links button:focus-vis
  body > #exact-header.lucifer-header-rebuilt .exact-header-links{gap:1px!important}
  body > #exact-header.lucifer-header-rebuilt .exact-header-links button{font-size:9px!important;padding:1px!important}
 }
+
+/* DIRECTOR ORDER: no header, no top banner, no top navigation. */
+body > #exact-header,body > header.brand-header,body > .site-topnav,
+body > .brand-header,body > .site-topnav {display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body{padding-top:0!important}
 </style>
 </head>
 <body>
-<div id="exact-header" class="lucifer-header-rebuilt" aria-label="LUCIFER-WEB — корпоративен хедър">
-  <div class="lucifer-header-photo" role="img" aria-label="Луцифер с червени криле, планини и замък"></div>
-  <nav class="exact-header-links" aria-label="Основна навигация">
-    <button type="button" data-exact="home">⌂ Начало</button>
-    <button type="button" data-exact-info="За нас">⚙ За нас</button>
-    <button type="button" data-exact-info="Услуги">▥ Услуги</button>
-    <button type="button" data-exact-info="Бизнес партньори">♟ Бизнес партньори</button>
-    <button type="button" data-exact="contacts">✉ Контакти с нас</button>
-    <button type="button" data-exact-info="Заявете консултация">Заявете консултация</button>
-    <button type="button" data-exact="home">▷ Демо</button>
-    <button type="button" data-exact-info="Вход">♙ Вход</button>
-  </nav>
-</div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><button type="button" data-info="Вход">♙ Вход</button></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
