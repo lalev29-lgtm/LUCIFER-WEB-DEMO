@@ -1130,9 +1130,52 @@ body > #exact-header.lucifer-header-rebuilt .exact-header-links button:focus-vis
 body > #exact-header,body > header.brand-header,body > .site-topnav,
 body > .brand-header,body > .site-topnav {display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
 body{padding-top:0!important}
+
+/* FRESH HEADER 2026-10-31: separate image strip + existing real functional menu. */
+body > #lucifer-fresh-header {
+ display:block!important;
+ box-sizing:border-box!important;
+ width:100%!important;
+ height:102px!important;
+ min-height:102px!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ overflow:hidden!important;
+ background:#122e49 url("assets/approved-header-31-10-2026.png?v=fresh-header-1") center top / 100% 166px no-repeat!important;
+}
+body > header.brand-header{display:none!important}
+body > .site-topnav{
+ display:grid!important;
+ grid-template-columns:1.05fr .9fr .95fr 1.6fr 1.6fr 1.7fr .9fr .9fr!important;
+ width:100%!important;
+ height:38px!important;min-height:38px!important;max-height:38px!important;
+ gap:3px!important;padding:1px!important;margin:0!important;
+ background:#031b30!important;
+ overflow:visible!important;
+ box-sizing:border-box!important;
+}
+body > .site-topnav button{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ width:auto!important;min-width:0!important;
+ height:36px!important;min-height:36px!important;max-height:36px!important;
+ padding:2px 5px!important;margin:0!important;
+ color:#fff!important;background:#062945!important;
+ border:1px solid #356080!important;border-radius:4px!important;
+ font:700 clamp(10px,.82vw,14px)/1.15 Arial,sans-serif!important;
+ white-space:normal!important;text-align:center!important;box-sizing:border-box!important;
+}
+body > .site-topnav button:first-child{background:#0869e9!important}
+body > .site-topnav button:nth-child(6){background:#e90032!important}
+@media(max-width:760px){
+ body > #lucifer-fresh-header{height:90px!important;min-height:90px!important;background-size:100% 150px!important}
+ body > .site-topnav{gap:1px!important}
+ body > .site-topnav button{font-size:9px!important;padding:1px!important}
+}
 </style>
 </head>
 <body>
+<div id="lucifer-fresh-header" role="banner" aria-label="Луцифер — Знанието е сила · Управление на риска"></div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><button type="button" data-info="Вход">♙ Вход</button></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
