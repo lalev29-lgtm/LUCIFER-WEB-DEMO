@@ -105,6 +105,21 @@ body{background-image:linear-gradient(rgba(5,15,30,.70),rgba(5,15,30,.78)),url("
 @media(max-width:760px){.wrap.side-collapsed>nav>:not(.side-collapse-toggle){display:none!important}.wrap>nav{min-height:0}}
 /* Вторият образ остава само като приглушен декоративен фон, без да покрива полета и бутони. */
 .angel-corner{position:fixed;right:0;bottom:0;width:min(23vw,300px);opacity:.12;filter:grayscale(.55) brightness(.7);pointer-events:none;z-index:0}.wrap,.wrap>nav,.wrap>section{position:relative;z-index:1}
+
+/* Директорско одобрение: компактен навигационен панел 195px, самостоятелно превъртане и автоматично разширяване. */
+@media(min-width:761px){
+ main.wrap{grid-template-columns:195px minmax(0,1fr)!important;column-gap:10px!important;padding-left:0!important;padding-right:10px!important}
+ main.wrap.side-collapsed{grid-template-columns:46px minmax(0,1fr)!important}
+ main.wrap>nav{position:sticky;top:0;align-self:start;max-height:calc(100dvh - 12px);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;min-height:0!important;margin:0!important;padding:7px 6px!important;border-radius:0 10px 10px 0}
+ main.wrap.side-collapsed>nav{padding:6px 3px!important}
+}
+main.wrap>nav button[data-tab]{min-height:33px;height:auto;padding:6px 8px!important;margin:0!important;line-height:1.3!important;white-space:normal;overflow-wrap:anywhere;text-align:left}
+main.wrap>nav{gap:4px!important}
+main.wrap>nav .side-group{min-height:33px;height:auto;line-height:1.3;white-space:normal;overflow-wrap:anywhere;padding:6px 7px}
+main.wrap>nav .side-logo{padding:6px 6px 8px}
+main.wrap>nav .side-foot{padding:6px 5px}
+main.wrap>nav .side-collapse-toggle{height:33px;min-height:33px;margin:0 0 4px!important;padding:4px!important;text-align:center!important}
+@media(max-width:760px){main.wrap>nav{max-height:60dvh;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}}
 </style>
 </head>
 <body>
