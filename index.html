@@ -249,6 +249,29 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 .exact-header-profile{display:none!important}
 @media(max-width:900px){.exact-header{height:205px!important}.exact-header::after{height:57px!important}.exact-header-links{height:35px!important;bottom:3px!important}.exact-header-links button{height:35px!important;min-height:35px!important;max-height:35px!important}}
 @media(max-width:600px){.exact-header{height:230px!important}.exact-header::after{height:94px!important}.exact-header-links{height:76px!important;bottom:4px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,36px)!important}.exact-header-links button{height:36px!important;min-height:36px!important;max-height:36px!important}}
+
+/* FIX-BAKED-NAV-CLIP-2026-10-31
+   Физически изрязва вградените в PNG бутони, вместо да разчита
+   само на наслагване. Показва само един интерактивен ред. */
+.exact-header{isolation:isolate!important;background:#041b35!important}
+.exact-header img{
+  clip-path:inset(0 0 43% 0)!important;
+  -webkit-clip-path:inset(0 0 43% 0)!important;
+  z-index:0!important;
+}
+.exact-header::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;right:0!important;bottom:0!important;
+  height:74px!important;
+  background:#041b35!important;
+  z-index:2!important;
+}
+.exact-header-links{z-index:5!important;bottom:4px!important}
+.exact-header-profile{display:none!important}
+@media(max-width:900px){.exact-header::after{height:73px!important}}
+@media(max-width:600px){.exact-header::after{height:110px!important}.exact-header img{clip-path:inset(0 0 51% 0)!important;-webkit-clip-path:inset(0 0 51% 0)!important}}
 </style>
 </head>
 <body>
