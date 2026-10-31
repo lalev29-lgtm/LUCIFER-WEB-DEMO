@@ -176,6 +176,59 @@ body:has(.exact-header:not([hidden])) main.wrap>section{margin-top:0!important}
 .exact-header-links button:nth-child(8)::before{content:"♙"}
 .exact-header-profile{position:absolute;right:1.5%;top:6%;z-index:4;background:#061c37;border:1px solid #2a5276;color:#fff;border-radius:7px;padding:clamp(5px,.55vw,10px) clamp(8px,.8vw,15px);font:700 clamp(10px,.85vw,15px)/1.1 Arial,sans-serif;box-shadow:0 0 0 8px #08213b77;white-space:nowrap}
 @media(max-width:760px){.exact-header-links button{font-size:8px!important;gap:0}.exact-header-links button::before{display:none}.exact-header-profile{font-size:9px;right:1%;top:5%}}
+
+/* DIRECT-PUBLISHED-FIX-2026-10-31: един ред навигация; без дублиран профил.
+   Променя само визуалното оформление на одобрения хедър. */
+.exact-header{
+  aspect-ratio:auto!important;
+  height:clamp(248px,17.2vw,345px)!important;
+  min-height:248px!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+.exact-header img{
+  position:absolute!important;
+  left:0!important;top:-31%!important;
+  width:100%!important;height:180%!important;
+  object-fit:fill!important;
+}
+.exact-header::after{
+  content:""!important;position:absolute!important;
+  left:0!important;right:0!important;bottom:0!important;
+  height:115px!important;
+  background:linear-gradient(180deg,#062345,#041a34)!important;
+  z-index:2!important;pointer-events:none!important;
+}
+.exact-header-links{
+  position:absolute!important;
+  top:auto!important;bottom:9px!important;
+  left:1%!important;right:1%!important;
+  height:54px!important;
+  z-index:3!important;
+  display:grid!important;
+  grid-template-columns:1.05fr .88fr .9fr 1.5fr 1.48fr 1.72fr .83fr .78fr!important;
+  gap:6px!important;padding:0!important;
+}
+.exact-header-links button{
+  min-height:42px!important;
+  padding:0 3px!important;
+  font-size:clamp(10px,1vw,16px)!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.exact-header-profile{display:none!important}
+@media(max-width:900px){
+  .exact-header{height:260px!important}
+  .exact-header-links{gap:3px!important;height:48px!important}
+  .exact-header-links button{font-size:10px!important}
+  .exact-header-links button::before{display:none!important}
+}
+@media(max-width:600px){
+  .exact-header{height:225px!important;min-height:225px!important}
+  .exact-header::after{height:124px!important}
+  .exact-header-links{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,38px)!important;height:80px!important;bottom:5px!important}
+  .exact-header-links button{font-size:9px!important;white-space:normal!important}
+}
 </style>
 </head>
 <body>
