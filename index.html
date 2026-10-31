@@ -1320,6 +1320,29 @@ body > #lucifer-fresh-header::before{
 @media(max-width:650px){
  #home .page-crumb{width:calc(100% - 24px)!important;max-width:calc(100% - 24px)!important}
 }
+
+/* Director request: restore banner position before last change, further compact dashboard title. */
+body > #lucifer-fresh-header{
+ width:100%!important;
+ max-width:100%!important;
+ margin-left:0!important;
+ height:clamp(76px,6.8vw,118px)!important;
+ min-height:76px!important;
+ max-height:118px!important;
+}
+#home .page-crumb{
+ width:calc(100% - 170px)!important;
+ max-width:calc(100% - 170px)!important;
+ min-height:22px!important;
+ padding:1px 7px!important;
+ margin:0 auto 6px!important;
+ font-size:.8rem!important;
+ line-height:1.05!important;
+}
+#home .page-crumb span{font-size:.6rem!important}
+@media(max-width:650px){
+ #home .page-crumb{width:calc(100% - 24px)!important;max-width:calc(100% - 24px)!important}
+}
 </style>
 </head>
 <body>
