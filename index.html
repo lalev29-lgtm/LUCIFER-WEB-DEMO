@@ -815,6 +815,17 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
  }
  main.wrap.side-collapsed{display:block!important;grid-template-columns:none!important}
 }
+
+/* The mobile sidebar is truly collapsed by default and visible when expanded. */
+@media(max-width:760px){
+ main.wrap>nav{position:relative!important;z-index:4!important;max-height:none!important}
+ main.wrap>nav .side-collapse-toggle{display:block!important;pointer-events:auto!important;cursor:pointer!important;position:relative!important;z-index:20!important}
+ main.wrap>nav.expanded,main.wrap>nav.open{max-height:65dvh!important;overflow-y:auto!important}
+ main.wrap>nav.expanded .side-logo,main.wrap>nav.expanded .side-group,
+ main.wrap>nav.expanded .side-foot,main.wrap>nav.expanded button[data-tab],
+ main.wrap>nav.open .side-logo,main.wrap>nav.open .side-group,
+ main.wrap>nav.open .side-foot,main.wrap>nav.open button[data-tab]{display:block!important}
+}
 </style>
 </head>
 <body>
@@ -883,6 +894,27 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
 </main>
 <footer class="site-approved-slogan" aria-label="Девиз на LUCIFER-WEB">Знанието е сила</footer>
 <img class="angel-corner" src="assets/angel-approved-preview.svg" alt="" aria-hidden="true" onerror="this.hidden=true">
+<script>
+/* INDEPENDENT-MOBILE-MENU-2026-10-31: works even if the main application script fails. */
+(function(){
+ function mobileMenuClick(event){
+  var button=event.target.closest&&event.target.closest("#side-collapse-toggle");
+  if(!button)return;
+  if(!window.matchMedia("(max-width:760px)").matches)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  var nav=button.closest("nav"),wrap=button.closest("main.wrap");
+  if(!nav)return;
+  var opening=!nav.classList.contains("expanded");
+  nav.classList.toggle("expanded",opening);
+  nav.classList.toggle("open",opening);
+  if(wrap)wrap.classList.remove("side-collapsed");
+  button.setAttribute("aria-expanded",String(opening));
+  button.setAttribute("aria-label",opening?"Прибери страничното меню":"Разгъни страничното меню");
+  button.textContent=opening?"✕":"☰";
+ }
+ document.addEventListener("click",mobileMenuClick,true);
+})();
+</script>
 <script>
 "use strict";
 
