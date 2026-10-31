@@ -149,6 +149,13 @@ main.wrap.side-collapsed>nav>:not(.side-collapse-toggle){display:none!important}
 }
 
 main.wrap>nav button[data-tab]{font-size:13px!important;line-height:13px!important;padding:3px 6px!important}
+
+/* Директорска корекция: изрязване на вградения служебен надпис ПОД бутоните. Без бяла рамка и без празна зона пред работното табло. */
+.exact-header{aspect-ratio:2170/260!important;width:100%!important;max-width:none!important;margin:0!important;border:0!important;overflow:hidden!important;background:#061b33!important}
+.exact-header img{left:-.55%!important;width:101.1%!important;height:222.5%!important;top:-41.75%!important;object-fit:fill!important}
+.exact-header-links{top:72%!important;height:27%!important;z-index:2}
+body:has(.exact-header:not([hidden])) main.wrap{margin-top:0!important;padding-top:0!important}
+body:has(.exact-header:not([hidden])) main.wrap>section{margin-top:0!important}
 </style>
 </head>
 <body>
