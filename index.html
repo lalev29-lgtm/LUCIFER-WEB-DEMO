@@ -496,11 +496,10 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 .exact-header::before,.exact-header::after{content:none!important;display:none!important}
 .exact-header>img{
  position:absolute!important;display:block!important;left:0!important;
- top:calc(-30.561798vw)!important;width:100%!important;height:auto!important;
+ top:-6.267vw!important;width:100%!important;height:auto!important;
  max-width:none!important;object-fit:initial!important;z-index:1!important
 }
-/* Match original crop at 2170px/725px, independent of viewport width. */
-.exact-header>img{top:-6.267vw!important}
+
 .exact-header-art-right{
  position:absolute;right:0;top:0;width:285px;height:70px;z-index:5;
  background:linear-gradient(90deg,rgba(96,158,201,.08),#6b9fc1 38%,#8db5d1 100%);
@@ -578,12 +577,19 @@ main.wrap>section{min-width:0!important;margin:0!important}
  main.wrap>nav{max-height:calc(100vh - 194px)!important}
 }
 @media(max-width:650px){
+ .exact-header{height:auto!important;min-height:0!important;aspect-ratio:auto!important;padding-top:0!important;display:flex!important;flex-direction:column!important}
+ .exact-header>img{position:relative!important;top:0!important;left:0!important;width:100%!important;height:110px!important;object-fit:cover!important;object-position:center 20%!important;flex:none!important}
+ .exact-header-art-right{display:none!important}
+ .exact-header-profile-compact{top:8px!important;right:6px!important}
+ .exact-header-motto-right{display:none!important}
+ .exact-header-links{position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;width:100%!important;flex:none!important}
+
  .exact-header{height:174px!important}
  .exact-header-motto-right{top:94px;font-size:12px;right:7px}
  .exact-header-art-right{width:140px;height:50px}
  .exact-header-profile-compact{width:115px!important;font-size:10px!important;right:5px!important}
- .exact-header-links{height:49px!important;grid-template-rows:47px!important;gap:1px!important}
- .exact-header-links button{height:45px!important;max-height:45px!important;min-height:45px!important;font-size:9px!important;padding:2px!important}
+ .exact-header-links{height:42px!important;grid-template-rows:40px!important;gap:1px!important}
+ .exact-header-links button{height:39px!important;max-height:39px!important;min-height:39px!important;font-size:9px!important;padding:2px!important}
  main.wrap{display:block!important}
  main.wrap>nav{width:100%!important;max-height:none!important}
 }
