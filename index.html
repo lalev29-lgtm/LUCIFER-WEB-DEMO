@@ -498,62 +498,42 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 .site-approved-slogan{position:static!important;transform:none!important;display:block!important;min-height:0!important;width:100%!important;text-align:center!important;margin:0!important;padding:6px!important;background:#071e35!important;color:#f8e8cb!important;font:italic 21px Georgia,serif!important}
 @media(max-width:700px){.exact-header{height:150px!important;min-height:150px!important;max-height:150px!important}.exact-header-links{top:110px!important;height:40px!important}.exact-header-clean-sky{width:40%}.exact-header-profile{width:145px!important;max-width:145px!important;font-size:9px!important}}
 
-/* LIVE-DEMO-UI-FIX-2026-10-31: flush left edge, short user button, visible subtitle. */
+
+/* CORPORATE-RESTORE-2026-10-31: approved light sidebar and single header layout. */
 html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 main.wrap{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;grid-template-columns:195px minmax(0,1fr)!important;gap:0!important}
-main.wrap>nav{width:195px!important;margin:0!important;padding:4px!important;border:0!important;border-radius:0!important;background:#0b2846!important;color:#fff!important}
-main.wrap>nav .side-logo,main.wrap>nav .side-group,main.wrap>nav .side-foot{color:#f2f7ff!important}
-main.wrap>nav .side-logo small{color:#bfd3e9!important}
-main.wrap>nav button:not([aria-selected=true]){background:#123a60!important;color:#fff!important;border-color:#315878!important}
+main.wrap>nav{width:195px!important;margin:0!important;padding:4px!important;border:0!important;border-radius:0!important;background:#edf4fc!important;color:#102b48!important}
+main.wrap>nav .side-logo,main.wrap>nav .side-group,main.wrap>nav .side-foot{color:#102b48!important}
+main.wrap>nav .side-logo small{color:#617b97!important}
+main.wrap>nav button{min-height:33px!important;margin-bottom:3px!important;white-space:normal!important;line-height:1.2!important}
+main.wrap>nav button:not([aria-selected=true]){background:#f6f9fd!important;color:#123552!important;border:1px solid #b7cde3!important}
+main.wrap>nav button[aria-selected=true]{background:#2775b4!important;color:white!important}
 main.wrap>section{margin-left:0!important;border-radius:0 7px 7px 0!important}
 main.wrap.side-collapsed{grid-template-columns:46px minmax(0,1fr)!important}
 main.wrap.side-collapsed>nav{width:46px!important}
-.exact-header-clean-sky{width:215px!important;height:45px!important;top:0!important;right:0!important;background:#061d36!important;z-index:20!important}
-.exact-header-profile{display:flex!important;align-items:center!important;justify-content:center!important;top:7px!important;right:8px!important;width:136px!important;max-width:136px!important;height:28px!important;min-height:28px!important;padding:3px 5px!important;font-size:10px!important;box-shadow:none!important;z-index:30!important}
-.exact-header-subtitle{position:absolute;left:46%;top:46px;transform:translateX(-50%);z-index:24;display:block;white-space:nowrap;color:#09213d;background:rgba(236,245,255,.87);padding:2px 12px;border-radius:4px;font:700 clamp(12px,1.1vw,18px)/1.2 Arial,sans-serif;text-shadow:none}
-@media(max-width:700px){main.wrap{grid-template-columns:minmax(0,1fr)!important}main.wrap>nav{width:100%!important;position:relative!important}.exact-header-clean-sky{width:160px!important;height:42px!important}.exact-header-profile{width:124px!important;max-width:124px!important;font-size:9px!important}.exact-header-subtitle{top:47px;left:50%;font-size:11px}}
-
-/* BANNER-EDGE-AND-MOTTO-2026-10-31: fixes reported from the actual DEMO screenshot. */
-.exact-header{margin:0!important;border:0!important;padding:0!important;left:0!important;width:100%!important;overflow:hidden!important}
-.exact-header img{left:-9px!important;width:calc(100% + 18px)!important;max-width:none!important}
-.exact-header{box-shadow:inset 8px 0 0 #082642!important}
-.exact-header-motto{
- position:absolute!important;z-index:25!important;
- top:76px!important;left:46%!important;transform:translateX(-50%)!important;
- padding:2px 12px!important;border-radius:4px!important;
- color:#fff5d5!important;background:rgba(6,27,51,.9)!important;
- font:italic 700 clamp(14px,1.25vw,21px)/1.2 Georgia,serif!important;
- letter-spacing:.09em!important;white-space:nowrap!important;text-shadow:0 1px 2px #000!important;
+.exact-header{position:relative!important;width:100%!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;overflow:hidden!important}
+.exact-header img{left:0!important;width:100%!important;max-width:none!important}
+.exact-header::before,.exact-header::after{content:none!important;display:none!important}
+.exact-header-clean-sky{
+ position:absolute!important;top:0!important;right:0!important;
+ width:22%!important;height:114px!important;z-index:22!important;
+ background:linear-gradient(135deg,#aecce0 0%,#75a4c6 52%,#c3d9e8 100%)!important;
  pointer-events:none!important
 }
-.exact-header-subtitle{top:47px!important;left:46%!important;z-index:25!important}
-@media(max-width:700px){.exact-header-motto{top:77px!important;left:49%!important;font-size:12px!important;padding:2px 6px!important}.exact-header-subtitle{left:49%!important;font-size:10px!important}}
-
-/* VISUAL-REPAIR-2026-10-31: cover the old raster motto beneath navigation,
-   keep a clean dedicated motto line between the title and buttons. */
-.exact-header{position:relative!important;overflow:hidden!important;border-left:0!important}
-.exact-header img{left:-14px!important;width:calc(100% + 28px)!important}
-.exact-header::after{
- content:""!important;display:block!important;position:absolute!important;
- top:88px!important;left:0!important;right:0!important;
- height:26px!important;bottom:auto!important;
- background:linear-gradient(90deg,#0b2948 0%,#163d5a 50%,#092a4b 100%)!important;
- z-index:21!important;pointer-events:none!important
+.exact-header-profile{position:absolute!important;top:8px!important;right:8px!important;z-index:30!important;display:flex!important;align-items:center!important;justify-content:center!important;width:132px!important;max-width:132px!important;height:29px!important;min-height:29px!important;padding:3px 6px!important;font-size:10px!important;background:#061e38!important;color:#fff!important;border:1px solid #406484!important;box-shadow:none!important}
+.exact-header-subtitle,.exact-header-motto{display:none!important}
+.exact-header-clean-sky::after{
+ content:"Знанието е сила";position:absolute;right:12px;bottom:13px;
+ color:#08243f;font:italic bold clamp(11px,1vw,16px)/1.2 Georgia,serif;
+ white-space:nowrap;text-shadow:0 1px 1px #fff
 }
-.exact-header-motto{
- position:absolute!important;top:89px!important;left:50%!important;
- transform:translateX(-50%)!important;z-index:26!important;
- background:transparent!important;color:#fff1c9!important;
- font:italic 700 20px/1.1 Georgia,serif!important;
- padding:1px 10px!important;margin:0!important;white-space:nowrap!important;
- letter-spacing:.08em!important;text-shadow:0 1px 2px #000!important
-}
-.exact-header-subtitle{top:42px!important;z-index:26!important}
 .exact-header-links{z-index:35!important}
-@media(max-width:700px){
- .exact-header::after{top:87px!important;height:27px!important}
- .exact-header-motto{top:91px!important;font-size:13px!important}
- .exact-header-subtitle{top:44px!important}
+@media(max-width:760px){
+ main.wrap{display:block!important}
+ main.wrap>nav{width:100%!important}
+ .exact-header-clean-sky{width:35%!important}
+ .exact-header-clean-sky::after{font-size:10px;right:5px}
+ .exact-header-profile{width:119px!important;max-width:119px!important;font-size:9px!important}
 }
 </style>
 </head>
