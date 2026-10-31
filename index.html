@@ -605,6 +605,27 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
  .exact-header-heading{left:76px!important;font-size:11px!important}
  .exact-header-profile-compact{width:92px!important;font-size:8px!important}
 }
+
+/* MOBILE-ARTWORK-SEPARATION-2026-10-31: avoid portrait cropping and text collision. */
+@media(max-width:760px){
+ .exact-header{height:170px!important}
+ .exact-header-angel{
+   position:absolute!important;left:6px!important;top:30px!important;bottom:auto!important;
+   width:82px!important;max-width:82px!important;height:90px!important;
+   object-fit:contain!important;object-position:center center!important;
+   background:transparent!important
+ }
+ .exact-header-heading{
+   position:absolute!important;top:38px!important;left:100px!important;right:10px!important;
+   width:auto!important;max-width:none!important;transform:none!important;
+   text-align:center!important;color:#072440!important;
+   font:800 clamp(11px,2.7vw,15px)/1.2 Arial,sans-serif!important;
+   text-shadow:0 1px 3px #fff6e6,0 0 6px #fff6e6!important;
+ }
+ .exact-header-heading small{font-size:11px!important;margin-top:5px!important}
+ .exact-header-profile-compact{width:98px!important;height:21px!important;min-height:21px!important;font-size:9px!important}
+ .exact-header-motto-right{bottom:44px!important;right:8px!important;font-size:11px!important}
+}
 </style>
 </head>
 <body>
