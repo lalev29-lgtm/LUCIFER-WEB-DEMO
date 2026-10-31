@@ -1050,6 +1050,35 @@ body>#exact-header.exact-header .exact-header-clean-sky,
 body>#exact-header.exact-header .exact-header-subtitle{display:none!important;content:none!important;background:none!important}
 body>#exact-header.exact-header .exact-header-links button::before,
 body>#exact-header.exact-header .exact-header-links button::after{content:none!important}
+
+/* Final approved-header layout: photographic banner, not the old vector placeholder. */
+body>#exact-header.exact-header{
+ height:136px!important;min-height:136px!important;max-height:136px!important;
+ background:#95bad4 url("assets/approved-header-31-10-2026.png") left top / 78% 100% no-repeat!important;
+}
+body>#exact-header.exact-header .lucifer-art-slot,
+body>#exact-header.exact-header .exact-header-art-right,
+body>#exact-header.exact-header .exact-header-heading{display:none!important}
+body>#exact-header.exact-header .exact-header-links{
+ bottom:0!important;top:auto!important;height:36px!important;
+ grid-template-columns:1.05fr .9fr .95fr 1.6fr 1.6fr 1.7fr .9fr .9fr!important;
+}
+body>#exact-header.exact-header .exact-header-links button{
+ height:36px!important;max-height:36px!important;min-height:36px!important;
+ background:#072642!important;color:white!important;
+ font-size:clamp(10px,.78vw,14px)!important;
+}
+body>#exact-header.exact-header .exact-header-links button:first-child{background:#0864e8!important}
+body>#exact-header.exact-header .exact-header-links button:nth-child(6){background:#e9002f!important}
+body>#exact-header.exact-header .exact-header-motto-right{
+ top:53%!important;right:1%!important;bottom:auto!important;color:#082b49!important;text-shadow:none!important;
+ font:italic 700 16px Georgia,serif!important;
+}
+@media(max-width:760px){
+ body>#exact-header.exact-header{height:125px!important;min-height:125px!important;max-height:125px!important}
+ body>#exact-header.exact-header .exact-header-links{height:38px!important}
+ body>#exact-header.exact-header .exact-header-links button{height:38px!important;max-height:38px!important;min-height:38px!important;font-size:9px!important}
+}
 </style>
 </head>
 <body>
