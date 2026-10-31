@@ -547,6 +547,29 @@ main.wrap>section{min-width:0!important;margin:0!important}
  main.wrap{display:block!important}
  main.wrap>nav{width:100%!important}
 }
+
+/* MOBILE-CORPORATE-FIX-2026-10-31: render the real clean header, hide old fallback. */
+.exact-header{display:block!important}
+.exact-header[hidden]{display:none!important}
+body:has(.exact-header:not([hidden]))>header.brand-header,
+body:has(.exact-header:not([hidden]))>.site-topnav{display:none!important}
+body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!important;display:block!important;margin:0!important;pointer-events:none!important}
+@media(max-width:760px){
+ .exact-header{height:155px!important;overflow:hidden!important}
+ .exact-header-angel{height:88px!important;bottom:44px!important;left:1%!important;max-width:23%!important}
+ .exact-header-heading{top:32px!important;left:22%!important;right:3%!important;font-size:clamp(11px,3vw,16px)!important;line-height:1.1!important}
+ .exact-header-heading small{font-size:11px!important;margin-top:3px!important}
+ .exact-header-profile-compact{top:4px!important;right:5px!important;width:108px!important;height:23px!important;min-height:23px!important;font-size:9px!important}
+ .exact-header-motto-right{bottom:44px!important;top:auto!important;right:6px!important;font-size:11px!important}
+ .exact-header-links{height:40px!important;grid-template-rows:36px!important;gap:1px!important;padding:2px!important}
+ .exact-header-links button{height:35px!important;min-height:35px!important;max-height:35px!important;font-size:9px!important;padding:1px!important}
+ main.wrap{display:block!important}
+ main.wrap>nav{box-sizing:border-box!important;width:100%!important;padding:3px!important;max-height:none!important;overflow:visible!important}
+ main.wrap>nav .side-collapse-toggle{height:32px!important;min-height:32px!important;text-align:center!important}
+ main.wrap>nav .side-logo,main.wrap>nav .side-group,main.wrap>nav .side-foot{display:none}
+ main.wrap>nav:not(.expanded):not(.open) button:not(.side-collapse-toggle){display:none!important}
+ .site-approved-slogan{position:static!important;transform:none!important}
+}
 </style>
 </head>
 <body>
@@ -743,7 +766,7 @@ function updateDashboard(){
  const body=document.getElementById("dash-recent");body.replaceChildren();if(!rows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent="Няма въведени инциденти.";tr.append(td);body.append(tr);}else for(const r of rows.slice(-5).reverse()){const tr=document.createElement("tr");for(const v of [r.id,r.date?.replace("T"," "),r.zone,r.category,r.expert]){const td=document.createElement("td");td.textContent=v??"";tr.append(td);}body.append(tr);}
 }
 const originalShow=show;show=function(tab){originalShow(tab);if(tab==="home")updateDashboard();};
-const exactImg=document.getElementById("exact-header-image");const exactHeader=document.getElementById("exact-header");exactImg.addEventListener("load",()=>{exactHeader.hidden=false;});exactImg.addEventListener("error",()=>{exactHeader.hidden=true;});if(exactImg.complete&&exactImg.naturalWidth>0)exactHeader.hidden=false;document.querySelectorAll("[data-exact]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.exact)));document.querySelectorAll("[data-exact-info]").forEach(b=>b.addEventListener("click",()=>alert("Раздел „"+b.dataset.exactInfo+"“ предстои да бъде реализиран.")));
+const exactHeader=document.getElementById("exact-header");if(exactHeader)exactHeader.hidden=false;document.querySelectorAll("[data-exact]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.exact)));document.querySelectorAll("[data-exact-info]").forEach(b=>b.addEventListener("click",()=>alert("Раздел „"+b.dataset.exactInfo+"“ предстои да бъде реализиран.")));
 document.querySelectorAll("[data-info]").forEach(b=>b.addEventListener("click",()=>{const title=b.dataset.info;alert("Раздел „"+title+"“ е включен в утвърдения архитектурен план, но функционалността още не е реализирана. Това е визуална демонстрация.");}));
 try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
 
