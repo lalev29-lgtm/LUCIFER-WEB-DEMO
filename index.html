@@ -481,25 +481,18 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
   .site-approved-slogan{font-size:15px!important;bottom:2px!important;padding:3px 10px!important}
 }
 
-/* CLEAN-HEADER-REBUILD-31-10: independently laid-out banner, no stacked pseudo-elements */
-.exact-header{height:154px!important;min-height:154px!important;max-height:154px!important;aspect-ratio:auto!important;overflow:hidden!important;isolation:isolate!important}
+
+/* RESTORE-APPROVED-HEADER: 31.10.2026 director-accepted original raster, no overlays. */
+.exact-header{position:relative!important;width:100%!important;max-width:2170px!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:2170/445!important;overflow:hidden!important;margin:0 auto!important;background:#031b32!important;line-height:0!important;border:0!important;box-shadow:none!important}
 .exact-header::before,.exact-header::after{display:none!important;content:none!important}
-.exact-header img{left:0!important;top:-68px!important;width:100%!important;height:396px!important;object-fit:fill!important}
-.exact-header-profile{top:9px!important;right:9px!important;width:168px!important;max-width:168px!important;height:32px!important;z-index:30!important;font-size:10px!important}
-.exact-header-links{top:114px!important;height:40px!important;bottom:auto!important;left:0!important;right:0!important;padding:0 2px!important;gap:4px!important;grid-template-rows:40px!important}
-.exact-header-links button{height:40px!important;min-height:40px!important}
-.exact-header-clean-sky{
- position:absolute;right:0;top:0;width:23%;height:62px;z-index:20;
- background-image:url("assets/approved-header-enhanced-31-10-2026.png");
- background-size:175% 600px;background-position:60% 13%;
- pointer-events:none
-}
-.exact-header-profile{background:#051e39!important;border:1px solid #3b5c7b!important}
-.site-approved-slogan{position:static!important;transform:none!important;display:block!important;min-height:0!important;width:100%!important;text-align:center!important;margin:0!important;padding:6px!important;background:#071e35!important;color:#f8e8cb!important;font:italic 21px Georgia,serif!important}
-@media(max-width:700px){.exact-header{height:150px!important;min-height:150px!important;max-height:150px!important}.exact-header-links{top:110px!important;height:40px!important}.exact-header-clean-sky{width:40%}.exact-header-profile{width:145px!important;max-width:145px!important;font-size:9px!important}}
-
-
-/* CORPORATE-RESTORE-2026-10-31: approved light sidebar and single header layout. */
+.exact-header img{position:absolute!important;display:block!important;left:0!important;top:-30.561798%!important;width:100%!important;height:auto!important;max-width:none!important;object-fit:initial!important}
+.exact-header-links{position:absolute!important;left:0!important;right:0!important;top:57%!important;bottom:auto!important;height:27%!important;display:grid!important;grid-template-columns:11.8fr 8.4fr 9fr 15.9fr 15.8fr 17.6fr 8.6fr 8.9fr!important;gap:.5%!important;padding:0 2.4%!important;background:transparent!important}
+.exact-header-links button{background:transparent!important;border:0!important;outline-offset:-3px!important;padding:0!important;min-width:0!important;min-height:0!important;height:100%!important;max-height:none!important;border-radius:3px!important;color:transparent!important;font-size:0!important;box-shadow:none!important}
+.exact-header-links button:hover{box-shadow:inset 0 0 0 2px #fff9!important}
+.exact-header-links button:focus-visible{outline:3px solid #ffd166!important}
+.exact-header[hidden]{display:none!important}
+body:has(.exact-header:not([hidden]))>header.brand-header,body:has(.exact-header:not([hidden]))>.site-topnav{display:none!important}
+body:has(.exact-header:not([hidden]))>.angel-corner{display:none!important}
 html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 main.wrap{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;grid-template-columns:195px minmax(0,1fr)!important;gap:0!important}
 main.wrap>nav{width:195px!important;margin:0!important;padding:4px!important;border:0!important;border-radius:0!important;background:#edf4fc!important;color:#102b48!important}
@@ -508,37 +501,12 @@ main.wrap>nav .side-logo small{color:#617b97!important}
 main.wrap>nav button{min-height:33px!important;margin-bottom:3px!important;white-space:normal!important;line-height:1.2!important}
 main.wrap>nav button:not([aria-selected=true]){background:#f6f9fd!important;color:#123552!important;border:1px solid #b7cde3!important}
 main.wrap>nav button[aria-selected=true]{background:#2775b4!important;color:white!important}
-main.wrap>section{margin-left:0!important;border-radius:0 7px 7px 0!important}
-main.wrap.side-collapsed{grid-template-columns:46px minmax(0,1fr)!important}
-main.wrap.side-collapsed>nav{width:46px!important}
-.exact-header{position:relative!important;width:100%!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;overflow:hidden!important}
-.exact-header img{left:0!important;width:100%!important;max-width:none!important}
-.exact-header::before,.exact-header::after{content:none!important;display:none!important}
-.exact-header-clean-sky{
- position:absolute!important;top:0!important;right:0!important;
- width:22%!important;height:114px!important;z-index:22!important;
- background:linear-gradient(135deg,#aecce0 0%,#75a4c6 52%,#c3d9e8 100%)!important;
- pointer-events:none!important
-}
-.exact-header-profile{position:absolute!important;top:8px!important;right:8px!important;z-index:30!important;display:flex!important;align-items:center!important;justify-content:center!important;width:132px!important;max-width:132px!important;height:29px!important;min-height:29px!important;padding:3px 6px!important;font-size:10px!important;background:#061e38!important;color:#fff!important;border:1px solid #406484!important;box-shadow:none!important}
-.exact-header-subtitle,.exact-header-motto{display:none!important}
-.exact-header-clean-sky::after{
- content:"Знанието е сила";position:absolute;right:12px;bottom:13px;
- color:#08243f;font:italic bold clamp(11px,1vw,16px)/1.2 Georgia,serif;
- white-space:nowrap;text-shadow:0 1px 1px #fff
-}
-.exact-header-links{z-index:35!important}
-@media(max-width:760px){
- main.wrap{display:block!important}
- main.wrap>nav{width:100%!important}
- .exact-header-clean-sky{width:35%!important}
- .exact-header-clean-sky::after{font-size:10px;right:5px}
- .exact-header-profile{width:119px!important;max-width:119px!important;font-size:9px!important}
-}
+main.wrap>section{margin-left:0!important}
+@media(max-width:760px){main.wrap{display:block!important}main.wrap>nav{width:100%!important}}
 </style>
 </head>
 <body>
-<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-clean-sky" aria-hidden="true"></div><div class="exact-header-subtitle">Управление на риска</div><div class="exact-header-motto">Знанието е сила</div><div class="exact-header-profile" aria-label="Потребителски панел">♙ Димитър Лалев</div><div class="exact-header-links"><button data-exact="home" aria-label="Начало">Начало</button><button data-exact-info="За нас" aria-label="За нас">За нас</button><button data-exact-info="Услуги" aria-label="Услуги">Услуги</button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори">Бизнес партньори</button><button data-exact="contacts" aria-label="Контакти с нас">Контакти с нас</button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация">Заявете консултация</button><button data-exact="home" aria-label="Демо">Демо</button><button data-exact-info="Вход" aria-label="Вход">Вход</button></div></div>
+<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-links"><button data-exact="home" aria-label="Начало"></button><button data-exact-info="За нас" aria-label="За нас"></button><button data-exact-info="Услуги" aria-label="Услуги"></button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори"></button><button data-exact="contacts" aria-label="Контакти с нас"></button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация"></button><button data-exact="home" aria-label="Демо"></button><button data-exact-info="Вход" aria-label="Вход"></button></div></div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><button type="button" data-info="Вход">♙ Вход</button></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
