@@ -570,6 +570,41 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
  main.wrap>nav:not(.expanded):not(.open) button:not(.side-collapse-toggle){display:none!important}
  .site-approved-slogan{position:static!important;transform:none!important}
 }
+
+/* MOBILE-HEADER-READABILITY-2026-10-31: scaled artwork, clear title, small profile. */
+@media(max-width:760px){
+ .exact-header{height:166px!important;background-position:center center!important}
+ .exact-header-angel{
+  left:4px!important;top:32px!important;bottom:auto!important;
+  width:82px!important;max-width:82px!important;height:78px!important;
+  object-fit:contain!important;object-position:center!important;
+  background:transparent!important
+ }
+ .exact-header-heading{
+  top:38px!important;left:96px!important;right:8px!important;
+  width:auto!important;max-width:none!important;text-align:center!important;
+  font:800 clamp(11px,2.9vw,15px)/1.17 Arial,sans-serif!important;
+  color:#09233d!important;text-shadow:0 1px 2px #fff4dd!important;
+  overflow-wrap:normal!important
+ }
+ .exact-header-heading small{font-size:11px!important;margin-top:4px!important}
+ .exact-header-profile-compact{
+  top:5px!important;right:6px!important;width:99px!important;height:21px!important;
+  min-height:21px!important;padding:2px 4px!important;font-size:9px!important;
+  border-radius:4px!important
+ }
+ .exact-header-motto-right{
+  top:auto!important;bottom:44px!important;right:8px!important;
+  font-size:11px!important
+ }
+ .exact-header-links{bottom:0!important;height:40px!important;grid-template-rows:36px!important}
+ .exact-header-links button{height:35px!important;min-height:35px!important;max-height:35px!important}
+}
+@media(max-width:380px){
+ .exact-header-angel{width:66px!important;max-width:66px!important;height:67px!important;top:38px!important}
+ .exact-header-heading{left:76px!important;font-size:11px!important}
+ .exact-header-profile-compact{width:92px!important;font-size:8px!important}
+}
 </style>
 </head>
 <body>
