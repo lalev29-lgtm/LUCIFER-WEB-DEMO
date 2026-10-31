@@ -1343,6 +1343,10 @@ body > .site-topnav{
  margin-top:clamp(-38px,-2.3vw,-24px)!important;
  z-index:10!important;
 }
+
+/* Директорски приета корекция: единствено ширината на работното табло. */
+@media (min-width:761px){#home:not([hidden]){width:50%!important;max-width:none!important;min-width:0;justify-self:center}}
+@media (max-width:760px){#home{width:100%!important}}
 </style>
 </head>
 <body>
