@@ -530,10 +530,48 @@ main.wrap>nav .side-group{background:#eaf2fb!important;color:#102b48!important}
 main.wrap>nav .side-logo,main.wrap>nav .side-foot{color:#102b48!important}
 main.wrap>nav button{font-size:12px!important;padding:5px 6px!important;min-height:33px!important}
 @media(max-width:760px){.exact-header::before{width:27%!important}.exact-header::after{font-size:10px!important;right:3px!important;top:39%!important}}
+
+/* COMPACT-APPROVED-BANNER-2026-10-31: keep art/title, replace oversized raster menu. */
+.exact-header{
+ aspect-ratio:auto!important;height:clamp(190px,13.7vw,232px)!important;
+ min-height:190px!important;max-height:232px!important;
+ overflow:hidden!important
+}
+.exact-header img{top:-30.561798%!important;width:100%!important}
+.exact-header-links{
+ top:auto!important;bottom:0!important;height:36px!important;
+ display:grid!important;align-items:stretch!important;
+ padding:0 4px!important;gap:4px!important;
+ grid-template-columns:1.05fr .9fr .9fr 1.4fr 1.35fr 1.6fr .75fr .75fr!important;
+ background:#092641!important;z-index:45!important
+}
+.exact-header-links button{
+ height:34px!important;min-height:34px!important;max-height:34px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ background:#0b3153!important;border:1px solid #39658b!important;
+ color:#fff!important;font:600 clamp(10px,.82vw,13px)/1.1 Arial,sans-serif!important;
+ white-space:nowrap!important;border-radius:4px!important;
+ text-shadow:none!important
+}
+.exact-header-links button:first-child{background:#0863e8!important}
+.exact-header-links button:nth-child(6){background:#ed0031!important;border-color:#ed0031!important}
+.exact-header-links button:hover{filter:brightness(1.18)!important}
+.exact-header::before,.exact-header::after{display:none!important;content:none!important}
+.exact-header-profile-compact{
+ position:absolute;top:9px;right:10px;z-index:44;
+ background:#071e37;color:#fff;border:1px solid #466785;
+ border-radius:5px;padding:5px 9px;font:600 11px/1.2 Arial,sans-serif;
+ pointer-events:none
+}
+@media(max-width:900px){
+ .exact-header-links{gap:2px!important;padding:0 2px!important}
+ .exact-header-links button{font-size:10px!important;white-space:normal!important}
+ .exact-header-profile-compact{font-size:10px;padding:4px 6px}
+}
 </style>
 </head>
 <body>
-<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-links"><button data-exact="home" aria-label="Начало"></button><button data-exact-info="За нас" aria-label="За нас"></button><button data-exact-info="Услуги" aria-label="Услуги"></button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори"></button><button data-exact="contacts" aria-label="Контакти с нас"></button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация"></button><button data-exact="home" aria-label="Демо"></button><button data-exact-info="Вход" aria-label="Вход"></button></div></div>
+<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-profile-compact" aria-label="Потребител">Димитър Лалев</div><div class="exact-header-links"><button data-exact="home" aria-label="Начало">⌂ Начало</button><button data-exact-info="За нас" aria-label="За нас">⚙ За нас</button><button data-exact-info="Услуги" aria-label="Услуги">▥ Услуги</button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори">♟ Бизнес партньори</button><button data-exact="contacts" aria-label="Контакти с нас">✉ Контакти с нас</button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация">Заявете консултация</button><button data-exact="home" aria-label="Демо">▷ Демо</button><button data-exact-info="Вход" aria-label="Вход">♙ Вход</button></div></div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><button type="button" data-info="Вход">♙ Вход</button></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
