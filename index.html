@@ -1260,6 +1260,23 @@ body{
  background-repeat:no-repeat!important;
  background-attachment:fixed!important;
 }
+
+/* Director: narrower/shorter banner and compact dashboard heading. */
+body > #lucifer-fresh-header{
+ height:clamp(76px,6.8vw,118px)!important;
+ min-height:76px!important;
+ max-height:118px!important;
+}
+#home .page-crumb{
+ width:calc(100% - 22px)!important;
+ max-width:calc(100% - 22px)!important;
+ min-height:34px!important;
+ padding:6px 11px!important;
+ margin:0 auto 10px!important;
+ font-size:1rem!important;
+ line-height:1.25!important;
+}
+#home .page-crumb span{font-size:.7rem!important}
 </style>
 </head>
 <body>
