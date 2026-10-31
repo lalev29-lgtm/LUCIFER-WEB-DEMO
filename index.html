@@ -87,6 +87,9 @@ body{background-color:#061a30}header.brand-header{padding:10px clamp(14px,2vw,30
 /* Директорска корекция: хедър с ~10% по-малка височина; изображението и навигацията се свиват заедно, без изрязване на бутони. */
 .exact-header{width:100%!important;max-width:2170px!important;aspect-ratio:2170/355!important;} .exact-header img{top:-30.561798%!important;} .exact-header-links{top:71.5%!important;height:33.8%!important;}
 @media(max-width:760px){.exact-header{width:100%!important}}
+/* Поправка: оригиналът е 2170×725 с видима област y=136..581. При височина 355px скалираме цялата видима област вертикално, вместо да отрязваме долните бутони. */
+.exact-header img{width:100%!important;height:162.92135%!important;top:-30.5618%!important;object-fit:fill!important;}
+.exact-header-links{top:57%!important;height:27%!important;}
 /* Премахване на черната горна ивица: хедърът прилепва към горния ръб; изображението започва от първия пиксел. */
 html,body{margin:0!important;padding-top:0!important}.exact-header{margin-top:0!important;border-top:0!important}.exact-header img{top:-30.561798%!important}
 /* 31.10 — директорски разрешени корекции само на работната зона; утвърденият хедър е недокоснат. */
