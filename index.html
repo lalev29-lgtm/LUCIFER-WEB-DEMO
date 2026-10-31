@@ -229,6 +229,15 @@ body:has(.exact-header:not([hidden])) main.wrap>section{margin-top:0!important}
   .exact-header-links{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,38px)!important;height:80px!important;bottom:5px!important}
   .exact-header-links button{font-size:9px!important;white-space:normal!important}
 }
+
+/* DIRECTOR-APPROVED COMPACT HEADER: 40px navigation, compact user control, no clipping. */
+.exact-header{height:clamp(220px,15.5vw,320px)!important;min-height:220px!important;max-width:none!important;width:100%!important;margin:0!important;border:0!important;aspect-ratio:auto!important}
+.exact-header::after{height:80px!important;bottom:0!important;z-index:2!important;background:#041b35!important}
+.exact-header-links{position:absolute!important;z-index:3!important;top:auto!important;bottom:8px!important;height:40px!important;left:1%!important;right:1%!important;gap:5px!important;padding:0!important;grid-template-columns:1fr .76fr .8fr 1.42fr 1.4fr 1.65fr .75fr .7fr!important}
+.exact-header-links button{display:flex!important;align-items:center;justify-content:center;height:40px!important;min-height:40px!important;max-height:40px!important;font-size:clamp(10px,.9vw,15px)!important;padding:0 5px!important;line-height:1!important;white-space:nowrap!important}
+.exact-header-profile{display:flex!important;position:absolute!important;z-index:4!important;align-items:center;justify-content:center;top:7%!important;right:1.5%!important;width:auto!important;max-width:205px!important;min-height:30px!important;padding:4px 8px!important;font-size:clamp(10px,.7vw,12px)!important;box-shadow:none!important;background:#061c37!important}
+@media(max-width:900px){.exact-header{height:235px!important}.exact-header-links{height:36px!important;bottom:6px!important}.exact-header-links button{height:36px!important;min-height:36px!important;max-height:36px!important;font-size:10px!important}.exact-header-profile{max-width:170px!important}}
+@media(max-width:600px){.exact-header{height:235px!important;min-height:235px!important}.exact-header::after{height:96px!important}.exact-header-links{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,34px)!important;height:72px!important;bottom:5px!important}.exact-header-links button{height:34px!important;min-height:34px!important;max-height:34px!important;white-space:normal!important;font-size:9px!important}.exact-header-profile{font-size:9px!important;max-width:150px!important}}
 </style>
 </head>
 <body>
