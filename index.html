@@ -45,17 +45,37 @@ table{width:max-content;min-width:100%;border-collapse:separate;border-spacing:0
 #incidents h3{margin:10px 0 6px}
 @media(max-width:1050px){#incidents .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){#incidents .grid{grid-template-columns:1fr}}
-#register-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;padding:10px;background:rgba(15,39,63,.92);border:1px solid #55738f;border-radius:10px}#register-toolbar button{padding:9px 12px}#register-toolbar button:disabled{opacity:.46;cursor:not-allowed}#selected-incident{margin-right:auto;font-size:.9rem;color:#d7e6f5}#incident-rows tr[data-id]{cursor:pointer}#incident-rows tr[data-id]:hover td{background:#294766}#incident-rows tr[aria-selected="true"] td{background:#31577b;outline:1px solid #8fc7f2}</style>
+#register-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;padding:10px;background:rgba(15,39,63,.92);border:1px solid #55738f;border-radius:10px}#register-toolbar button{padding:9px 12px}#register-toolbar button:disabled{opacity:.46;cursor:not-allowed}#selected-incident{margin-right:auto;font-size:.9rem;color:#d7e6f5}#incident-rows tr[data-id]{cursor:pointer}#incident-rows tr[data-id]:hover td{background:#294766}#incident-rows tr[aria-selected="true"] td{background:#31577b;outline:1px solid #8fc7f2}
+/* Директорски утвърден дизайн 31.10.2026 — публична/клиентска/административна навигация. */
+:root{--lucifer-menu:#dbe8f4;--lucifer-menu-ink:#13283d}
+body{padding-bottom:0}
+.site-topnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.site-topnav button{background:#dbe8f4;color:#13283d;border-color:#9dbbd5;padding:8px 12px}
+.site-topnav button[aria-current=page]{background:#f3d8aa;color:#16273a}
+#nav-drawer-toggle{background:#e6edf5;color:#142c42;border-color:#9ab6d0;font-weight:700}
+#nav-drawer{background:#e2edf7;color:#14283d;border:1px solid #93b1cc;border-radius:10px;padding:10px;margin-bottom:12px}
+#nav-drawer h3{margin:0 0 8px}
+#nav-drawer .drawer-links{display:flex;flex-wrap:wrap;gap:8px}
+#nav-drawer button{background:#f8fbff;color:#183550;border:1px solid #9cb9d2}
+.wrap>nav{background:rgba(223,235,246,.96);border-color:#a3bed4}
+.wrap>nav::before{color:#254867}
+.wrap>nav button{background:#f5f9fd;color:#18354e;border-color:#b4cadb}
+.wrap>nav button[aria-selected=true]{background:#2773af;color:#fff;border-color:#23699f}
+#contacts{max-width:1080px;width:100%;justify-self:center}
+.angel-corner{position:fixed;right:14px;bottom:14px;width:clamp(70px,9vw,132px);height:auto;z-index:6;pointer-events:none;filter:drop-shadow(0 5px 15px #0009);border-radius:8px;opacity:.9}
+.angel-corner[hidden]{display:none}
+@media(max-width:760px){.angel-corner{width:66px;right:6px;bottom:6px;opacity:.7}.site-topnav{gap:5px}.site-topnav button{padding:7px 9px;font-size:.85rem}}
+</style>
 </head>
 <body>
 <header><h1>Луцифер- Знанието е сила · Управление на риска</h1><span class="badge">WEB-SITE-003 · Разширен регистър · Не е приет</span></header>
-<main class="wrap">
+<div class="site-topnav" aria-label="Публична навигация"><button type="button" data-public="home" aria-current="page">Начало</button><button type="button" data-public="contacts">Контакти с нас</button><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Лист навигация</button><span class="muted">Клиентска и административна навигация — след удостоверяване на права (предстои реализация).</span></div><div id="nav-drawer" hidden><h3>Лист навигация</h3><div class="drawer-links"><button type="button" data-drawer="home">Начало</button><button type="button" data-drawer="incidents">Инциденти</button><button type="button" data-drawer="risk">Оценка на риска</button><button type="button" data-drawer="priority">Приоритет за третиране</button><button type="button" data-drawer="contacts">Контакти с нас</button></div><p class="muted">Останалите модули от архитектурната карта предстои да бъдат разработени; няма фиктивен достъп.</p></div><main class="wrap">
 <nav aria-label="Основни модули">
 <button type="button" aria-selected="true" data-tab="home">Начало</button>
 <button type="button" aria-selected="false" data-tab="incidents">Инциденти</button>
 <button type="button" aria-selected="false" data-tab="risk">Оценка на риска</button>
 <button type="button" aria-selected="false" data-tab="priority">Приоритет за третиране</button>
-</nav>
+<button type="button" aria-selected="false" data-tab="contacts">Контакти с нас</button></nav>
 <section id="home"><h2>Център за управление на риска</h2><p>Първи интерфейс на LUCIFER-WEB. Работният маршрут е <strong>Инциденти → Оценка на риска → Приоритет за третиране</strong>.</p>
 <div class="notice"><strong>Внимание:</strong> Това е демонстрационен локален интерфейс, а не оперативна система. Няма връзка с LUCIFER 1.0, сървър, AI или GitHub. Не въвеждайте реални лични данни или чувствителни инциденти.</div>
 <p>Записите в този прототип се съхраняват единствено в браузъра на това устройство. Изтриването на данните на браузъра може да ги премахне.</p>
@@ -91,7 +111,9 @@ table{width:max-content;min-width:100%;border-collapse:separate;border-spacing:0
 </section>
 <section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Модулът предстои да бъде реализиран по утвърдената методика. Няма автоматично изчисляване и не се представя измислена оценка.</div><p>Основно изискване: експертната оценка H задава минималната крайна категория риск. Финансовите показатели не могат да понижават по-високата експертна оценка.</p></section>
 <section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оперативната логика предстои да бъде реализирана и проверена. Не използвайте този екран за реални решения.</div><p>При доказана тежка опасност животът и здравето имат приоритет пред материалните щети. Експертната оценка H определя минимален оперативен приоритет.</p></section>
+<section id="contacts" hidden><h2>Контакти с нас</h2><p>Страница за връзка с екипа на LUCIFER-WEB.</p><div class="notice">Официалните координати за контакт и работеща форма ще бъдат добавени след директорско потвърждение. Не се събират или изпращат лични данни.</div></section>
 </main>
+<img class="angel-corner" src="assets/padnaliyat-angel-pod-palnolunieto.png" alt="" aria-hidden="true" onerror="this.hidden=true">
 <script>
 "use strict";
 
@@ -101,7 +123,7 @@ if(v8Grid){const byId=new Map([...v8Grid.children].map(el=>[el.querySelector("in
 const KEY="lucifer-web-site-001-demo-v1"; // Запазва съвместимост с демонстрационните записи от предишния преглед.
 const tabs=[...document.querySelectorAll("[data-tab]")];
 const TAB_KEY="lucifer-web-active-tab-v1";
-const validTabs=["home","incidents","risk","priority"];
+const validTabs=["home","incidents","risk","priority","contacts"];
 function show(tab){
  if(!validTabs.includes(tab))tab="home";
  for(const b of tabs)b.setAttribute("aria-selected",String(b.dataset.tab===tab));
@@ -109,6 +131,10 @@ function show(tab){
  try{sessionStorage.setItem(TAB_KEY,tab);}catch(error){/* Навигацията работи и без storage. */}
 }
 tabs.forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab)));
+const drawer=document.getElementById("nav-drawer"),drawerToggle=document.getElementById("nav-drawer-toggle");
+drawerToggle.addEventListener("click",()=>{drawer.hidden=!drawer.hidden;drawerToggle.setAttribute("aria-expanded",String(!drawer.hidden));});
+document.querySelectorAll("[data-drawer]").forEach(b=>b.addEventListener("click",()=>{show(b.dataset.drawer);drawer.hidden=true;drawerToggle.setAttribute("aria-expanded","false");}));
+document.querySelectorAll("[data-public]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.public)));
 document.getElementById("go-incidents").addEventListener("click",()=>show("incidents"));
 function read(){
 try{
@@ -133,7 +159,7 @@ throw error;
 }
 function nextId(){const used=new Set(read().map(x=>x.id));for(let i=1;i<=399;i++){const id="INC-"+String(i).padStart(3,"0");if(!used.has(id))return id;}return "";}
 function suggestId(){document.getElementById("incident-id").value=nextId();}
-function validLocalDateTime(value){const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(value));if(!m)return false;const [y,mo,d,h,mi]=m.slice(1).map(Number);const dt=new Date(y,mo-1,d,h,mi);return dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d&&dt.getHours()===h&&dt.getMinutes()===mi;}
+function validLocalDateTime(value){const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(String(value));if(!m)return false;const [y,mo,d,h,mi]=m.slice(1).map(Number);if(y<2000||h>23||mi>59)return false;const dt=new Date(0);dt.setFullYear(y,mo-1,d);dt.setHours(h,mi,0,0);if(dt.getFullYear()!==y||dt.getMonth()!==mo-1||dt.getDate()!==d||dt.getHours()!==h||dt.getMinutes()!==mi)return false;const today=new Date();const day=new Date(today.getFullYear(),today.getMonth(),today.getDate());return new Date(y,mo-1,d)<=day;}
 function weekdayFromDate(value){return ["Неделя","Понеделник","Вторник","Сряда","Четвъртък","Петък","Събота"][new Date(value).getDay()];}
 function formatDateBG(value){const match=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2})?$/.exec(String(value??""));if(!match)return String(value??"");const [,year,month,day,hour,minute]=match;const date=new Date(Number(year),Number(month)-1,Number(day),Number(hour),Number(minute));if(date.getFullYear()!==Number(year)||date.getMonth()!==Number(month)-1||date.getDate()!==Number(day)||date.getHours()!==Number(hour)||date.getMinutes()!==Number(minute))return String(value);return `${day}.${month}.${year} г., ${hour}:${minute} ч.`;}
 const fieldIds=["incident-id","incident-date","incident-shift","incident-weekday","incident-zone","incident-category","incident-expert","incident-guards","incident-cctv","incident-access","incident-sot","incident-visitors","incident-detect","incident-react","incident-result","incident-prevented","incident-evidence","incident-reference","incident-threatened","incident-damage","incident-description"];
@@ -141,8 +167,21 @@ const dataKeys=["id","date","shift","weekday","zone","category","expert","guards
 const detailLabels=["ID","Дата и час","Смяна","Ден от седмицата","Зона","Категория","Експертно ниво H","Брой охранители","CCTV","Контрол на достъпа","СОТ","Посетители","Време за откриване","Време за реакция","Резултат","Предотвратена кражба","Статус на проверката","Препратка към доказателства","Застрашена стойност V (евро)","Действителна щета P (евро)","Описание"];
 let editingId=null;
 let selectedId=null;
-function selectIncident(id){const exists=id!==null&&read().some(x=>x.id===id);selectedId=exists?id:null;document.getElementById("selected-incident").textContent=selectedId?"Избран: "+selectedId:"Няма избран инцидент";for(const action of ["view","edit","delete"])document.getElementById("toolbar-"+action).disabled=!selectedId;document.querySelectorAll("#incident-rows tr[data-id]").forEach(tr=>tr.setAttribute("aria-selected",String(tr.dataset.id===selectedId)));}
-for(const action of ["view","edit","delete"]){document.getElementById("toolbar-"+action).addEventListener("click",()=>{if(!selectedId||!read().some(x=>x.id===selectedId)){selectIncident(null);return;}if(action==="view")showDetails(selectedId);if(action==="edit")editRecord(selectedId);if(action==="delete")deleteRecord(selectedId);});}
+function selectIncident(id){
+ const exists=id!==null&&read().some(x=>x.id===id);
+ selectedId=exists?id:null;
+ document.getElementById("selected-incident").textContent=selectedId?"Избран: "+selectedId:"Няма избран инцидент";
+ for(const action of ["view","edit","delete"])document.getElementById("toolbar-"+action).disabled=!selectedId;
+ document.querySelectorAll("#incident-rows tr[data-id]").forEach(tr=>tr.setAttribute("aria-selected",String(tr.dataset.id===selectedId)));
+}
+for(const action of ["view","edit","delete"]){
+ document.getElementById("toolbar-"+action).addEventListener("click",()=>{
+  if(!selectedId||!read().some(x=>x.id===selectedId)){selectIncident(null);return;}
+  if(action==="view")showDetails(selectedId);
+  if(action==="edit")editRecord(selectedId);
+  if(action==="delete")deleteRecord(selectedId);
+ });
+}
 function render(){const rows=read();document.getElementById("record-count").textContent="("+rows.length+"/399)";const body=document.getElementById("incident-rows");body.replaceChildren();for(const x of rows){const tr=document.createElement("tr");tr.dataset.id=x.id;tr.setAttribute("aria-selected",String(x.id===selectedId));for(const v of [x.id,formatDateBG(x.date),x.shift,x.weekday,x.zone,x.category,x.expert,x.guards,x.cctv,x.access,x.sot,x.visitors,x.detect,x.react,x.result,x.prevented==="yes"?"Да":"Не",x.evidence,x.reference,x.threatened??0,x.damage,x.description]){const td=document.createElement("td");td.textContent=String(v??"");td.title=String(v??"");tr.append(td)}const td=document.createElement("td"),actions=document.createElement("div");actions.className="actions";for(const [label,action,cls] of [["Преглед","view",""],["Редактирай","edit",""],["Изтрий","delete","danger"]]){const b=document.createElement("button");b.type="button";b.textContent=label;b.dataset.action=action;b.dataset.id=x.id;if(cls)b.className=cls;actions.append(b)}td.append(actions);tr.append(td);body.append(tr)}if(selectedId&&!rows.some(x=>x.id===selectedId))selectIncident(null)}
 function showDetails(id){const row=read().find(x=>x.id===id);if(!row)return;const container=document.getElementById("record-details-content");container.replaceChildren();dataKeys.forEach((key,i)=>{const div=document.createElement("div"),title=document.createElement("strong"),value=document.createElement("span");title.textContent=detailLabels[i];value.textContent=String(key==="date"?formatDateBG(row[key]):key==="prevented"?(row[key]==="yes"?"Да":"Не"):(row[key]??""));div.append(title,value);container.append(div)});document.getElementById("record-details").hidden=false;document.getElementById("record-details").scrollIntoView({block:"nearest"})}
 function cancelEdit(){editingId=null;document.getElementById("incident-form").reset();document.getElementById("incident-id").readOnly=false;document.getElementById("editing-banner").hidden=true;document.getElementById("cancel-edit").hidden=true;document.getElementById("save-button").textContent="Запиши локално";suggestId()}
@@ -153,7 +192,6 @@ document.getElementById("close-details").addEventListener("click",()=>document.g
 document.getElementById("cancel-edit").addEventListener("click",cancelEdit);
 document.getElementById("incident-form").addEventListener("submit",e=>{e.preventDefault();const get=id=>document.getElementById(id).value.trim();const id=get("incident-id").toUpperCase();const n=Number(id.slice(4));const msg=document.getElementById("form-message");if(!/^INC-\d{3}$/.test(id)||n<1||n>399){msg.textContent="Невалиден ID: INC-001 до INC-399.";return}if(!validLocalDateTime(get("incident-date"))){msg.textContent="Невалидна календарна дата или час. Записът е спрян (контрол R).";msg.className="";return}const rows=read();if(!editingId&&rows.some(x=>x.id===id)){msg.textContent="Този ID вече съществува.";return}if(!editingId&&rows.length>=399){msg.textContent="Достигнат е лимитът от 399 записа.";return}const guards=Number(get("incident-guards")),visitors=Number(get("incident-visitors")),detect=Number(get("incident-detect")),react=Number(get("incident-react")),damage=Number(get("incident-damage")),threatened=Number(get("incident-threatened"));if(![guards,visitors,detect,react,damage,threatened].every(v=>Number.isFinite(v)&&v>=0)||![guards,visitors].every(Number.isInteger)){msg.textContent="Проверете числовите полета.";return}const prevented=get("incident-prevented"),evidence=get("incident-evidence"),reference=get("incident-reference");if(prevented==="yes"&&(get("incident-category")!=="Кражба"||evidence!=="Проверени — потвърдено"||!reference)){msg.textContent="За предотвратена кражба са необходими категория Кражба, потвърдена проверка и препратка.";return}const row={id,date:get("incident-date"),weekday:weekdayFromDate(get("incident-date")),shift:get("incident-shift"),guards,cctv:get("incident-cctv"),access:get("incident-access"),sot:get("incident-sot"),visitors,detect,react,zone:get("incident-zone"),category:get("incident-category"),expert:get("incident-expert"),damage,threatened,prevented,evidence,reference,result:get("incident-result"),description:get("incident-description")};if(editingId){if(id!==editingId){msg.textContent="ID не може да се променя.";return}const idx=rows.findIndex(x=>x.id===editingId);if(idx<0){msg.textContent="Записът не е намерен.";return}rows[idx]=row}else rows.push(row);try{localStorage.setItem(KEY,JSON.stringify(rows));msg.textContent=editingId?"Корекциите са записани.":"Записано само в този браузър.";msg.className="ok";cancelEdit();render()}catch{msg.textContent="Локалното записване е неуспешно.";msg.className=""}});
 document.getElementById("export-json").addEventListener("click",()=>{const data=JSON.stringify({schema:1,kind:"LUCIFER-WEB-DEMO-BACKUP",exported_at:new Date().toISOString(),incidents:read()},null,2);const blob=new Blob([data],{type:"application/json;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="LUCIFER-WEB-демо-резервно-копие.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
-
 const restoreButton=document.getElementById("restore-json");
 const restoreFile=document.getElementById("restore-file");
 const restoreMessage=document.getElementById("restore-message");
@@ -165,14 +203,17 @@ restoreFile.addEventListener("change",async()=>{
  restoreMessage.textContent="";
  try{
   if(file.size>2*1024*1024)throw new Error("Файлът е прекалено голям (максимум 2 MB).");
-  const backup=JSON.parse(await file.text());
+  let backup;
+  try{backup=JSON.parse(await file.text());}
+  catch{throw new Error("Файлът не съдържа валиден JSON.");}
   if(!backup||typeof backup!=="object"||Array.isArray(backup)||backup.schema!==1||backup.kind!=="LUCIFER-WEB-DEMO-BACKUP"||!Array.isArray(backup.incidents))throw new Error("Невалиден формат на резервното копие.");
+  if(Object.keys(backup).some(k=>!["schema","kind","incidents","exported_at","exportedAt"].includes(k)))throw new Error("Непозната структура на резервното копие.");
   const incoming=backup.incidents;
   if(incoming.length>399)throw new Error("Превишен е лимитът от 399 инцидента.");
   const ids=new Set();
   const keys=["id","date","weekday","shift","guards","cctv","access","sot","visitors","detect","react","zone","category","expert","damage","threatened","prevented","evidence","reference","result","description"];
   for(const row of incoming){
-   if(!row||typeof row!=="object"||Array.isArray(row)||keys.some(k=>!Object.hasOwn(row,k)))throw new Error("Липсват задължителни данни в резервното копие.");
+   if(!row||typeof row!=="object"||Array.isArray(row)||keys.some(k=>!Object.hasOwn(row,k))||Object.keys(row).some(k=>!keys.includes(k)))throw new Error("Неправилна структура на запис в резервното копие.");
    if(typeof row.id!=="string"||!/^INC-\d{3}$/.test(row.id)||Number(row.id.slice(4))<1||Number(row.id.slice(4))>399||ids.has(row.id))throw new Error("Невалиден или повторен идентификатор.");
    ids.add(row.id);
    if(!validLocalDateTime(row.date)||row.weekday!==weekdayFromDate(row.date))throw new Error("Невалидна дата или ден от седмицата.");
