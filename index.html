@@ -1434,6 +1434,9 @@ body > #lucifer-fresh-header{
  background-size:100% auto!important;
  background-position:center top!important;
 }
+
+/* Директорска корекция: работното табло +25% ширина (50% → 62.5%), само desktop. */
+@media (min-width:761px){#home:not([hidden]){width:62.5%!important;max-width:none!important;min-width:0!important}}
 </style>
 </head>
 <body>
