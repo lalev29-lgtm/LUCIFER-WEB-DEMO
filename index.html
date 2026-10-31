@@ -125,6 +125,29 @@ main.wrap>nav .side-logo{padding:6px 6px 8px}
 main.wrap>nav .side-foot{padding:6px 5px}
 main.wrap>nav .side-collapse-toggle{height:33px;min-height:33px;margin:0 0 4px!important;padding:4px!important;text-align:center!important}
 @media(max-width:760px){main.wrap>nav{max-height:60dvh;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}}
+
+/* Compact workspace navigation — 195px; header rules intentionally untouched. */
+main.wrap{width:100%;max-width:none;min-height:0!important;margin:0!important;padding:0 10px 0 0!important;display:grid;grid-template-columns:195px minmax(0,1fr)!important;gap:10px!important;align-items:start}
+main.wrap>section{width:100%;max-width:none!important;min-width:0;margin:0!important;justify-self:stretch}
+main.wrap>nav{position:sticky;top:0;align-self:start;display:flex;flex-direction:column;flex-wrap:nowrap;gap:4px!important;width:195px;min-height:0!important;max-height:calc(100dvh - var(--workspace-top,0px));overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;background:#f5f8fc;margin:0!important;padding:4px!important;border:0;border-radius:0}
+main.wrap>nav::before{display:none}
+main.wrap>nav>*{flex-shrink:0}
+main.wrap>nav button,main.wrap>nav .side-group{width:100%;min-height:33px;height:auto;margin:0!important;padding:3px 6px!important;font-size:13px!important;line-height:13px!important;white-space:normal;overflow-wrap:break-word;border-radius:4px}
+main.wrap>nav button{display:block;text-align:left}
+main.wrap>nav .side-group{display:flex;align-items:center;justify-content:space-between;gap:3px}
+main.wrap>nav .side-group span{flex-shrink:0}
+main.wrap>nav .side-logo,main.wrap>nav .side-foot{display:block;padding:5px 6px}
+main.wrap>nav .side-collapse-toggle{height:33px;min-height:33px;margin:0!important;text-align:center!important;position:sticky;top:0;z-index:2}
+main.wrap>nav button[aria-selected=true]{background:#2773af;color:white;border-color:#23699f}
+main.wrap.side-collapsed{grid-template-columns:46px minmax(0,1fr)!important}
+main.wrap.side-collapsed>nav{width:46px;padding:4px!important}
+main.wrap.side-collapsed>nav>:not(.side-collapse-toggle){display:none!important}
+@media(max-width:600px){
+ main.wrap{grid-template-columns:minmax(0,1fr)!important;padding-right:0!important;gap:8px!important}
+ main.wrap>nav{position:relative;max-height:min(55dvh,calc(100dvh - var(--workspace-top,0px)));width:min(195px,100%)}
+ main.wrap.side-collapsed{grid-template-columns:46px minmax(0,1fr)!important;gap:6px!important}
+}
+
 </style>
 </head>
 <body>
@@ -323,4 +346,17 @@ const originalShow=show;show=function(tab){originalShow(tab);if(tab==="home")upd
 const exactImg=document.getElementById("exact-header-image");const exactHeader=document.getElementById("exact-header");exactImg.addEventListener("load",()=>{exactHeader.hidden=false;});exactImg.addEventListener("error",()=>{exactHeader.hidden=true;});if(exactImg.complete&&exactImg.naturalWidth>0)exactHeader.hidden=false;document.querySelectorAll("[data-exact]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.exact)));document.querySelectorAll("[data-exact-info]").forEach(b=>b.addEventListener("click",()=>alert("Раздел „"+b.dataset.exactInfo+"“ предстои да бъде реализиран.")));
 document.querySelectorAll("[data-info]").forEach(b=>b.addEventListener("click",()=>{const title=b.dataset.info;alert("Раздел „"+title+"“ е включен в утвърдения архитектурен план, но функционалността още не е реализирана. Това е визуална демонстрация.");}));
 try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
+
+/* Size only the sidebar scrollport to the visible workspace. */
+{
+ const workspace=document.querySelector("main.wrap");
+ let sizingFrame=0;
+ const sizeSidebar=()=>{sizingFrame=0;const top=Math.max(0,workspace.getBoundingClientRect().top);workspace.style.setProperty("--workspace-top",top+"px");};
+ const scheduleSidebar=()=>{if(!sizingFrame)sizingFrame=requestAnimationFrame(sizeSidebar);};
+ window.addEventListener("resize",scheduleSidebar,{passive:true});
+ window.addEventListener("scroll",scheduleSidebar,{passive:true});
+ new ResizeObserver(scheduleSidebar).observe(document.body);
+ sizeSidebar();
+}
+
 </script></body></html>
