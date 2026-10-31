@@ -407,6 +407,37 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
  .exact-header::before{width:195px!important;top:6px!important;height:40px!important}
  .exact-header-profile{top:8px!important;right:5px!important;width:144px!important;max-width:144px!important;font-size:9px!important}
 }
+
+/* DIRECTOR-ONE-PROFILE-AND-SLOGAN-2026-10-31 */
+.exact-header::before{
+ content:""!important;display:block!important;
+ position:absolute!important;top:0!important;right:0!important;
+ width:390px!important;height:58px!important;
+ background:#082744!important;z-index:8!important;
+ pointer-events:none!important;
+}
+.exact-header-profile{
+ display:flex!important;z-index:9!important;
+ top:8px!important;right:10px!important;
+ width:170px!important;max-width:170px!important;
+ height:30px!important;min-height:30px!important;
+ font-size:10px!important;
+}
+.site-approved-slogan{
+ position:relative;z-index:1;box-sizing:border-box;
+ width:100%;min-height:52px;
+ display:flex;align-items:center;justify-content:center;
+ margin:0;padding:8px 14px;
+ color:#f7e8c7;
+ background:linear-gradient(90deg,#071d36,#123451,#071d36);
+ font:italic 24px Georgia,serif;
+ letter-spacing:.12em;text-align:center;
+}
+@media(max-width:600px){
+ .exact-header::before{width:205px!important;height:47px!important}
+ .exact-header-profile{right:5px!important;top:7px!important;width:145px!important;max-width:145px!important;font-size:9px!important}
+ .site-approved-slogan{min-height:44px;font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -473,6 +504,7 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 <section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оперативната логика предстои да бъде реализирана и проверена. Не използвайте този екран за реални решения.</div><p>При доказана тежка опасност животът и здравето имат приоритет пред материалните щети. Експертната оценка H определя минимален оперативен приоритет.</p></section>
 <section id="contacts" hidden><div class="page-crumb">✉ &nbsp; Контакти с нас <span>Начало / Контакти с нас</span></div><div class="contact-grid"><div class="contact-panel"><h2>Контакти с нас</h2><p>Информация за връзка с LUCIFER-WEB</p><div class="contact-item"><b>⌖ Адрес</b><span>Официален адрес — предстои потвърждение</span></div><div class="contact-item"><b>☎ Телефон</b><span>Предстои потвърждение</span></div><div class="contact-item"><b>✉ Имейл</b><span>Предстои потвърждение</span></div><div class="contact-map">Карта на местоположението<br><small>Ще бъде добавена след потвърждение на адреса.</small></div></div><div class="contact-panel"><h2>Форма за запитване</h2><div class="grid"><div><label for="contact-first">Име *</label><input id="contact-first" disabled placeholder="Име"></div><div><label for="contact-last">Фамилия *</label><input id="contact-last" disabled placeholder="Фамилия"></div><div><label for="contact-org">Организация</label><input id="contact-org" disabled></div><div><label for="contact-topic">Тема *</label><select id="contact-topic" disabled><option>Изберете тема</option></select></div></div><label for="contact-message">Съобщение *</label><textarea id="contact-message" disabled></textarea><p class="muted">Формата е визуален образец и не изпраща данни. Активиране — след одобрение на контактите и политика за поверителност.</p><button disabled>➤ Изпрати запитване</button></div></div></section>
 </main>
+<footer class="site-approved-slogan" aria-label="Девиз на LUCIFER-WEB">Знанието е сила</footer>
 <img class="angel-corner" src="assets/angel-approved-preview.svg" alt="" aria-hidden="true" onerror="this.hidden=true">
 <script>
 "use strict";
