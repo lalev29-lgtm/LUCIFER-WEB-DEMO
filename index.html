@@ -992,6 +992,50 @@ body>#exact-header.exact-header{display:block;position:relative!important;left:0
   white-space:normal!important;text-wrap:balance!important;
  }
 }
+
+/* SCREENSHOT-REFERENCE-HEADER: original approved artwork, left 78% and sky-blue right panel. */
+#exact-header.exact-header{
+ height:clamp(145px,8.85vw,190px)!important;min-height:145px!important;max-height:190px!important;
+ aspect-ratio:auto!important;overflow:hidden!important;
+ background-color:#94b8d2!important;
+ background-image:url("assets/approved-header-31-10-2026.png")!important;
+ background-repeat:no-repeat!important;
+ background-position:left top!important;
+ background-size:78% 135%!important;
+}
+#exact-header.exact-header .lucifer-art-slot,
+#exact-header.exact-header .exact-header-art-right,
+#exact-header.exact-header .exact-header-heading{display:none!important}
+#exact-header.exact-header .exact-header-profile-compact{
+ display:block!important;right:1%!important;top:8px!important;left:auto!important;
+ padding:7px 13px!important;background:#082744!important;color:#fff!important;
+ border-radius:4px!important;font:700 11px Arial,sans-serif!important;z-index:20!important;
+}
+#exact-header.exact-header .exact-header-motto-right{
+ display:block!important;right:1%!important;top:52%!important;bottom:auto!important;
+ color:#062640!important;text-shadow:none!important;
+ font:italic 700 clamp(13px,1vw,18px) Georgia,serif!important;z-index:10!important;
+}
+#exact-header.exact-header .exact-header-links{
+ left:0!important;right:0!important;top:auto!important;bottom:0!important;
+ height:36px!important;padding:0!important;gap:3px!important;
+ background:transparent!important;z-index:25!important;
+ grid-template-columns:1.05fr .9fr .95fr 1.6fr 1.6fr 1.7fr .9fr .9fr!important;
+}
+#exact-header.exact-header .exact-header-links button{
+ height:36px!important;max-height:36px!important;min-height:36px!important;
+ border-radius:4px!important;background:#082744!important;
+ color:#fff!important;font:700 clamp(10px,.78vw,14px) Arial,sans-serif!important;
+ padding:2px 5px!important;border:1px solid #2e597b!important;
+}
+#exact-header.exact-header .exact-header-links button:first-child{background:#0967e3!important}
+#exact-header.exact-header .exact-header-links button:nth-child(6){background:#ed0033!important}
+@media(max-width:760px){
+ #exact-header.exact-header{height:145px!important;min-height:145px!important;max-height:145px!important;background-size:78% 135%!important}
+ #exact-header.exact-header .exact-header-links{height:38px!important;gap:1px!important}
+ #exact-header.exact-header .exact-header-links button{height:38px!important;max-height:38px!important;min-height:38px!important;font-size:9px!important;padding:1px!important}
+ #exact-header.exact-header .exact-header-motto-right{top:55%!important;font-size:12px!important}
+}
 </style>
 </head>
 <body>
