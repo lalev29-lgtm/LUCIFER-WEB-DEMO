@@ -346,6 +346,67 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
  .exact-header-links{top:126px!important;height:80px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,38px)!important}
  .exact-header-links button{height:38px!important;min-height:38px!important;max-height:38px!important;white-space:normal!important;font-size:9px!important}
 }
+
+/* DIRECTOR-THREE-POINTS-2026-10-31: (1) no white left edge,
+   (2) compact user badge, (3) navigation touches banner with zero gap. */
+.exact-header{
+  height:154px!important;min-height:154px!important;max-height:154px!important;
+  margin:0!important;padding:0!important;border:0!important;
+  background:#041b35!important;
+}
+.exact-header img{
+  left:-12px!important;width:calc(100% + 24px)!important;
+  top:-68px!important;height:396px!important;
+}
+.exact-header::after{
+  top:114px!important;bottom:0!important;height:auto!important;
+  background:#041b35!important;
+}
+.exact-header-links{
+  top:114px!important;bottom:auto!important;
+  height:40px!important;left:0!important;right:0!important;
+  grid-template-rows:40px!important;gap:4px!important;padding:0 2px!important;
+}
+.exact-header-links button{
+  height:40px!important;min-height:40px!important;max-height:40px!important;
+}
+/* The supplied banner contains a wide rasterized name badge. Cover that
+   region and render a single narrower live badge in the same position. */
+.exact-header::before{
+  content:""!important;display:block!important;position:absolute!important;
+  top:7px!important;right:0!important;width:335px!important;height:43px!important;
+  background:#092441!important;z-index:6!important;pointer-events:none!important;
+}
+.exact-header-profile{
+  display:flex!important;position:absolute!important;
+  top:9px!important;right:10px!important;
+  width:184px!important;max-width:184px!important;
+  height:32px!important;min-height:32px!important;
+  box-sizing:border-box!important;
+  padding:3px 7px!important;
+  align-items:center!important;justify-content:center!important;
+  border-radius:5px!important;
+  background:#061c37!important;color:white!important;
+  font-size:11px!important;white-space:nowrap!important;
+  box-shadow:none!important;z-index:7!important;
+}
+@media(max-width:900px){
+ .exact-header{height:150px!important;min-height:150px!important;max-height:150px!important}
+ .exact-header::after{top:112px!important}
+ .exact-header-links{top:112px!important;height:38px!important;grid-template-rows:38px!important}
+ .exact-header-links button{height:38px!important;min-height:38px!important;max-height:38px!important}
+ .exact-header::before{width:235px!important}
+ .exact-header-profile{width:155px!important;max-width:155px!important;font-size:10px!important}
+}
+@media(max-width:600px){
+ .exact-header{height:192px!important;min-height:192px!important;max-height:192px!important}
+ .exact-header img{top:-58px!important;height:350px!important}
+ .exact-header::after{top:114px!important}
+ .exact-header-links{top:114px!important;height:78px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:repeat(2,37px)!important}
+ .exact-header-links button{height:37px!important;min-height:37px!important;max-height:37px!important}
+ .exact-header::before{width:195px!important;top:6px!important;height:40px!important}
+ .exact-header-profile{top:8px!important;right:5px!important;width:144px!important;max-width:144px!important;font-size:9px!important}
+}
 </style>
 </head>
 <body>
