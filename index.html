@@ -726,6 +726,35 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
  #exact-header.exact-header .lucifer-art-slot{width:67px!important;max-width:67px!important;height:88px!important;max-height:88px!important}
  #exact-header.exact-header .exact-header-heading{left:79px!important}
 }
+
+/* MOBILE-FINAL-POLISH-2026-10-31: modest user badge, readable identity, blended portrait. */
+@media(max-width:760px){
+ #exact-header.exact-header .exact-header-profile-compact{
+   position:absolute!important;top:5px!important;right:6px!important;left:auto!important;
+   width:auto!important;max-width:104px!important;min-width:0!important;
+   height:20px!important;min-height:20px!important;max-height:20px!important;
+   padding:2px 5px!important;margin:0!important;
+   font:600 9px/1 Arial,sans-serif!important;white-space:nowrap!important;
+   border:1px solid #53758d!important;border-radius:4px!important;
+   background:#0b2c49!important;color:#fff!important;
+   box-shadow:none!important
+ }
+ #exact-header.exact-header .exact-header-profile-compact::before{
+   content:"♙"!important;display:inline-block!important;margin-right:3px!important;font-size:9px!important
+ }
+ #exact-header.exact-header .exact-header-heading small{
+   color:#092f51!important;opacity:1!important;
+   -webkit-text-fill-color:#092f51!important;
+   text-shadow:none!important;font-weight:900!important;
+   background:rgba(255,255,255,.86)!important;
+   box-shadow:0 0 0 1px rgba(10,50,80,.14)!important;
+ }
+ #exact-header.exact-header .lucifer-art-slot{
+   border-radius:24px!important;
+   -webkit-mask-image:radial-gradient(ellipse 74% 76% at 50% 50%,#000 29%,rgba(0,0,0,.92) 47%,rgba(0,0,0,.45) 68%,transparent 100%)!important;
+   mask-image:radial-gradient(ellipse 74% 76% at 50% 50%,#000 29%,rgba(0,0,0,.92) 47%,rgba(0,0,0,.45) 68%,transparent 100%)!important;
+ }
+}
 </style>
 </head>
 <body>
