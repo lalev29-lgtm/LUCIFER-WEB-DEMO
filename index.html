@@ -1303,6 +1303,19 @@ body > #lucifer-fresh-header{
  background-size:100% auto!important;
  background-position:center top!important;
 }
+
+/* AUTHORITATIVE APPROVED HEADER — hide all embedded/baked buttons by masking bottom portion.
+   The image stays proportionate, with only the real site-topnav row clickable. */
+body > #lucifer-fresh-header{
+ display:block!important;
+ width:100%!important;
+ height:clamp(70px,7vw,120px)!important;
+ min-height:70px!important;
+ max-height:120px!important;
+ overflow:hidden!important;
+ background:#122e49 url("assets/approved-header-31-10-2026.png?v=approved-header-20261031-final") center top / 100% auto no-repeat!important;
+}
+body > #lucifer-fresh-header::before{display:none!important;content:none!important}
 </style>
 </head>
 <body>
