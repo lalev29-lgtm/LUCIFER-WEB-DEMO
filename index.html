@@ -503,6 +503,33 @@ main.wrap>nav button:not([aria-selected=true]){background:#f6f9fd!important;colo
 main.wrap>nav button[aria-selected=true]{background:#2775b4!important;color:white!important}
 main.wrap>section{margin-left:0!important}
 @media(max-width:760px){main.wrap{display:block!important}main.wrap>nav{width:100%!important}}
+
+/* HEADER-AND-SIDEBAR-CORRECTION-31-10: eliminate large pale profile plate
+   and make approved light sidebar readable without changing app logic. */
+.exact-header{overflow:hidden!important}
+.exact-header::before{
+ content:""!important;display:block!important;position:absolute!important;
+ top:0!important;right:0!important;width:22.5%!important;height:57%!important;
+ z-index:12!important;pointer-events:none!important;
+ background-image:url("assets/approved-header-enhanced-31-10-2026.png")!important;
+ background-repeat:no-repeat!important;
+ background-size:260% auto!important;
+ background-position:71% 43%!important;
+ border:0!important
+}
+.exact-header::after{content:"Знанието е сила"!important;display:block!important;
+ position:absolute!important;right:12px!important;top:40%!important;
+ z-index:16!important;color:#f4e7c9!important;background:rgba(7,31,56,.75)!important;
+ padding:4px 9px!important;border-radius:3px!important;
+ font:italic bold clamp(12px,1vw,17px)/1.1 Georgia,serif!important;
+ text-shadow:0 1px 2px #000!important;pointer-events:none!important
+}
+main.wrap>nav{background:#eaf2fb!important;color:#102b48!important;overflow-x:hidden!important}
+main.wrap>nav button:not([aria-selected=true]){background:#f7faff!important;color:#102b48!important;border:1px solid #bfd2e5!important}
+main.wrap>nav .side-group{background:#eaf2fb!important;color:#102b48!important}
+main.wrap>nav .side-logo,main.wrap>nav .side-foot{color:#102b48!important}
+main.wrap>nav button{font-size:12px!important;padding:5px 6px!important;min-height:33px!important}
+@media(max-width:760px){.exact-header::before{width:27%!important}.exact-header::after{font-size:10px!important;right:3px!important;top:39%!important}}
 </style>
 </head>
 <body>
