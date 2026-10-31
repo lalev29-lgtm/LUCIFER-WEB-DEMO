@@ -826,6 +826,53 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
  main.wrap>nav.open .side-logo,main.wrap>nav.open .side-group,
  main.wrap>nav.open .side-foot,main.wrap>nav.open button[data-tab]{display:block!important}
 }
+
+/* CORPORATE-HEADER-REFERENCE-2026-10-31: separate responsive text, motto under user control. */
+#exact-header.exact-header .exact-header-heading{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ color:#082b4a!important;text-shadow:0 1px 3px rgba(255,255,255,.9)!important;
+}
+#exact-header.exact-header .exact-header-heading small{
+ color:#082b4a!important;-webkit-text-fill-color:#082b4a!important;
+ background:transparent!important;box-shadow:none!important;border:0!important;
+ opacity:1!important;text-shadow:0 1px 3px rgba(255,255,255,.9)!important;
+}
+#exact-header.exact-header .exact-header-profile-compact{
+ z-index:12!important;white-space:nowrap!important;
+}
+#exact-header.exact-header .exact-header-motto-right{
+ z-index:11!important;display:block!important;position:absolute!important;
+ right:2.5%!important;bottom:calc(100% - 154px)!important;top:auto!important;
+ padding:0!important;margin:0!important;background:transparent!important;
+ color:#fff!important;text-shadow:0 2px 4px #0a2b49,0 0 6px #0a2b49!important;
+ font-family:Georgia,"Times New Roman",serif!important;font-style:italic!important;
+ font-size:clamp(17px,2vw,29px)!important;white-space:nowrap!important;
+}
+@media(min-width:761px){
+ #exact-header.exact-header .exact-header-profile-compact{
+   right:2%!important;top:12px!important;left:auto!important;
+   max-width:170px!important;width:auto!important;
+ }
+ #exact-header.exact-header .exact-header-motto-right{
+   right:2.5%!important;top:87px!important;bottom:auto!important;
+ }
+}
+@media(max-width:760px){
+ #exact-header.exact-header .exact-header-motto-right{
+  right:8px!important;top:auto!important;bottom:44px!important;
+  font-size:clamp(12px,3vw,17px)!important;
+ }
+ #exact-header.exact-header .exact-header-profile-compact{
+  top:5px!important;right:6px!important;left:auto!important;
+  max-width:115px!important;
+ }
+ #exact-header.exact-header .exact-header-heading{
+  background:transparent!important;box-shadow:none!important;
+ }
+ #exact-header.exact-header .exact-header-heading small{
+  background:transparent!important;box-shadow:none!important;
+ }
+}
 </style>
 </head>
 <body>
