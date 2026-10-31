@@ -755,6 +755,23 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
    mask-image:radial-gradient(ellipse 74% 76% at 50% 50%,#000 29%,rgba(0,0,0,.92) 47%,rgba(0,0,0,.45) 68%,transparent 100%)!important;
  }
 }
+
+/* RESTORE MOUNTAINS AND CASTLE: use existing clean corporate SVG, full scene visible on phones. */
+@media(max-width:760px){
+ #exact-header.exact-header{
+   background-color:#a8c7d7!important;
+   background-image:url("assets/corporate-clean-background.svg")!important;
+   background-repeat:no-repeat!important;
+   background-size:100% 100%!important;
+   background-position:center center!important;
+ }
+ #exact-header.exact-header .exact-header-heading{
+   background:rgba(246,249,250,.78)!important;
+ }
+ #exact-header.exact-header .exact-header-motto-right{
+   color:#fff!important;text-shadow:0 1px 3px #09243d,0 0 3px #09243d!important;
+ }
+}
 </style>
 </head>
 <body>
