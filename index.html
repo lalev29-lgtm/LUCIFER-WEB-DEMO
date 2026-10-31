@@ -798,6 +798,23 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
    mask-image:radial-gradient(ellipse 72% 78% at 50% 50%,#000 20%,rgba(0,0,0,.95) 39%,rgba(0,0,0,.62) 56%,rgba(0,0,0,.18) 73%,transparent 96%)!important;
  }
 }
+
+/* MOBILE SIDEBAR TOGGLE: open the actual nav instead of collapsing desktop grid. */
+@media(max-width:760px){
+ main.wrap>nav:not(.expanded):not(.open)>:not(.side-collapse-toggle){display:none!important}
+ main.wrap>nav.expanded>.side-logo,
+ main.wrap>nav.expanded>.side-group,
+ main.wrap>nav.expanded>.side-foot,
+ main.wrap>nav.expanded>button:not(.side-collapse-toggle),
+ main.wrap>nav.open>.side-logo,
+ main.wrap>nav.open>.side-group,
+ main.wrap>nav.open>.side-foot,
+ main.wrap>nav.open>button:not(.side-collapse-toggle){display:block!important}
+ main.wrap>nav.expanded,main.wrap>nav.open{
+  max-height:min(65dvh,560px)!important;overflow-y:auto!important;overflow-x:hidden!important;
+ }
+ main.wrap.side-collapsed{display:block!important;grid-template-columns:none!important}
+}
 </style>
 </head>
 <body>
@@ -883,7 +900,21 @@ function show(tab){
  try{sessionStorage.setItem(TAB_KEY,tab);}catch(error){/* Навигацията работи и без storage. */}
 }
 tabs.forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab)));
-const sideToggle=document.getElementById("side-collapse-toggle");const workWrap=document.querySelector("main.wrap");sideToggle.addEventListener("click",()=>{const collapsed=workWrap.classList.toggle("side-collapsed");sideToggle.setAttribute("aria-expanded",String(!collapsed));sideToggle.setAttribute("aria-label",collapsed?"Разгъни страничното меню":"Прибери страничното меню");});
+const sideToggle=document.getElementById("side-collapse-toggle");const workWrap=document.querySelector("main.wrap");sideToggle.addEventListener("click",()=>{
+ const mobile=window.matchMedia("(max-width:760px)").matches;
+ if(mobile){
+  const nav=sideToggle.closest("nav");
+  const expanded=nav.classList.toggle("expanded");
+  nav.classList.toggle("open",expanded);
+  workWrap.classList.remove("side-collapsed");
+  sideToggle.setAttribute("aria-expanded",String(expanded));
+  sideToggle.setAttribute("aria-label",expanded?"Прибери страничното меню":"Разгъни страничното меню");
+ }else{
+  const collapsed=workWrap.classList.toggle("side-collapsed");
+  sideToggle.setAttribute("aria-expanded",String(!collapsed));
+  sideToggle.setAttribute("aria-label",collapsed?"Разгъни страничното меню":"Прибери страничното меню");
+ }
+});
 const drawer=document.getElementById("nav-drawer"),drawerToggle=document.getElementById("nav-drawer-toggle");
 drawerToggle.addEventListener("click",()=>{drawer.hidden=!drawer.hidden;drawerToggle.setAttribute("aria-expanded",String(!drawer.hidden));});
 document.querySelectorAll("[data-drawer]").forEach(b=>b.addEventListener("click",()=>{show(b.dataset.drawer);drawer.hidden=true;drawerToggle.setAttribute("aria-expanded","false");}));
