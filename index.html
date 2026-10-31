@@ -482,96 +482,115 @@ html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
 }
 
 
-/* RESTORE-APPROVED-HEADER: 31.10.2026 director-accepted original raster, no overlays. */
-.exact-header{position:relative!important;width:100%!important;max-width:2170px!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:2170/445!important;overflow:hidden!important;margin:0 auto!important;background:#031b32!important;line-height:0!important;border:0!important;box-shadow:none!important}
-.exact-header::before,.exact-header::after{display:none!important;content:none!important}
-.exact-header img{position:absolute!important;display:block!important;left:0!important;top:-30.561798%!important;width:100%!important;height:auto!important;max-width:none!important;object-fit:initial!important}
-.exact-header-links{position:absolute!important;left:0!important;right:0!important;top:57%!important;bottom:auto!important;height:27%!important;display:grid!important;grid-template-columns:11.8fr 8.4fr 9fr 15.9fr 15.8fr 17.6fr 8.6fr 8.9fr!important;gap:.5%!important;padding:0 2.4%!important;background:transparent!important}
-.exact-header-links button{background:transparent!important;border:0!important;outline-offset:-3px!important;padding:0!important;min-width:0!important;min-height:0!important;height:100%!important;max-height:none!important;border-radius:3px!important;color:transparent!important;font-size:0!important;box-shadow:none!important}
-.exact-header-links button:hover{box-shadow:inset 0 0 0 2px #fff9!important}
-.exact-header-links button:focus-visible{outline:3px solid #ffd166!important}
-.exact-header[hidden]{display:none!important}
-body:has(.exact-header:not([hidden]))>header.brand-header,body:has(.exact-header:not([hidden]))>.site-topnav{display:none!important}
-body:has(.exact-header:not([hidden]))>.angel-corner{display:none!important}
+/* CORPORATE-HEADER-REBUILD-2026-10-31 — single coherent layout.
+   Raster art is clipped BEFORE its oversized built-in navigation and red label;
+   all eight working buttons are real HTML controls. */
 html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
-main.wrap{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;grid-template-columns:195px minmax(0,1fr)!important;gap:0!important}
-main.wrap>nav{width:195px!important;margin:0!important;padding:4px!important;border:0!important;border-radius:0!important;background:#edf4fc!important;color:#102b48!important}
-main.wrap>nav .side-logo,main.wrap>nav .side-group,main.wrap>nav .side-foot{color:#102b48!important}
-main.wrap>nav .side-logo small{color:#617b97!important}
-main.wrap>nav button{min-height:33px!important;margin-bottom:3px!important;white-space:normal!important;line-height:1.2!important}
-main.wrap>nav button:not([aria-selected=true]){background:#f6f9fd!important;color:#123552!important;border:1px solid #b7cde3!important}
-main.wrap>nav button[aria-selected=true]{background:#2775b4!important;color:white!important}
-main.wrap>section{margin-left:0!important}
-@media(max-width:760px){main.wrap{display:block!important}main.wrap>nav{width:100%!important}}
-
-/* HEADER-AND-SIDEBAR-CORRECTION-31-10: eliminate large pale profile plate
-   and make approved light sidebar readable without changing app logic. */
-.exact-header{overflow:hidden!important}
-.exact-header::before{
- content:""!important;display:block!important;position:absolute!important;
- top:0!important;right:0!important;width:22.5%!important;height:57%!important;
- z-index:12!important;pointer-events:none!important;
- background-image:url("assets/approved-header-enhanced-31-10-2026.png")!important;
- background-repeat:no-repeat!important;
- background-size:260% auto!important;
- background-position:71% 43%!important;
- border:0!important
-}
-.exact-header::after{content:"Знанието е сила"!important;display:block!important;
- position:absolute!important;right:12px!important;top:40%!important;
- z-index:16!important;color:#f4e7c9!important;background:rgba(7,31,56,.75)!important;
- padding:4px 9px!important;border-radius:3px!important;
- font:italic bold clamp(12px,1vw,17px)/1.1 Georgia,serif!important;
- text-shadow:0 1px 2px #000!important;pointer-events:none!important
-}
-main.wrap>nav{background:#eaf2fb!important;color:#102b48!important;overflow-x:hidden!important}
-main.wrap>nav button:not([aria-selected=true]){background:#f7faff!important;color:#102b48!important;border:1px solid #bfd2e5!important}
-main.wrap>nav .side-group{background:#eaf2fb!important;color:#102b48!important}
-main.wrap>nav .side-logo,main.wrap>nav .side-foot{color:#102b48!important}
-main.wrap>nav button{font-size:12px!important;padding:5px 6px!important;min-height:33px!important}
-@media(max-width:760px){.exact-header::before{width:27%!important}.exact-header::after{font-size:10px!important;right:3px!important;top:39%!important}}
-
-/* COMPACT-APPROVED-BANNER-2026-10-31: keep art/title, replace oversized raster menu. */
 .exact-header{
- aspect-ratio:auto!important;height:clamp(190px,13.7vw,232px)!important;
- min-height:190px!important;max-height:232px!important;
- overflow:hidden!important
+ position:relative!important;isolation:isolate!important;box-sizing:border-box!important;
+ width:100%!important;max-width:none!important;min-height:0!important;max-height:none!important;
+ height:224px!important;aspect-ratio:auto!important;overflow:hidden!important;
+ margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;
+ background:#08243e!important
 }
-.exact-header img{top:-30.561798%!important;width:100%!important}
-.exact-header-links{
- top:auto!important;bottom:0!important;height:36px!important;
- display:grid!important;align-items:stretch!important;
- padding:0 4px!important;gap:4px!important;
- grid-template-columns:1.05fr .9fr .9fr 1.4fr 1.35fr 1.6fr .75fr .75fr!important;
- background:#092641!important;z-index:45!important
+.exact-header::before,.exact-header::after{content:none!important;display:none!important}
+.exact-header>img{
+ position:absolute!important;display:block!important;left:0!important;
+ top:calc(-30.561798vw)!important;width:100%!important;height:auto!important;
+ max-width:none!important;object-fit:initial!important;z-index:1!important
 }
-.exact-header-links button{
- height:34px!important;min-height:34px!important;max-height:34px!important;
- display:flex!important;align-items:center!important;justify-content:center!important;
- background:#0b3153!important;border:1px solid #39658b!important;
- color:#fff!important;font:600 clamp(10px,.82vw,13px)/1.1 Arial,sans-serif!important;
- white-space:nowrap!important;border-radius:4px!important;
- text-shadow:none!important
-}
-.exact-header-links button:first-child{background:#0863e8!important}
-.exact-header-links button:nth-child(6){background:#ed0031!important;border-color:#ed0031!important}
-.exact-header-links button:hover{filter:brightness(1.18)!important}
-.exact-header::before,.exact-header::after{display:none!important;content:none!important}
-.exact-header-profile-compact{
- position:absolute;top:9px;right:10px;z-index:44;
- background:#071e37;color:#fff;border:1px solid #466785;
- border-radius:5px;padding:5px 9px;font:600 11px/1.2 Arial,sans-serif;
+/* Match original crop at 2170px/725px, independent of viewport width. */
+.exact-header>img{top:calc(-.30561798 * (100vw * 725 / 2170))!important}
+.exact-header-art-right{
+ position:absolute;right:0;top:0;width:285px;height:70px;z-index:5;
+ background:linear-gradient(90deg,rgba(96,158,201,.08),#6b9fc1 38%,#8db5d1 100%);
  pointer-events:none
 }
+.exact-header-profile-compact{
+ position:absolute!important;top:10px!important;right:12px!important;z-index:11!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ width:124px!important;height:27px!important;box-sizing:border-box!important;
+ padding:3px 7px!important;margin:0!important;border-radius:5px!important;
+ border:1px solid #3b6689!important;background:#061f3b!important;color:#fff!important;
+ font:600 11px/1 Arial,sans-serif!important;white-space:nowrap!important;
+ box-shadow:none!important
+}
+.exact-header-motto-right{
+ position:absolute;top:135px;right:18px;z-index:10;
+ color:#f5e7c8;text-shadow:0 2px 3px #061b31;
+ font:italic 700 19px/1.1 Georgia,serif;white-space:nowrap
+}
+.exact-header-links{
+ position:absolute!important;top:auto!important;bottom:0!important;left:0!important;right:0!important;
+ box-sizing:border-box!important;height:37px!important;min-height:37px!important;
+ display:grid!important;align-items:center!important;
+ grid-template-columns:1.05fr .9fr .9fr 1.4fr 1.35fr 1.6fr .75fr .75fr!important;
+ grid-template-rows:35px!important;gap:3px!important;padding:1px 3px!important;
+ background:#08243f!important;z-index:20!important
+}
+.exact-header-links button{
+ box-sizing:border-box!important;display:flex!important;align-items:center!important;
+ justify-content:center!important;height:34px!important;min-height:34px!important;
+ max-height:34px!important;min-width:0!important;width:100%!important;
+ margin:0!important;padding:2px 5px!important;border-radius:4px!important;
+ background:#0c3152!important;border:1px solid #2f5d82!important;
+ color:#fff!important;font:600 clamp(10px,.83vw,13px)/1.1 Arial,sans-serif!important;
+ text-align:center!important;white-space:nowrap!important;box-shadow:none!important
+}
+.exact-header-links button:first-child{background:#0966e8!important}
+.exact-header-links button:nth-child(6){background:#ed0031!important;border-color:#ed0031!important}
+.exact-header-links button:hover{filter:brightness(1.15)!important}
+.exact-header-links button:focus-visible{outline:2px solid #ffd166!important}
+.exact-header[hidden]{display:none!important}
+body:has(.exact-header:not([hidden]))>header.brand-header,
+body:has(.exact-header:not([hidden]))>.site-topnav,
+body:has(.exact-header:not([hidden]))>.angel-corner{display:none!important}
+main.wrap{box-sizing:border-box!important;width:100%!important;max-width:none!important;
+ margin:0!important;padding:0!important;display:grid!important;
+ grid-template-columns:195px minmax(0,1fr)!important;gap:0!important}
+main.wrap>nav{
+ box-sizing:border-box!important;width:195px!important;min-width:0!important;
+ margin:0!important;padding:4px!important;border:0!important;border-radius:0!important;
+ background:#eaf2fb!important;color:#112c49!important;overflow-x:hidden!important;
+ overflow-y:auto!important;max-height:calc(100vh - 224px)!important
+}
+main.wrap>nav .side-logo,main.wrap>nav .side-group,main.wrap>nav .side-foot{
+ color:#112c49!important;overflow-wrap:anywhere!important
+}
+main.wrap>nav .side-logo small{color:#627c98!important}
+main.wrap>nav button{
+ box-sizing:border-box!important;width:100%!important;min-height:33px!important;
+ height:auto!important;margin:0 0 3px!important;padding:5px 6px!important;
+ font-size:12px!important;line-height:1.2!important;text-align:left!important;
+ white-space:normal!important;overflow-wrap:anywhere!important
+}
+main.wrap>nav button:not([aria-selected=true]){
+ background:#f7faff!important;color:#102b48!important;border:1px solid #bfd2e5!important
+}
+main.wrap>nav button[aria-selected=true]{background:#2775b4!important;color:#fff!important}
+main.wrap>section{min-width:0!important;margin:0!important}
 @media(max-width:900px){
- .exact-header-links{gap:2px!important;padding:0 2px!important}
+ .exact-header{height:194px!important}
+ .exact-header-links{height:38px!important}
  .exact-header-links button{font-size:10px!important;white-space:normal!important}
- .exact-header-profile-compact{font-size:10px;padding:4px 6px}
+ .exact-header-motto-right{top:110px;font-size:14px}
+ .exact-header-art-right{width:210px}
+ main.wrap>nav{max-height:calc(100vh - 194px)!important}
+}
+@media(max-width:650px){
+ .exact-header{height:174px!important}
+ .exact-header-motto-right{top:94px;font-size:12px;right:7px}
+ .exact-header-art-right{width:140px;height:50px}
+ .exact-header-profile-compact{width:115px!important;font-size:10px!important;right:5px!important}
+ .exact-header-links{height:49px!important;grid-template-rows:47px!important;gap:1px!important}
+ .exact-header-links button{height:45px!important;max-height:45px!important;min-height:45px!important;font-size:9px!important;padding:2px!important}
+ main.wrap{display:block!important}
+ main.wrap>nav{width:100%!important;max-height:none!important}
 }
 </style>
 </head>
 <body>
-<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-profile-compact" aria-label="Потребител">Димитър Лалев</div><div class="exact-header-links"><button data-exact="home" aria-label="Начало">⌂ Начало</button><button data-exact-info="За нас" aria-label="За нас">⚙ За нас</button><button data-exact-info="Услуги" aria-label="Услуги">▥ Услуги</button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори">♟ Бизнес партньори</button><button data-exact="contacts" aria-label="Контакти с нас">✉ Контакти с нас</button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация">Заявете консултация</button><button data-exact="home" aria-label="Демо">▷ Демо</button><button data-exact-info="Вход" aria-label="Вход">♙ Вход</button></div></div>
+<div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-art-right" aria-hidden="true"></div><div class="exact-header-profile-compact" aria-label="Потребител">Димитър Лалев</div><div class="exact-header-motto-right">Знанието е сила</div><div class="exact-header-links"><button data-exact="home" aria-label="Начало">⌂ Начало</button><button data-exact-info="За нас" aria-label="За нас">⚙ За нас</button><button data-exact-info="Услуги" aria-label="Услуги">▥ Услуги</button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори">♟ Бизнес партньори</button><button data-exact="contacts" aria-label="Контакти с нас">✉ Контакти с нас</button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация">Заявете консултация</button><button data-exact="home" aria-label="Демо">▷ Демо</button><button data-exact-info="Вход" aria-label="Вход">♙ Вход</button></div></div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><button type="button" data-info="Вход">♙ Вход</button></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
