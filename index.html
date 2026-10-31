@@ -699,6 +699,33 @@ body:has(.exact-header:not([hidden]))>.site-approved-slogan{position:static!impo
  }
  #exact-header.exact-header .exact-header-links{position:absolute!important;bottom:0!important;top:auto!important}
 }
+
+/* MOBILE-HEADER-POLISH-2026-10-31: blend Lucifer artwork and make LUCIFER-WEB legible. */
+@media(max-width:760px){
+ #exact-header.exact-header .lucifer-art-slot{
+   left:6px!important;top:27px!important;width:79px!important;height:99px!important;
+   min-width:79px!important;max-width:79px!important;min-height:99px!important;max-height:99px!important;
+   background-position:center!important;background-size:contain!important;
+   -webkit-mask-image:radial-gradient(ellipse 76% 74% at 50% 50%,#000 40%,rgba(0,0,0,.8) 62%,transparent 100%)!important;
+   mask-image:radial-gradient(ellipse 76% 74% at 50% 50%,#000 40%,rgba(0,0,0,.8) 62%,transparent 100%)!important;
+ }
+ #exact-header.exact-header .exact-header-heading{
+   left:94px!important;top:38px!important;right:7px!important;
+   color:#092744!important;background:rgba(246,249,250,.70)!important;
+   text-shadow:0 1px 1px rgba(255,255,255,.85)!important;
+ }
+ #exact-header.exact-header .exact-header-heading small{
+   display:block!important;color:#062848!important;opacity:1!important;
+   text-shadow:none!important;font-weight:900!important;font-size:12px!important;
+   letter-spacing:.4px!important;background:rgba(255,255,255,.65)!important;
+   border-radius:3px!important;margin:4px auto 0!important;padding:1px 5px!important;
+   width:max-content!important;max-width:100%!important;
+ }
+}
+@media(max-width:380px){
+ #exact-header.exact-header .lucifer-art-slot{width:67px!important;max-width:67px!important;height:88px!important;max-height:88px!important}
+ #exact-header.exact-header .exact-header-heading{left:79px!important}
+}
 </style>
 </head>
 <body>
