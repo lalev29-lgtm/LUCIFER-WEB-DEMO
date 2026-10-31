@@ -1295,6 +1295,14 @@ body > #lucifer-fresh-header::before{content:none!important;display:none!importa
 }
 #home .page-crumb span{font-size:.56rem!important}
 @media(max-width:650px){#home .page-crumb{width:50%!important;max-width:50%!important}}
+
+/* FIX: show only artwork above the baked-in button row; real buttons stay clickable below. */
+body > #lucifer-fresh-header{
+ height:clamp(55px,5.2vw,88px)!important;
+ min-height:0!important;max-height:88px!important;
+ background-size:100% auto!important;
+ background-position:center top!important;
+}
 </style>
 </head>
 <body>
