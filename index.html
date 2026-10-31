@@ -1197,6 +1197,49 @@ body > .site-topnav{
  position:relative!important;z-index:4!important;
  margin:0!important;
 }
+
+/* APPROVED NEW ART — uploaded by director, verified in repository. 
+   Top section is image only; image's drawn navigation is outside clipped area.
+   Actual clickable buttons are the existing site-topnav below. */
+body > #lucifer-fresh-header{
+ display:block!important;
+ width:100%!important;
+ height:clamp(76px,16.2vw,340px)!important;
+ min-height:0!important;
+ max-height:none!important;
+ position:relative!important;
+ overflow:hidden!important;
+ background:#0b2a45!important;
+ border:0!important;
+ padding:0!important;
+ margin:0!important;
+}
+body > #lucifer-fresh-header::before{
+ content:""!important;
+ display:block!important;
+ position:absolute!important;
+ inset:0!important;
+ background-image:url("assets/LUCIFER_WEB_HEADER%20(1).png?v=director-upload-20261031")!important;
+ background-repeat:no-repeat!important;
+ background-position:center top!important;
+ background-size:100% auto!important;
+}
+body > .site-topnav{
+ display:grid!important;
+ grid-template-columns:1.05fr .9fr .95fr 1.6fr 1.6fr 1.7fr .9fr .9fr!important;
+ gap:3px!important;
+ height:38px!important;min-height:38px!important;max-height:38px!important;
+ padding:1px!important;margin:0!important;
+ background:#041d34!important;
+}
+body > .site-topnav button{
+ height:36px!important;min-height:36px!important;max-height:36px!important;
+ background:#062945!important;color:white!important;
+ border:1px solid #315d7b!important;border-radius:4px!important;
+ font:700 clamp(10px,.8vw,14px)/1.1 Arial,sans-serif!important;
+}
+body > .site-topnav button:first-child{background:#0865e8!important}
+body > .site-topnav button:nth-child(6){background:#e90032!important}
 </style>
 </head>
 <body>
