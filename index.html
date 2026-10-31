@@ -1344,22 +1344,35 @@ body > .site-topnav{
  z-index:10!important;
 }
 
-/* Одобрена проба: 10% пропорционално намаляване на целия хедър, без изрязване. */
+/* Директорски одобрен корпоративен вид: пълно изображение на хедъра,
+   без странични ивици, без изрязване и без деформация. */
 body > #lucifer-fresh-header{
- width:90%!important;
+ width:100%!important;
  height:auto!important;
  aspect-ratio:2172 / 355!important;
- margin-left:auto!important;
- margin-right:auto!important;
+ margin:0!important;
+ box-shadow:none!important;
  background-size:100% 100%!important;
  background-position:center center!important;
+ border-bottom:3px solid #bd8c2c!important;
 }
-
-/* Одобрено: запълване на страничните ивици с тъмносин фон; оригиналният хедър остава 90%, без изрязване и разтягане. */
-body > #lucifer-fresh-header{
- box-shadow:-10vw 0 0 #08213a,10vw 0 0 #08213a!important;
+body > .site-topnav{
+ border-top:1px solid #d7a53b!important;
+ border-bottom:2px solid #c99a36!important;
+ box-shadow:0 2px 8px rgba(0,0,0,.25)!important;
 }
-
+body > .site-topnav button{border-color:#45627d!important}
+#home:not([hidden]){
+ border:1px solid #2b719c!important;
+ border-radius:12px!important;
+ box-shadow:0 12px 30px rgba(0,0,0,.35)!important;
+}
+@media(min-width:761px){
+ #home:not([hidden]){width:57%!important;max-width:none!important;min-width:0}
+}
+@media(max-width:760px){#home:not([hidden]){width:100%!important}}
+/* Златни акценти, без промяна на функционалността. */
+#home .page-crumb{border-color:#346b94!important}
 /* Директорски приета корекция: единствено ширината на работното табло. */
 @media (min-width:761px){#home:not([hidden]){width:50%!important;max-width:none!important;min-width:0;justify-self:center}}
 @media (max-width:760px){#home{width:100%!important}}
