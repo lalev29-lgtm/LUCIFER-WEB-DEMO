@@ -528,6 +528,33 @@ main.wrap.side-collapsed>nav{width:46px!important}
 }
 .exact-header-subtitle{top:47px!important;left:46%!important;z-index:25!important}
 @media(max-width:700px){.exact-header-motto{top:77px!important;left:49%!important;font-size:12px!important;padding:2px 6px!important}.exact-header-subtitle{left:49%!important;font-size:10px!important}}
+
+/* VISUAL-REPAIR-2026-10-31: cover the old raster motto beneath navigation,
+   keep a clean dedicated motto line between the title and buttons. */
+.exact-header{position:relative!important;overflow:hidden!important;border-left:0!important}
+.exact-header img{left:-14px!important;width:calc(100% + 28px)!important}
+.exact-header::after{
+ content:""!important;display:block!important;position:absolute!important;
+ top:88px!important;left:0!important;right:0!important;
+ height:26px!important;bottom:auto!important;
+ background:linear-gradient(90deg,#0b2948 0%,#163d5a 50%,#092a4b 100%)!important;
+ z-index:21!important;pointer-events:none!important
+}
+.exact-header-motto{
+ position:absolute!important;top:89px!important;left:50%!important;
+ transform:translateX(-50%)!important;z-index:26!important;
+ background:transparent!important;color:#fff1c9!important;
+ font:italic 700 20px/1.1 Georgia,serif!important;
+ padding:1px 10px!important;margin:0!important;white-space:nowrap!important;
+ letter-spacing:.08em!important;text-shadow:0 1px 2px #000!important
+}
+.exact-header-subtitle{top:42px!important;z-index:26!important}
+.exact-header-links{z-index:35!important}
+@media(max-width:700px){
+ .exact-header::after{top:87px!important;height:27px!important}
+ .exact-header-motto{top:91px!important;font-size:13px!important}
+ .exact-header-subtitle{top:44px!important}
+}
 </style>
 </head>
 <body>
