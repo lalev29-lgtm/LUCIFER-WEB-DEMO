@@ -1172,6 +1172,31 @@ body > .site-topnav button:nth-child(6){background:#e90032!important}
  body > .site-topnav{gap:1px!important}
  body > .site-topnav button{font-size:9px!important;padding:1px!important}
 }
+
+/* Header correction: original banner is a composite image with buttons baked into its lower edge.
+   Render it at its natural aspect ratio and crop that lower edge; use only the live menu. */
+body > #lucifer-fresh-header {
+ height:clamp(64px,5.12vw,92px)!important;
+ min-height:0!important;max-height:none!important;
+ background-image:none!important;
+ background-color:#0a2946!important;
+ position:relative!important;
+ overflow:hidden!important;
+}
+body > #lucifer-fresh-header::before{
+ content:""!important;
+ display:block!important;
+ position:absolute!important;
+ inset:0!important;
+ background-image:url("assets/approved-header-31-10-2026.png?v=corrected-natural-crop")!important;
+ background-repeat:no-repeat!important;
+ background-position:center top!important;
+ background-size:100% auto!important;
+}
+body > .site-topnav{
+ position:relative!important;z-index:4!important;
+ margin:0!important;
+}
 </style>
 </head>
 <body>
