@@ -1240,6 +1240,26 @@ body > .site-topnav button{
 }
 body > .site-topnav button:first-child{background:#0865e8!important}
 body > .site-topnav button:nth-child(6){background:#e90032!important}
+
+/* Director correction: compact header and mandatory shared corporate background. */
+body > #lucifer-fresh-header{
+ height:clamp(92px,8.2vw,145px)!important;
+ min-height:92px!important;
+ max-height:145px!important;
+}
+body > #lucifer-fresh-header::before{
+ background-size:100% auto!important;
+ background-position:center top!important;
+}
+html{background:#071b2f!important}
+body{
+ background-color:#071b2f!important;
+ background-image:linear-gradient(rgba(5,17,32,.48),rgba(5,17,32,.66)),url("assets/approved-header-enhanced-31-10-2026.png")!important;
+ background-position:center center!important;
+ background-size:cover!important;
+ background-repeat:no-repeat!important;
+ background-attachment:fixed!important;
+}
 </style>
 </head>
 <body>
