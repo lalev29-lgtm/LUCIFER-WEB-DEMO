@@ -1437,6 +1437,22 @@ body > #lucifer-fresh-header{
 
 /* Директорска корекция: работното табло +25% ширина (50% → 62.5%), само desktop. */
 @media (min-width:761px){#home:not([hidden]){width:62.5%!important;max-width:none!important;min-width:0!important}}
+
+/* Director-approved mobile banner: compact height and opaque cover over Lucifer figure. */
+@media(max-width:760px){
+ body > #lucifer-fresh-header{
+  height:auto!important;min-height:0!important;max-height:none!important;
+  aspect-ratio:1706/124!important;background-size:100% 100%!important;
+  background-position:center center!important;
+ }
+ body > #lucifer-fresh-header::after{
+  display:block!important;left:0!important;right:auto!important;top:0!important;bottom:0!important;
+  width:29%!important;height:100%!important;
+  background:linear-gradient(180deg,#9abde5 0%,#e7c4bd 52%,#efb15d 100%)!important;
+  -webkit-mask-image:linear-gradient(to right,#000 0%,#000 88%,transparent 100%)!important;
+  mask-image:linear-gradient(to right,#000 0%,#000 88%,transparent 100%)!important;
+ }
+}
 </style>
 </head>
 <body>
