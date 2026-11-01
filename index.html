@@ -1726,4 +1726,32 @@ try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
  sizeSidebar();
 }
 
-</script></body></html>
+</script>
+<script id="lucifer-responsive-runtime">
+/* Mobile viewport guard: applies layout even when CSS media queries are defeated by an oversized layout viewport. */
+(function(){
+ const mobile=document.getElementById('lucifer-mobile-header');
+ const desktop=document.getElementById('lucifer-fresh-header');
+ const nav=document.querySelector('body > .site-topnav');
+ if(!mobile||!desktop||!nav)return;
+ const set=(el,key,value)=>el.style.setProperty(key,value,'important');
+ const clear=(el,keys)=>keys.forEach(key=>el.style.removeProperty(key));
+ const mobileKeys=['display','visibility','height','min-height','max-height','width','margin','padding','overflow'];
+ const navKeys=['display','grid-template-columns','grid-auto-flow','gap','width','max-width','min-width','height','min-height','overflow','white-space','padding','margin'];
+ const buttonKeys=['width','max-width','min-width','height','max-height','min-height','padding','margin','white-space','font-size','line-height','overflow-wrap'];
+ function apply(){
+  const isMobile=Math.min(window.innerWidth||9999,window.screen&&screen.width||9999,document.documentElement.clientWidth||9999)<=760;
+  if(isMobile){
+   set(desktop,'display','none');set(desktop,'height','0px');set(desktop,'min-height','0px');set(desktop,'max-height','0px');
+   set(mobile,'display','flex');set(mobile,'visibility','visible');set(mobile,'height','76px');set(mobile,'min-height','76px');set(mobile,'max-height','76px');
+   set(nav,'display','grid');set(nav,'grid-template-columns','repeat(4,minmax(0,1fr))');set(nav,'grid-auto-flow','row');set(nav,'gap','4px');set(nav,'width','100%');set(nav,'max-width','100%');set(nav,'min-width','0');set(nav,'height','auto');set(nav,'overflow','visible');set(nav,'white-space','normal');set(nav,'margin','0');set(nav,'padding','4px');
+   for(const b of nav.children){set(b,'width','100%');set(b,'max-width','100%');set(b,'min-width','0');set(b,'height','auto');set(b,'max-height','none');set(b,'min-height','46px');set(b,'padding','5px 2px');set(b,'margin','0');set(b,'white-space','normal');set(b,'font-size','12px');set(b,'line-height','1.15');set(b,'overflow-wrap','anywhere');}
+  }else{
+   clear(desktop,mobileKeys);clear(mobile,mobileKeys);clear(nav,navKeys);
+   for(const b of nav.children)clear(b,buttonKeys);
+  }
+ }
+ apply();window.addEventListener('resize',apply,{passive:true});window.addEventListener('orientationchange',apply,{passive:true});
+})();
+</script>
+</body></html>
