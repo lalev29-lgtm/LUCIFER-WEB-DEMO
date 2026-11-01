@@ -638,10 +638,12 @@ header.brand-header{display:none!important}
 }
 </style>
 
-/* ПРИЕТО 01.11.2026: един мобилен хедър с надписи само в изображението. */
 <style id="director-approved-mobile-header-2026-11-01">
+/* ПРИЕТО 01.11.2026: един мобилен хедър с надписи само в изображението. */
 #lucifer-mobile-header{display:none}
 @media(max-width:760px){
+ body > #exact-header,body > header.brand-header,body > .site-topnav{display:none!important}
+
  body > #lucifer-fresh-header{display:none!important;height:0!important;min-height:0!important;max-height:0!important}
  body > #lucifer-mobile-header{display:block!important;position:relative!important;box-sizing:border-box!important;width:100%!important;height:76px!important;min-height:76px!important;max-height:76px!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#112f4a!important}
  body > #lucifer-mobile-header > img.lucifer-mobile-backdrop{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important}
