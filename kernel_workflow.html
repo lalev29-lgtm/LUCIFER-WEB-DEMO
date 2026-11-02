@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUCIFER-WEB-DEMO · Нов работен интерфейс</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#071a30;color:#edf4ff}
+*{box-sizing:border-box}body{max-width:1250px;margin:0 auto;padding:20px}
+a{color:#b8dcff}h1{font-size:1.7rem;margin:10px 0}
+section{background:#112b46;border:1px solid #476685;border-radius:10px;padding:18px;margin:16px 0}
+h2{margin:0 0 12px;font-size:1.2rem}.muted{color:#c0d1e4}
+.notice{border-left:4px solid #f3b65e;padding:12px;background:#473a27}
+label{display:block;margin:0 0 5px;font-weight:600;font-size:.89rem}
+input,select{width:100%;min-width:0;background:#071a2d;color:#fff;border:1px solid #7392ac;border-radius:6px;padding:10px;font:inherit}
+button{background:#216ca6;color:#fff;padding:10px 16px;border:1px solid #398ed1;border-radius:6px;cursor:pointer}
+button:hover{background:#2c80bd}button:disabled{opacity:.45;cursor:not-allowed}
+form{display:grid;gap:13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.field{min-width:0}.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+table{border-collapse:collapse;min-width:780px;width:100%;margin-top:12px}
+th,td{padding:9px;border-bottom:1px solid #476685;text-align:left}
+th{background:#173854}#result,.scroll{overflow:auto}.warning{font-weight:700;color:#ffd68a}
+#result table{min-width:970px}.field-full{grid-column:1/-1}
+#scope-label{margin:9px 0;color:#a7cfec}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){body{padding:10px}.grid{grid-template-columns:1fr}h1{font-size:1.35rem}}
+</style>
+</head><body>
+<p><a href="index.html">← Основна демонстрационна среда</a></p>
+<h1>Управление на риска · Нов работен интерфейс</h1>
+<p class="notice"><strong>ВИЗУАЛНА ДЕМОНСТРАЦИЯ</strong> — тази страница показва новата форма от KERNEL-B-09. Можете да въвеждате примерни инциденти и да видите подготвения работен списък. Данните НЕ се записват и НЕ се изпращат на сървър. Изчислението и реалният служебен вход не са активни в публичния сайт.</p>
+<section><h2>1. Режим на преглед</h2><p class="muted">Това е публичен преглед без служебни акаунти или данни. За локалната демонстрация е зададен синтетичен обект. Реалният backend остава защитен в частния проект.</p><p id="auth-status" aria-live="polite">Режим: демонстрационна форма — не е свързана с PostgreSQL.</p></section>
+<section id="workspace">
+<h2>2. Обект и примерни инциденти</h2>
+<label for="site-scope">Организация и обект (само разрешените)</label>
+<select id="site-scope" required><option>Демонстрационна организация / Тестов обект</option></select>
+<p class="muted" id="scope-label">Само примерни данни · няма достъп до служебни обекти</p>
+<form id="incident-form">
+ <div class="grid">
+  <div class="field"><label for="incident_id">ID на инцидента</label><input id="incident_id" placeholder="INC-001" maxlength="200" required></div>
+  <div class="field"><label for="incident_date">Дата</label><input id="incident_date" type="date" required></div>
+  <div class="field"><label for="incident_time">Час</label><input id="incident_time" type="time"></div>
+  <div class="field"><label for="zone">Зона</label><input id="zone" placeholder="Главен вход"></div>
+  <div class="field"><label for="shift">Смяна</label><input id="shift" placeholder="Дневна"></div>
+  <div class="field"><label for="category">Категория</label><select id="category" required></select></div>
+  <div class="field"><label for="risk_level">Експертно ниво H (предварително)</label>
+   <select id="risk_level" required><option value="">Изберете</option><option>Нисък</option><option>Среден</option><option>Висок</option><option>Критичен</option></select>
+  </div>
+  <div class="field"><label for="guards">Охранители</label><input id="guards" type="number" min="0" step="1" value="1" required></div>
+  <div class="field"><label for="visitors">Посетители</label><input id="visitors" type="number" min="0" step="1" value="0"></div>
+  <div class="field"><label for="cctv">CCTV</label><select id="cctv"><option>Да</option><option>Не</option></select></div>
+  <div class="field"><label for="access_control">Контрол на достъпа</label><select id="access_control"><option>Да</option><option>Частично</option><option>Не</option></select></div>
+  <div class="field"><label for="sot">СОТ</label><select id="sot"><option>Да</option><option>Не</option><option>Неприложимо</option></select></div>
+  <div class="field"><label for="detection_minutes">Време за откриване (мин)</label><input id="detection_minutes" type="number" min="0" step="any" value="5" required></div>
+  <div class="field"><label for="reaction_minutes">Време за реакция (мин)</label><input id="reaction_minutes" type="number" min="0" step="any" value="10" required></div>
+  <div class="field"><label for="loss_eur">Действителна щета (EUR)</label><input id="loss_eur" type="number" min="0" step="any" value="0"></div>
+  <div class="field field-full"><label for="result_status">Резултат от инцидента</label>
+   <select id="result_status">
+    <option>В процес на проверка</option>
+    <option>Приключен — без установени вредни последици</option>
+    <option>Приключен — с установени вредни последици</option>
+    <option>Приключен — резултатът не е установен</option>
+    <option>Установени вреди — проверката продължава</option>
+   </select>
+  </div>
+ </div>
+ <div id="theft-fields" class="grid">
+  <div class="field"><label for="theft_outcome">Резултат за кражбата</label><select id="theft_outcome"><option>Извършена кражба</option><option>Доказан предотвратен опит</option></select></div>
+  <div class="field"><label for="evidence_status">Проверка на доказателствата</label><select id="evidence_status"><option>Проверени — потвърдено</option><option>Не са проверени</option></select></div>
+  <div class="field"><label for="evidence_reference">Препратка към доказателство</label><input id="evidence_reference" placeholder="TEST-EVIDENCE-001"></div>
+  <div class="field"><label for="threatened_eur">Застрашена стойност (EUR, незадължителна)</label><input id="threatened_eur" type="number" min="0" step="any" placeholder="Неизвестна"></div>
+ </div>
+ <div class="actions"><button type="submit">Добави инцидент към изчислението</button><span class="muted">Данните са само в паметта на този екран до излизане.</span></div>
+</form>
+<p id="entry-status" aria-live="polite"></p>
+<div class="scroll"><table><thead><tr><th>ID</th><th>Дата</th><th>Категория</th><th>Ниво H</th><th>Щета</th><th>Действие</th></tr></thead><tbody id="incident-list"></tbody></table></div>
+<div class="actions"><button id="calculate" type="button">Провери наличността на сървърното изчисление</button><span id="incident-count" class="muted">0 / 399</span></div>
+</section>
+<section aria-live="polite"><h2>3. Резултати от ядрото</h2>
+<p id="status">Сървърното изчисление не е активирано в публичното DEMO.</p><p><a href="index.html">Отвори действащата демонстрация на риска в основния сайт</a></p><div id="result"></div>
+</section>
+<script src="kernel_public_preview.js"></script>
+</body></html>
