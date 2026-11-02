@@ -6,7 +6,7 @@
 (() => {
  const INCIDENT_KEY="lucifer-web-site-001-demo-v1";
  const PLAN_KEY="lucifer-web-treatment-plan-v1";
- const RISK_COLS=["Тип инцидент","Брой инциденти","Вероятност в набора","Средна щета (евро)","Макс. щета (евро)","Средно откриване (мин)","Средна реакция (мин)","Средна тежест (1–4)","Вероятност (1–5)","Последствия (1–5)","Финансов индекс","Крайна категория на риска","Ефективност на контрол (%)","Остатъчен финансов риск","Крайна категория на остатъчния риск","Risk ID (постоянен ключ)","Статус на данните (тест)","Максимално експертно ниво 1–4","Финансова категория","Код на крайната категория","Статус на оценката"];
+ const RISK_COLS=["Тип инцидент","Брой инциденти","Вероятност в набора","Средна щета (евро)","Макс. щета (евро)","Средно откриване (мин)","Средна реакция (мин)","Средна тежест (1–4)","Вероятност (1–5)","Последствия (1–5)","Финансов индекс","Крайна категория на риска","Ефективност на контрол (%)","Остатъчен финансов риск","Крайна категория на остатъчния риск","Risk ID (постоянен ключ)","Q — контрол на входните данни (без заглавие в Excel)","Статус на данните (тест)","Максимално експертно ниво 1–4","Финансова категория","Код на крайната категория","Статус на оценката"];
  const PRIORITY_COLS=["Категория","Инциденти","Материални загуби, евро","Макс. щета, евро","Базов индекс","Норм. загуби","Норм. риск","Норм. макс. щета","Балансиран резултат","Критичен сценарий (ДА/НЕ; след проверка)","Оперативен приоритет","Ред по оперативен приоритет","Обосновка","Risk ID — постоянен ключ","Параметър","Стойност","Проверка на безопасността","Основание за приоритет","Статус на потвърждение","Защитно действие","Проверена версия","Досегашен приоритет и предупреждения","Код от оценката на риска","Код на оперативния приоритет","Досегашен финансов ред","Контролни съобщения"];
  const PLAN_COLS=["Risk ID","Риск","Мярка","Тип мярка","Приоритет","Отговорник","Срок","Ресурс","Очакван резултат","KPI","Целева стойност","Статус","Доказателство"];
  const FIELDS=["riskId","risk","measure","type","priority","owner","due","resource","outcome","kpi","target","status","proof"];
@@ -22,7 +22,9 @@
  function table(heads,rows){
    const outer=document.createElement("div"),tbl=document.createElement("table");
    outer.className="scroll";const h=tbl.createTHead().insertRow();
-   heads.forEach(t=>{const th=document.createElement("th");th.textContent=t;h.append(th)});
+   heads.forEach((t,i)=>{const th=document.createElement("th");
+     // Show physical Excel positions: Q exists as a formula cell despite its blank header.
+     th.textContent=(heads===RISK_COLS?String.fromCharCode(65+i)+" · ":"")+t;h.append(th)});
    const body=tbl.createTBody();
    for(const cells of rows){if(cells.length!==heads.length)throw Error("Несъответствие в броя на колоните");
      const tr=body.insertRow();
@@ -51,8 +53,8 @@
  }
  function average(rows,key){return rows.length?rows.reduce((sum,r)=>sum+r[key],0)/rows.length:null}
  function riskRow(r){
-   if(!r.count)return [r.category,0,"0%","Няма случаи","Няма случаи","Няма случаи","Няма случаи","Няма случаи",0,0,0,"Неоценен","Няма случаи","Няма случаи","Няма случаи",r.riskId,"Няма регистрирани инциденти",0,"Неоценен",0,"Няма случаи"];
-   return [r.category,r.count,percent(r.frequency),cash(r.meanDamage),cash(r.maxDamage),num(r.meanDetection),num(r.meanReaction),num(r.meanSeverity),num(r.likelihood),num(r.impact),num(r.financialIndex),r.finalRisk,r.controlStatus==="OK"?percent(r.controlEffectiveness):r.controlStatus,num(r.residualFinancialIndex),r.residualRisk??pending,r.riskId,"Предварително — контролът на входните данни не е завършен",num(r.expertMax),r.financialCategory,num(r.finalRiskCode),"Неодобрено — проверката на безопасността не е завършена"];
+   if(!r.count)return [r.category,0,"0%","Няма случаи","Няма случаи","Няма случаи","Няма случаи","Няма случаи",0,0,0,"Неоценен","Няма случаи","Няма случаи","Няма случаи",r.riskId,r.riskId==="R-01"?pending:"—","Няма регистрирани инциденти",0,"Неоценен",0,"Няма случаи"];
+   return [r.category,r.count,percent(r.frequency),cash(r.meanDamage),cash(r.maxDamage),num(r.meanDetection),num(r.meanReaction),num(r.meanSeverity),num(r.likelihood),num(r.impact),num(r.financialIndex),r.finalRisk,r.controlStatus==="OK"?percent(r.controlEffectiveness):r.controlStatus,num(r.residualFinancialIndex),r.residualRisk??pending,r.riskId,r.riskId==="R-01"?pending:"—","Предварително — контролът на входните данни не е завършен",num(r.expertMax),r.financialCategory,num(r.finalRiskCode),"Неодобрено — проверката на безопасността не е завършена"];
  }
  function drawRisk(d){
    const r=d.risks,all=d.all;
@@ -64,16 +66,80 @@
     count?cash(Math.max(...totals.map(x=>x.damage))):"Няма случаи",
     count?num(average(totals,"detect")):"Няма случаи",count?num(average(totals,"react")):"Няма случаи",
     count?num(average(totals.map(x=>({severity:({"Нисък":1,"Среден":2,"Висок":3,"Критичен":4}[x.expert]||0)})),"severity")):"Няма случаи",
-    pending,pending,pending,pending,pending,pending,pending,"—","Предварителни данни",pending,pending,pending,"Неодобрено"]);
+    pending,pending,pending,pending,pending,pending,pending,"—","—","Предварителни данни",pending,pending,pending,"Неодобрено"]);
    const prov=d.prevented;
    values.push(["ДОКАЗАНИ ПРЕДОТВРАТЕНИ КРАЖБИ — отделно",prov.length,
      all.length?percent(prov.length/all.length):"0%",pending,pending,
      prov.length?num(average(prov,"detect")):"Няма случаи",
      prov.length?num(average(prov,"react")):"Няма случаи",pending,pending,pending,pending,
-     pending,pending,pending,pending,"—","Проверете U/O и доказателствата",pending,pending,pending,"Неодобрено"]);
+     pending,pending,pending,pending,"—","—","Проверете U/O и доказателствата",pending,pending,pending,"Неодобрено"]);
    riskEl.replaceChildren(note("Източник: съществуващият регистър „Инциденти“ ("+all.length+"/399). За основна оценка: "+d.real.length+"; доказани предотвратени кражби: "+d.prevented.length+"; кражби за проверка: "+d.review.length+"."),table(RISK_COLS,values),
-     note("Пълната структура на Excel „Оценка на риска“ е показана (21 озаглавени колони). Стойностите са предварителни от съществуващия модул; липсващите междулистови зависимости са ясно означени."));
+     note("Excel A–V: 22 позиции, от които 21 с оригинални заглавия и Q без заглавие. Q2 препраща към „Контрол входни данни“!B19; докато този контрол не е пренесен, стойността е обозначена като неизчислена. Плъзнете таблицата хоризонтално за колони P–V."),drawRiskDetails(d));
  }
+
+ // Additional Excel rows 12–29, previously omitted from the web page.
+ // This is a direct projection of the verified incident records, not an approval.
+ function valueState(value){
+   if(value===null||value===undefined||value==="")return "Неизвестна";
+   if(typeof value==="number"&&Number.isFinite(value)&&value>=0)return "Числова";
+   return "Невалидна";
+ }
+ function numericStatistics(rows,key){
+   const known=rows.filter(r=>valueState(r[key])==="Числова").map(r=>r[key]);
+   const unknown=rows.filter(r=>valueState(r[key])==="Неизвестна").length;
+   const invalid=rows.length-known.length-unknown;
+   const total=known.reduce((s,x)=>s+x,0);
+   const status=!rows.length?"Няма случаи":invalid?"Невалидни данни":unknown?
+     "Частична — има неизвестни "+key:"Пълна";
+   return {known:known.length,unknown,invalid,total,
+     average:known.length?total/known.length:"Няма известни стойности",
+     maximum:known.length?Math.max(...known):"Няма известни стойности",status};
+ }
+ function drawRiskDetails(data){
+   const block=document.createElement("div");
+   const h=document.createElement("h3");
+   h.textContent="Excel A13:D22 — U (застрашена стойност) и O (действителни щети)";
+   block.append(h);
+   const U=numericStatistics(data.prevented,"threatened");
+   const O=numericStatistics(data.prevented,"damage");
+   const uStatus=!data.prevented.length?"Няма случаи":U.invalid?"Невалидни данни":U.unknown?
+     "Частична — има неизвестни U":"Пълна";
+   const oStatus=!data.prevented.length?"Няма случаи":O.invalid?"Невалидни данни":O.unknown?
+     "Частична — има неизвестни O":"Пълна";
+   const actualReal=numericStatistics(data.real,"damage");
+   const actualRealTotal=!data.real.length?0:actualReal.invalid?"Непроверени данни":
+     actualReal.unknown?"Размерът на щетата не е установен":actualReal.total;
+   const actualPreventTotal=!data.prevented.length?0:O.invalid?"Непроверени данни":
+     O.unknown?"Размерът на щетата не е установен":O.total;
+   // Original Excel A14:D21: two parallel sets of labels and measures.
+   const tableRows=[
+      ["Брой известни U",U.known,"Брой известни O",O.known],
+      ["Брой неизвестни U",U.unknown,"Брой неизвестни O",O.unknown],
+      ["Брой невалидни U",U.invalid,"Брой невалидни O",O.invalid],
+      ["Обща известна застрашена стойност U",cash(U.total),"Обща известна действителна щета O",cash(O.total)],
+      ["Средна застрашена стойност U",U.known?cash(U.average):U.average,
+       "Средна действителна щета O",O.known?cash(O.average):O.average],
+      ["Максимална известна застрашена U",U.known?cash(U.maximum):U.maximum,
+       "Максимална известна действителна O",O.known?cash(O.maximum):O.maximum],
+      ["Пълнота на U",uStatus,"Пълнота на O",oStatus],
+      ["Действителна O — основни категории",typeof actualRealTotal==="number"?cash(actualRealTotal):actualRealTotal,
+       "Действителна O — предотвратени кражби",typeof actualPreventTotal==="number"?cash(actualPreventTotal):actualPreventTotal]
+   ];
+   block.append(table(["A · ЗАСТРАШЕНА СТОЙНОСТ U","B · ЕВРО",
+                        "C · ДЕЙСТВИТЕЛНИ ЩЕТИ O","D · ЕВРО"],tableRows));
+   block.append(note("Excel A22–C22: РАЗДЕЛЯНЕ НА O — действителните щети при предотвратяване са отделни от основните категории. U е застрашена стойност; тя не е реализирана загуба."));
+   const heading=document.createElement("h3");
+   heading.textContent="Excel A24:B29 — Разпределение на експертната тежест H";
+   block.append(heading);
+   const levels=["Нисък","Среден","Висок","Критичен"];
+   const levelRows=levels.map(level=>[level,data.prevented.filter(x=>x.expert===level).length]);
+   const counted=levelRows.reduce((s,row)=>s+row[1],0);
+   levelRows.push(["Липсващ/невалиден H",data.prevented.length-counted]);
+   block.append(table(["A · Разпределение на експертната тежест H","B · Брой"],levelRows));
+   block.append(note("Excel A12: ред 11 е сравнителен финансов индекс, а не измерена вероятност. Щетите O се отчитат отделно. Показателите, които зависят от непроверени доказателства, остават предварителни."));
+   return block;
+ }
+
  const parameters=[["Тежест на общите загуби",0.55],["Тежест на базовия риск",0.30],["Тежест на максималната щета",0.15],["Праг висок приоритет",0.75],["Праг среден приоритет",0.45],["",""],["Условие","Тълкуване"],["Критичен сценарий","ДА = задължителен критичен приоритет независимо от резултата"]];
  function drawPriority(d){
    const results=d.risks.map((r,i)=>{
