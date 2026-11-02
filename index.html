@@ -645,6 +645,20 @@ header.brand-header{display:none!important}
  #incidents .scroll table{table-layout:auto!important}
  #incidents .scroll th:first-child,#incidents .scroll td:first-child{min-width:120px!important;width:120px!important;max-width:none!important;white-space:nowrap!important}
 }
+
+/* Tables retain the entire Excel column sequence with horizontal scroll. */
+#risk-results .scroll,#priority-results .scroll,#treatment-results .scroll{overflow-x:auto;max-width:100%;border:1px solid #536c87;border-radius:8px}
+#risk-results table,#priority-results table,#treatment-results table{width:max-content;min-width:100%;font-size:.8rem}
+#risk-results th,#priority-results th,#treatment-results th{min-width:130px;max-width:320px;white-space:normal;vertical-align:top;background:#173c5b;padding:9px}
+#risk-results td,#priority-results td,#treatment-results td{min-width:130px;max-width:340px;white-space:normal;overflow-wrap:anywhere;padding:9px}
+#risk-results th:first-child,#risk-results td:first-child,#priority-results th:first-child,#priority-results td:first-child,#treatment-results th:first-child,#treatment-results td:first-child{position:sticky;left:0;background:#193a57;z-index:1;min-width:200px}
+#risk-results th:first-child,#priority-results th:first-child,#treatment-results th:first-child{z-index:2}
+#treatment-heading{margin-top:24px;border-top:1px solid #56718d;padding-top:18px}
+#treatment-form{padding:14px;background:rgba(13,35,57,.87);border:1px solid #486985;border-radius:10px}
+#treatment-form .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#treatment-form .grid>div{min-width:0}#treatment-form label{display:block;margin:4px 0}
+@media(max-width:850px){#treatment-form .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:550px){#treatment-form .grid{grid-template-columns:1fr}}
 </style>
 
 <style id="director-approved-mobile-header-2026-11-01">
@@ -699,10 +713,10 @@ body > .site-topnav{display:flex!important}
 <div class="side-logo"><strong>LUCIFER-WEB</strong><small>Управление на риска</small></div>
 <button type="button" aria-selected="true" data-tab="home">⌂ Работно табло</button>
 <button type="button" aria-selected="false" data-tab="incidents">▣ Инциденти</button>
-<button type="button" aria-selected="false" data-tab="risk">⚙ Управление на риска</button>
+<button type="button" aria-selected="false" data-tab="risk">⚙ Оценка на риска</button>
 <a href="prevented_theft.html" style="display:block;padding:10px 8px;background:#f5f9fd;color:#18354e;border:1px solid #b4cadb;border-radius:8px;text-decoration:none;font-weight:600">◈ Предотвратени кражби</a>
 
-<button type="button" aria-selected="false" data-tab="priority">◈ Приоритет за третиране</button>
+<button type="button" aria-selected="false" data-tab="priority">◈ Приоритет / План за третиране</button>
 <div class="side-group">▤ Рискови регистри <span>⌄</span></div>
 <div class="side-group">◴ Планиране <span>⌄</span></div>
 <div class="side-group">◉ Мониторинг <span>⌄</span></div>
@@ -751,8 +765,22 @@ body > .site-topnav{display:flex!important}
 </form>
 <h3>Локален регистър <span id="record-count" class="muted"></span></h3><div id="register-toolbar" role="group" aria-label="Действия за избрания инцидент"><span id="selected-incident" role="status">Няма избран инцидент</span><button type="button" id="toolbar-view" disabled>Преглед</button><button type="button" id="toolbar-edit" disabled>Редактирай</button><button type="button" id="toolbar-delete" class="danger" disabled>Изтрий</button></div><button type="button" id="export-json">Експортирай резервно копие (JSON)</button> <button type="button" id="restore-json">Възстанови от резервно копие (JSON)</button><input type="file" id="restore-file" accept=".json,application/json" hidden><span id="restore-message" role="status" aria-live="polite"></span><p class="muted">Резервното копие е файл на твоето устройство. Не се изпраща автоматично в GitHub.</p><p class="muted">Преместете хоризонталния плъзгач под таблицата, за да разгледате всички полета. ID и действията остават видими.</p><div class="scroll"><table><thead><tr><th>ID</th><th>Дата и час</th><th>Смяна</th><th>Ден</th><th>Зона</th><th>Категория</th><th>H</th><th>Охранители</th><th>CCTV</th><th>Достъп</th><th>СОТ</th><th>Посетители</th><th>Откриване (мин)</th><th>Реакция (мин)</th><th>Резултат</th><th>Предотвратена</th><th>Проверка</th><th>Доказателства</th><th>Застрашена V (евро)</th><th>Щета P (евро)</th><th>Описание</th><th>Действия</th></tr></thead><tbody id="incident-rows"></tbody></table></div><div id="record-details" class="details" hidden><h3>Пълен преглед на записа</h3><div id="record-details-content" class="detail-grid"></div><button type="button" id="close-details">Затвори</button></div>
 </section>
-<section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Данните идват от съществуващия регистър „Инциденти“. Оценките са ПРЕДВАРИТЕЛНИ — не са одобрени и не доказват пълно съответствие с всички Excel формули.</div><p>Експертната оценка H не се понижава от финансовите показатели. Запис, корекция, изтриване и възстановяване се отразяват в оценката.</p><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
-<section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Показва взаимовръзката с „Инциденти“ и „Оценка на риска“. Официалният приоритет остава блокиран без проверка за безопасност, доказателства и правомощия.</div><p>При доказана тежка опасност животът и здравето имат приоритет пред материалните щети.</p><div id="priority-results" role="status" aria-live="polite">Зареждане…</div></section>
+<section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Оригинални колони A–P и R–V от Excel „Оценка на риска“ (Q няма заглавие). Стойностите са предварителни и се обновяват от съществуващия регистър „Инциденти“; непроверените зависимости се означават ясно. НЕОДОБРЕНА оценка.</div><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
+<section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оригинални колони A–P и R–AA от Excel „Приоритет за третиране“ (Q няма заглавие). Стойностите са свързани с „Инциденти“ и „Оценка на риска“. При липса на проверка на безопасността окончателният приоритет остава НЕОДОБРЕН.</div><div id="priority-results" role="status" aria-live="polite">Зареждане…</div>
+<h2 id="treatment-heading">02 План третиране</h2><div class="notice">Оригинални колони A–M от Excel „02 План третиране“. Експертните мерки се въвеждат ръчно. Запис само в този браузър; без автоматично одобрение и без промени в инцидентите.</div><div id="treatment-results" role="status" aria-live="polite"></div>
+<form id="treatment-form"><h3>Добавяне / редакция на мярка</h3><label for="plan-row-picker">Избери мярка за редакция</label><select id="plan-row-picker"><option value="">Нова мярка</option></select><div class="grid"><div><label for="plan-risk-id">A · Risk ID</label><select id="plan-risk-id" required></select></div>
+<div><label for="plan-risk">B · Риск</label><input id="plan-risk" type="text" maxlength="500" required></div>
+<div><label for="plan-measure">C · Мярка</label><input id="plan-measure" type="text" maxlength="500" required></div>
+<div><label for="plan-type">D · Тип мярка</label><input id="plan-type" type="text" maxlength="500"></div>
+<div><label for="plan-priority">E · Приоритет</label><input id="plan-priority" type="text" maxlength="500"></div>
+<div><label for="plan-owner">F · Отговорник</label><input id="plan-owner" type="text" maxlength="500"></div>
+<div><label for="plan-due">G · Срок</label><input id="plan-due" type="date" maxlength="500"></div>
+<div><label for="plan-resource">H · Ресурс</label><input id="plan-resource" type="text" maxlength="500"></div>
+<div><label for="plan-outcome">I · Очакван резултат</label><input id="plan-outcome" type="text" maxlength="500"></div>
+<div><label for="plan-kpi">J · KPI</label><input id="plan-kpi" type="text" maxlength="500"></div>
+<div><label for="plan-target">K · Целева стойност</label><input id="plan-target" type="text" maxlength="500"></div>
+<div><label for="plan-status">L · Статус</label><input id="plan-status" type="text" maxlength="500"></div>
+<div><label for="plan-proof">M · Доказателство</label><input id="plan-proof" type="text" maxlength="500"></div></div><div class="actions"><button class="primary" type="submit">Запази мярката локално</button><button type="button" id="plan-clear">Нова мярка</button></div><p id="plan-message" role="status" aria-live="polite"></p></form></section>
 <section id="contacts" hidden><div class="page-crumb">✉ &nbsp; Контакти с нас <span>Начало / Контакти с нас</span></div><div class="contact-grid"><div class="contact-panel"><h2>Контакти с нас</h2><p>Информация за връзка с LUCIFER-WEB</p><div class="contact-item"><b>⌖ Адрес</b><span>Официален адрес — предстои потвърждение</span></div><div class="contact-item"><b>☎ Телефон</b><span>Предстои потвърждение</span></div><div class="contact-item"><b>✉ Имейл</b><span>Предстои потвърждение</span></div><div class="contact-map">Карта на местоположението<br><small>Ще бъде добавена след потвърждение на адреса.</small></div></div><div class="contact-panel"><h2>Форма за запитване</h2><div class="grid"><div><label for="contact-first">Име *</label><input id="contact-first" disabled placeholder="Име"></div><div><label for="contact-last">Фамилия *</label><input id="contact-last" disabled placeholder="Фамилия"></div><div><label for="contact-org">Организация</label><input id="contact-org" disabled></div><div><label for="contact-topic">Тема *</label><select id="contact-topic" disabled><option>Изберете тема</option></select></div></div><label for="contact-message">Съобщение *</label><textarea id="contact-message" disabled></textarea><p class="muted">Формата е визуален образец и не изпраща данни. Активиране — след одобрение на контактите и политика за поверителност.</p><button disabled>➤ Изпрати запитване</button></div></div></section>
 </main>
 <footer class="site-approved-slogan" aria-label="Девиз на LUCIFER-WEB">Знанието е сила</footer>
