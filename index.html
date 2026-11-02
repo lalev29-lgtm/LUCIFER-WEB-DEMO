@@ -675,6 +675,16 @@ header.brand-header{display:none!important}
 /* DIRECTOR: remove duplicate upper banner; retain approved navigation header. */
 @media(min-width:761px){body > #lucifer-fresh-header{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important}}
 </style>
+
+<style>
+/* DIRECTOR: landscape header only; hide Lucifer artwork header and its overlays. */
+body > #lucifer-fresh-header{display:none!important;height:0!important;min-height:0!important;max-height:0!important}
+body > #exact-header{display:none!important;height:0!important;min-height:0!important;max-height:0!important}
+body > #lucifer-mobile-header{display:none!important;height:0!important;min-height:0!important;max-height:0!important}
+body > header.brand-header{display:none!important}
+body > .site-topnav{display:flex!important}
+@media(max-width:760px){body > .site-topnav{display:flex!important;flex-wrap:wrap!important}}
+</style>
 </head>
 <body>
 <div id="lucifer-mobile-header" role="banner" aria-label="Луцифер – Знанието е сила · Управление на риска"><img class="lucifer-mobile-backdrop" src="https://raw.githubusercontent.com/lalev29-lgtm/LUCIFER-WEB-DEMO/main/assets/LUCIFER_WEB_HEADER%20%281%29.png" alt="Луцифер – Знанието е сила · Управление на риска"></div>
