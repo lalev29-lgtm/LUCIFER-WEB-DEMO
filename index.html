@@ -640,7 +640,10 @@ header.brand-header{display:none!important}
 /* Mobile incident register: preserve the complete INC-### identifier next to sticky actions. */
 @media(max-width:760px){
  #incidents .scroll th:first-child,#incidents .scroll td:first-child{min-width:105px!important;width:105px!important;max-width:none!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;padding-left:12px!important;padding-right:12px!important}
- #incidents .scroll th:last-child,#incidents .scroll td:last-child{position:static!important;right:auto!important;max-width:none!important}
+ #incidents .scroll th:first-child,#incidents .scroll td:first-child,#incidents .scroll th:last-child,#incidents .scroll td:last-child{position:static!important;left:auto!important;right:auto!important;z-index:auto!important}
+ #incidents .scroll{overflow-x:auto!important;scroll-behavior:auto!important}
+ #incidents .scroll table{table-layout:auto!important}
+ #incidents .scroll th:first-child,#incidents .scroll td:first-child{min-width:120px!important;width:120px!important;max-width:none!important;white-space:nowrap!important}
 }
 </style>
 
