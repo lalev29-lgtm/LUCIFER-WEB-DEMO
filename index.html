@@ -701,7 +701,7 @@ body > .site-topnav{display:flex!important}
 <button type="button" aria-selected="false" data-tab="incidents">▣ Инциденти</button>
 <button type="button" aria-selected="false" data-tab="risk">⚙ Управление на риска</button>
 <a href="prevented_theft.html" style="display:block;padding:10px 8px;background:#f5f9fd;color:#18354e;border:1px solid #b4cadb;border-radius:8px;text-decoration:none;font-weight:600">◈ Предотвратени кражби</a>
-<a href="kernel_workflow.html" style="display:block;padding:10px 8px;background:#e6f0fc;color:#173f61;border:1px solid #7fa5c6;border-radius:8px;text-decoration:none;font-weight:700">⌘ Нов интерфейс за оценка · KERNEL-B</a>
+
 <button type="button" aria-selected="false" data-tab="priority">◈ Приоритет за третиране</button>
 <div class="side-group">▤ Рискови регистри <span>⌄</span></div>
 <div class="side-group">◴ Планиране <span>⌄</span></div>
@@ -751,8 +751,8 @@ body > .site-topnav{display:flex!important}
 </form>
 <h3>Локален регистър <span id="record-count" class="muted"></span></h3><div id="register-toolbar" role="group" aria-label="Действия за избрания инцидент"><span id="selected-incident" role="status">Няма избран инцидент</span><button type="button" id="toolbar-view" disabled>Преглед</button><button type="button" id="toolbar-edit" disabled>Редактирай</button><button type="button" id="toolbar-delete" class="danger" disabled>Изтрий</button></div><button type="button" id="export-json">Експортирай резервно копие (JSON)</button> <button type="button" id="restore-json">Възстанови от резервно копие (JSON)</button><input type="file" id="restore-file" accept=".json,application/json" hidden><span id="restore-message" role="status" aria-live="polite"></span><p class="muted">Резервното копие е файл на твоето устройство. Не се изпраща автоматично в GitHub.</p><p class="muted">Преместете хоризонталния плъзгач под таблицата, за да разгледате всички полета. ID и действията остават видими.</p><div class="scroll"><table><thead><tr><th>ID</th><th>Дата и час</th><th>Смяна</th><th>Ден</th><th>Зона</th><th>Категория</th><th>H</th><th>Охранители</th><th>CCTV</th><th>Достъп</th><th>СОТ</th><th>Посетители</th><th>Откриване (мин)</th><th>Реакция (мин)</th><th>Резултат</th><th>Предотвратена</th><th>Проверка</th><th>Доказателства</th><th>Застрашена V (евро)</th><th>Щета P (евро)</th><th>Описание</th><th>Действия</th></tr></thead><tbody id="incident-rows"></tbody></table></div><div id="record-details" class="details" hidden><h3>Пълен преглед на записа</h3><div id="record-details-content" class="detail-grid"></div><button type="button" id="close-details">Затвори</button></div>
 </section>
-<section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Предварителни изчисления от съществуващия модул. Без проверка на безопасността и директорско одобрение не представляват окончателна оценка.</div><p>Експертната оценка H е минималната крайна категория. Финансовите показатели не могат да я понижават.</p><div id="risk-results" role="status" aria-live="polite">Отворете раздела за изчисляване.</div></section>
-<section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оперативната логика предстои да бъде реализирана и проверена. Не използвайте този екран за реални решения.</div><p>При доказана тежка опасност животът и здравето имат приоритет пред материалните щети. Експертната оценка H определя минимален оперативен приоритет.</p></section>
+<section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Данните идват от съществуващия регистър „Инциденти“. Оценките са ПРЕДВАРИТЕЛНИ — не са одобрени и не доказват пълно съответствие с всички Excel формули.</div><p>Експертната оценка H не се понижава от финансовите показатели. Запис, корекция, изтриване и възстановяване се отразяват в оценката.</p><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
+<section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Показва взаимовръзката с „Инциденти“ и „Оценка на риска“. Официалният приоритет остава блокиран без проверка за безопасност, доказателства и правомощия.</div><p>При доказана тежка опасност животът и здравето имат приоритет пред материалните щети.</p><div id="priority-results" role="status" aria-live="polite">Зареждане…</div></section>
 <section id="contacts" hidden><div class="page-crumb">✉ &nbsp; Контакти с нас <span>Начало / Контакти с нас</span></div><div class="contact-grid"><div class="contact-panel"><h2>Контакти с нас</h2><p>Информация за връзка с LUCIFER-WEB</p><div class="contact-item"><b>⌖ Адрес</b><span>Официален адрес — предстои потвърждение</span></div><div class="contact-item"><b>☎ Телефон</b><span>Предстои потвърждение</span></div><div class="contact-item"><b>✉ Имейл</b><span>Предстои потвърждение</span></div><div class="contact-map">Карта на местоположението<br><small>Ще бъде добавена след потвърждение на адреса.</small></div></div><div class="contact-panel"><h2>Форма за запитване</h2><div class="grid"><div><label for="contact-first">Име *</label><input id="contact-first" disabled placeholder="Име"></div><div><label for="contact-last">Фамилия *</label><input id="contact-last" disabled placeholder="Фамилия"></div><div><label for="contact-org">Организация</label><input id="contact-org" disabled></div><div><label for="contact-topic">Тема *</label><select id="contact-topic" disabled><option>Изберете тема</option></select></div></div><label for="contact-message">Съобщение *</label><textarea id="contact-message" disabled></textarea><p class="muted">Формата е визуален образец и не изпраща данни. Активиране — след одобрение на контактите и политика за поверителност.</p><button disabled>➤ Изпрати запитване</button></div></div></section>
 </main>
 <footer class="site-approved-slogan" aria-label="Девиз на LUCIFER-WEB">Знанието е сила</footer>
@@ -771,6 +771,7 @@ function show(tab){
  if(!validTabs.includes(tab))tab="home";
  for(const b of tabs)b.setAttribute("aria-selected",String(b.dataset.tab===tab));
  for(const id of validTabs)document.getElementById(id).hidden=id!==tab;
+  window.dispatchEvent(new CustomEvent("lucifer:tab-changed",{detail:{tab}}));
  try{sessionStorage.setItem(TAB_KEY,tab);}catch(error){/* Навигацията работи и без storage. */}
 }
 tabs.forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab)));
@@ -826,7 +827,7 @@ for(const action of ["view","edit","delete"]){
   if(action==="delete")deleteRecord(selectedId);
  });
 }
-function render(){const rows=read();document.getElementById("record-count").textContent="("+rows.length+"/399)";const body=document.getElementById("incident-rows");body.replaceChildren();for(const x of rows){const tr=document.createElement("tr");tr.dataset.id=x.id;tr.setAttribute("aria-selected",String(x.id===selectedId));for(const v of [x.id,formatDateBG(x.date),x.shift,x.weekday,x.zone,x.category,x.expert,x.guards,x.cctv,x.access,x.sot,x.visitors,x.detect,x.react,x.result,x.prevented==="yes"?"Да":"Не",x.evidence,x.reference,x.threatened??0,x.damage,x.description]){const td=document.createElement("td");td.textContent=String(v??"");td.title=String(v??"");tr.append(td)}const td=document.createElement("td"),actions=document.createElement("div");actions.className="actions";for(const [label,action,cls] of [["Преглед","view",""],["Редактирай","edit",""],["Изтрий","delete","danger"]]){const b=document.createElement("button");b.type="button";b.textContent=label;b.dataset.action=action;b.dataset.id=x.id;if(cls)b.className=cls;actions.append(b)}td.append(actions);tr.append(td);body.append(tr)}if(selectedId&&!rows.some(x=>x.id===selectedId))selectIncident(null)}
+function render(){const rows=read();document.getElementById("record-count").textContent="("+rows.length+"/399)";const body=document.getElementById("incident-rows");body.replaceChildren();for(const x of rows){const tr=document.createElement("tr");tr.dataset.id=x.id;tr.setAttribute("aria-selected",String(x.id===selectedId));for(const v of [x.id,formatDateBG(x.date),x.shift,x.weekday,x.zone,x.category,x.expert,x.guards,x.cctv,x.access,x.sot,x.visitors,x.detect,x.react,x.result,x.prevented==="yes"?"Да":"Не",x.evidence,x.reference,x.threatened??0,x.damage,x.description]){const td=document.createElement("td");td.textContent=String(v??"");td.title=String(v??"");tr.append(td)}const td=document.createElement("td"),actions=document.createElement("div");actions.className="actions";for(const [label,action,cls] of [["Преглед","view",""],["Редактирай","edit",""],["Изтрий","delete","danger"]]){const b=document.createElement("button");b.type="button";b.textContent=label;b.dataset.action=action;b.dataset.id=x.id;if(cls)b.className=cls;actions.append(b)}td.append(actions);tr.append(td);body.append(tr)}if(selectedId&&!rows.some(x=>x.id===selectedId))selectIncident(null);window.dispatchEvent(new Event("lucifer:incidents-changed"));}
 function showDetails(id){const row=read().find(x=>x.id===id);if(!row)return;const container=document.getElementById("record-details-content");container.replaceChildren();dataKeys.forEach((key,i)=>{const div=document.createElement("div"),title=document.createElement("strong"),value=document.createElement("span");title.textContent=detailLabels[i];value.textContent=String(key==="date"?formatDateBG(row[key]):key==="prevented"?(row[key]==="yes"?"Да":"Не"):(row[key]??""));div.append(title,value);container.append(div)});document.getElementById("record-details").hidden=false;document.getElementById("record-details").scrollIntoView({block:"nearest"})}
 function cancelEdit(){editingId=null;document.getElementById("incident-form").reset();document.getElementById("incident-id").readOnly=false;document.getElementById("editing-banner").hidden=true;document.getElementById("cancel-edit").hidden=true;document.getElementById("save-button").textContent="Запиши локално";suggestId()}
 function editRecord(id){const row=read().find(x=>x.id===id);if(!row)return;editingId=id;fieldIds.forEach((fid,i)=>document.getElementById(fid).value=String(row[dataKeys[i]]??""));document.getElementById("incident-weekday").value=validLocalDateTime(row.date)?weekdayFromDate(row.date):"";document.getElementById("incident-id").readOnly=true;document.getElementById("editing-id").textContent=id;document.getElementById("editing-banner").hidden=false;document.getElementById("cancel-edit").hidden=false;document.getElementById("save-button").textContent="Запази корекциите";document.getElementById("incident-form").scrollIntoView({block:"start"})}
@@ -914,32 +915,5 @@ try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
 })();
 </script>
 <script src="risk_engine_browser.js"></script>
-<script id="lucifer-risk-browser-adapter">
-(function(){
-"use strict";
-const root=document.getElementById("risk-results");
-function render(){
- root.replaceChildren();
- try{
-  const engine=window.LuciferRiskEngine;
-  if(!engine)throw Error("Изчислителният модул не е зареден.");
-  const rows=JSON.parse(localStorage.getItem("lucifer-web-site-001-demo-v1")||"[]");
-  const result=engine.riskAssessment(rows);
-  const active=result.filter(r=>r.count>0);
-  if(!active.length){root.textContent="Няма записани инциденти за изчисляване. Не се създава фиктивна оценка.";return;}
-  const wrap=document.createElement("div");wrap.style.overflowX="auto";
-  const table=document.createElement("table");
-  const head=document.createElement("tr");
-  for(const h of ["Risk ID","Категория","Брой","Честота","Средна щета","Експертна H","Предварителен риск","Статус"]){const th=document.createElement("th");th.textContent=h;head.append(th)}
-  const thead=document.createElement("thead");thead.append(head);table.append(thead);
-  const tbody=document.createElement("tbody");
-  for(const r of active){const tr=document.createElement("tr");for(const v of [r.riskId,r.category,r.count,(r.frequency*100).toFixed(1)+"%",r.meanDamage.toFixed(2)+" €",r.expertMax,r.finalRisk,r.status]){const td=document.createElement("td");td.textContent=String(v);td.style.padding="10px";tr.append(td)}tbody.append(tr)}
-  table.append(tbody);table.style.width="100%";table.style.minWidth="720px";wrap.append(table);root.append(wrap);
- }catch(error){root.textContent="Изчисляването е спряно: "+error.message+" Данните не са променени.";}
-}
-document.querySelectorAll('[data-tab="risk"]').forEach(b=>b.addEventListener("click",render));
-document.querySelectorAll('[data-exact="risk"]').forEach(b=>b.addEventListener("click",render));
-if(!document.getElementById("risk").hidden)render();
-})();
-</script>
+<script src="risk_connections.js"></script>
 </body></html>
