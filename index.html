@@ -636,6 +636,12 @@ header.brand-header{display:none!important}
   mask-image:linear-gradient(to right,#000 0%,#000 88%,transparent 100%)!important;
  }
 }
+
+/* Mobile incident register: preserve the complete INC-### identifier next to sticky actions. */
+@media(max-width:760px){
+ #incidents .scroll th:first-child,#incidents .scroll td:first-child{min-width:105px!important;width:105px!important;max-width:none!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;padding-left:12px!important;padding-right:12px!important}
+ #incidents .scroll th:last-child,#incidents .scroll td:last-child{max-width:calc(100vw - 130px)}
+}
 </style>
 
 <style id="director-approved-mobile-header-2026-11-01">
