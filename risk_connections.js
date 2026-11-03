@@ -32,6 +32,118 @@
    if(!rows.length){const td=body.insertRow().insertCell();td.colSpan=heads.length;td.textContent="Няма записи"}
    outer.append(tbl);return outer;
  }
+
+ /* Readable result summaries. The original Excel-column tables remain unchanged. */
+ const summaryStyles=document.createElement("style");
+ summaryStyles.id="lucifer-risk-priority-readable-results-v1";
+ summaryStyles.textContent=[
+   ".lucifer-result-overview{margin:14px 0 18px}",
+   ".lucifer-result-heading{margin:0 0 10px;font-size:1.15rem;color:#f5f8fc}",
+   ".lucifer-result-intro{margin:0 0 12px;color:#d1e0f1;line-height:1.5}",
+   ".lucifer-result-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:12px 0}",
+   ".lucifer-stat{border:1px solid #597a9c;border-radius:10px;background:#193b59;padding:12px;min-width:0}",
+   ".lucifer-stat-name{display:block;font-size:.84rem;color:#d2e0ed;margin-bottom:6px;line-height:1.35}",
+   ".lucifer-stat-value{display:block;color:#fff;font-weight:750;font-size:1.15rem;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}",
+   ".lucifer-category-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px;margin:14px 0}",
+   ".lucifer-category-card{min-width:0;background:#17334e;border:1px solid #597a9c;border-radius:11px;padding:14px}",
+   ".lucifer-category-title{margin:0 0 12px;font-weight:750;font-size:1.05rem;line-height:1.4;color:#fff}",
+   ".lucifer-category-id{display:inline-block;font-size:.82rem;color:#bfd8f0;font-weight:500}",
+   ".lucifer-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0}",
+   ".lucifer-fact{min-width:0;padding:9px;background:#10283e;border-radius:7px}",
+   ".lucifer-fact dt{font-size:.82rem;color:#c6d6e7;line-height:1.35;margin:0 0 5px}",
+   ".lucifer-fact dd{font-size:1rem;font-weight:650;color:#fff;margin:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}",
+   ".lucifer-table-details{margin:16px 0;border:1px solid #557694;border-radius:10px;padding:10px;background:#0b263d}",
+   ".lucifer-table-details>summary{font-weight:700;color:#f2f6fc;cursor:pointer;padding:8px;line-height:1.4}",
+   ".lucifer-table-details[open]>summary{margin-bottom:10px}",
+   "@media(max-width:760px){.lucifer-result-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.lucifer-category-list{grid-template-columns:minmax(0,1fr)}.lucifer-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.lucifer-category-card{padding:12px}.lucifer-table-details{margin:12px 0}}",
+   "@media(max-width:390px){.lucifer-facts{grid-template-columns:minmax(0,1fr)}}"
+ ].join("\n");
+ document.head.append(summaryStyles);
+ function resultNode(tag,cls,value){
+   const e=document.createElement(tag);
+   if(cls)e.className=cls;
+   if(value!==undefined)e.textContent=String(value);
+   return e;
+ }
+ function resultStat(label,value){
+   const card=resultNode("div","lucifer-stat");
+   card.append(resultNode("span","lucifer-stat-name",label),resultNode("strong","lucifer-stat-value",value));
+   return card;
+ }
+ function resultFact(label,value){
+   const fact=resultNode("div","lucifer-fact");
+   fact.append(resultNode("dt","",label),resultNode("dd","",value));
+   return fact;
+ }
+ function categorySummary(r,entries){
+   const card=resultNode("article","lucifer-category-card");
+   const h=resultNode("h4","lucifer-category-title",r.category+" · ");
+   h.append(resultNode("span","lucifer-category-id",r.riskId));
+   const dl=resultNode("dl","lucifer-facts");
+   for(const [label,value] of entries)dl.append(resultFact(label,value));
+   card.append(h,dl);
+   return card;
+ }
+ function fullExcelTable(title,...content){
+   const details=resultNode("details","lucifer-table-details");
+   // On phones, show the readable results first; the original wide table is optional.
+   details.open=!(typeof window.matchMedia==="function"&&window.matchMedia("(max-width:760px)").matches);
+   details.append(resultNode("summary","",title),...content);
+   return details;
+ }
+ function riskOverview(d){
+   const section=resultNode("section","lucifer-result-overview");
+   section.setAttribute("aria-label","Обобщение на оценката на риска");
+   section.append(resultNode("h3","lucifer-result-heading","Резултати от въведените инциденти"));
+   section.append(resultNode("p","lucifer-result-intro","Стойностите са от локалния регистър в този браузър. Показани са само категориите с случаи в основната оценка; останалите са в пълната Excel таблица."));
+   const stats=resultNode("div","lucifer-result-stats");
+   stats.append(resultStat("Въведени инциденти",d.all.length),resultStat("В основна оценка",d.real.length),
+     resultStat("Щети в основната оценка",cash(d.real.reduce((s,r)=>s+r.damage,0))),
+     resultStat("Кражби за проверка",d.review.length));
+   section.append(stats);
+   const cards=resultNode("div","lucifer-category-list");
+   for(const r of d.risks.filter(x=>x.count>0)){
+     cards.append(categorySummary(r,[
+       ["Брой инциденти",r.count],
+       ["Средна щета",cash(r.meanDamage)],
+       ["Максимална щета",cash(r.maxDamage)],
+       ["Експертна тежест H (средна)",num(r.meanSeverity)],
+       ["Предварителна категория риск",r.finalRisk],
+       ["Вероятност в набора",percent(r.frequency)]
+     ]));
+   }
+   section.append(cards.childElementCount?cards:resultNode("p","lucifer-result-intro","Няма допустими инциденти за основна оценка."));
+   section.append(note("Оценката е предварителна и НЕОДОБРЕНА. Проверка на безопасността и останалите контроли предстоят."));
+   return section;
+ }
+ function priorityOverview(d){
+   const section=resultNode("section","lucifer-result-overview");
+   section.setAttribute("aria-label","Обобщение на приоритетите");
+   section.append(resultNode("h3","lucifer-result-heading","Налични резултати за приоритет"));
+   section.append(resultNode("p","lucifer-result-intro","Показани са проверимите данни за категориите с инциденти. Не се присвоява измислен оперативен приоритет."));
+   const active=d.risks.filter(r=>r.count>0);
+   const stats=resultNode("div","lucifer-result-stats");
+   stats.append(resultStat("В основна оценка",d.real.length),resultStat("Категории с инциденти",active.length),
+     resultStat("Оперативен приоритет","Неизчислен"));
+   section.append(stats);
+   const cards=resultNode("div","lucifer-category-list");
+   for(const r of active){
+     const group=d.real.filter(x=>x.category===r.category);
+     const loss=group.reduce((sum,x)=>sum+x.damage,0);
+     cards.append(categorySummary(r,[
+       ["Брой инциденти",r.count],
+       ["Действителни щети",cash(loss)],
+       ["Максимална щета",cash(r.maxDamage)],
+       ["Предварителна категория риск",r.finalRisk],
+       ["Оперативен приоритет","Не е определен"],
+       ["Проверка на безопасността","Не е завършена"]
+     ]));
+   }
+   section.append(cards.childElementCount?cards:resultNode("p","lucifer-result-intro","Няма допустими инциденти за предварителна оценка."));
+   section.append(note("НЕОДОБРЕНО: липсва завършена проверка на безопасността. Защитата на човешкия живот и здраве има предимство пред финансовите интереси при доказана тежка опасност."));
+   return section;
+ }
+
  function getIncidents(){
    const raw=localStorage.getItem(INCIDENT_KEY),rows=raw===null?[]:JSON.parse(raw);
    if(!Array.isArray(rows)||rows.length>399)throw Error("Невалиден регистър");
@@ -73,8 +185,9 @@
      prov.length?num(average(prov,"detect")):"Няма случаи",
      prov.length?num(average(prov,"react")):"Няма случаи",pending,pending,pending,pending,
      pending,pending,pending,pending,"—","—","Проверете U/O и доказателствата",pending,pending,pending,"Неодобрено"]);
-   riskEl.replaceChildren(note("Източник: съществуващият регистър „Инциденти“ ("+all.length+"/399). За основна оценка: "+d.real.length+"; доказани предотвратени кражби: "+d.prevented.length+"; кражби за проверка: "+d.review.length+"."),table(RISK_COLS,values),
-     note("Excel A–V: 22 позиции, от които 21 с оригинални заглавия и Q без заглавие. Q2 препраща към „Контрол входни данни“!B19; докато този контрол не е пренесен, стойността е обозначена като неизчислена. Плъзнете таблицата хоризонтално за колони P–V."),drawRiskDetails(d));
+   riskEl.replaceChildren(riskOverview(d),fullExcelTable("Разгледай пълната Excel таблица на риска (A–V)", 
+     note("Източник: съществуващият регистър „Инциденти“ ("+all.length+"/399). За основна оценка: "+d.real.length+"; доказани предотвратени кражби: "+d.prevented.length+"; кражби за проверка: "+d.review.length+"."),table(RISK_COLS,values),
+     note("Excel A–V: 22 позиции, от които 21 с оригинални заглавия и Q без заглавие. Q2 препраща към „Контрол входни данни“!B19; докато този контрол не е пренесен, стойността е обозначена като неизчислена. В пълната таблица можете да превъртате хоризонтално за колони P–V."),drawRiskDetails(d)));
  }
 
  // Additional Excel rows 12–29, previously omitted from the web page.
@@ -154,8 +267,9 @@
        "НЕОДОБРЕНО",pending,pending,pending,num(r.finalRiskCode),pending,pending,
        "НЕОДОБРЕНО | липсва проверка безопасност"];
    });
-   priorityEl.replaceChildren(note("Данните са свързани по Risk ID със същите инциденти и „Оценка на риска“. Клетките, зависещи от „Балансирана оценка“ и „Проверка безопасност“, не са подменени с измислени изчисления."),table(PRIORITY_COLS,results),
-    note("Представени са всички 26 озаглавени колони от Excel „Приоритет за третиране“. Не е определен окончателен оперативен приоритет."));
+   priorityEl.replaceChildren(priorityOverview(d),fullExcelTable("Разгледай пълната Excel таблица за приоритет (26 колони)",
+     note("Данните са свързани по Risk ID със същите инциденти и „Оценка на риска“. Клетките, зависещи от „Балансирана оценка“ и „Проверка безопасност“, не са подменени с измислени изчисления."),table(PRIORITY_COLS,results),
+     note("Представени са всички 26 озаглавени колони от Excel „Приоритет за третиране“. Не е определен окончателен оперативен приоритет.")));
  }
  function readPlan(){
    const raw=localStorage.getItem(PLAN_KEY),rows=raw===null?[]:JSON.parse(raw);
