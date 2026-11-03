@@ -395,12 +395,16 @@
    }catch(e){$("plan-message").textContent="Записът не е извършен: "+e.message}
  });
  function render(){
-   try{const d=calculations();drawRisk(d);drawPriority(d)}
-   catch(e){const message="Изчислението е блокирано: "+e.message+". Инцидентите не са променени.";riskEl.textContent=message;priorityEl.textContent=message;}
+   let d;
+   try{d=calculations()}
+   catch(e){const message="Изчислението е блокирано: "+e.message+". Инцидентите не са променени.";riskEl.textContent=message;priorityEl.textContent=message;return}
+   // A damaged safety-review record must not hide otherwise valid risk calculations.
+   try{drawRisk(d)}catch(e){riskEl.textContent="Не може да се покаже оценката на риска: "+e.message}
+   try{drawPriority(d)}catch(e){priorityEl.textContent="Проверката на безопасността/приоритета е блокирана: "+e.message+". Инцидентите са запазени."}
  }
  window.addEventListener("lucifer:incidents-changed",render);
  window.addEventListener("lucifer:safety-changed",render);
  window.addEventListener("lucifer:tab-changed",e=>{if(["home","risk","priority"].includes(e.detail?.tab)){render();drawPlan()}});
- window.addEventListener("storage",e=>{if(e.key===INCIDENT_KEY||e.key===null)render();if(e.key===PLAN_KEY||e.key===null)drawPlan()});
+ window.addEventListener("storage",e=>{if([INCIDENT_KEY,"lucifer-web-safety-review-demo-v1",null].includes(e.key))render();if(e.key===PLAN_KEY||e.key===null)drawPlan()});
  clearPlan();drawPlan();render();
 })();
