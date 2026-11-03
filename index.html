@@ -738,7 +738,7 @@ body > .site-topnav{display:flex!important}
 <div class="dashboard-kpis"><div class="kpi"><b>▣</b><span>Общо инциденти<strong id="dash-total">0 / 399</strong></span></div><div class="kpi"><b class="red">⚠</b><span>Критична тежест H<strong id="dash-critical">0</strong></span></div><div class="kpi"><b class="orange">▥</b><span>Висока тежест H<strong id="dash-high">0</strong></span></div><div class="kpi"><b class="green">☷</b><span>Открити мерки<strong>—</strong></span></div></div>
 <div class="dashboard-charts"><div class="dash-card"><h3>Инциденти по вид</h3><div id="dash-types" class="chart-empty">Няма данни</div></div><div class="dash-card"><h3>Експертна тежест H</h3><div id="dash-risks" class="chart-empty">Няма данни</div></div></div>
 <div class="dash-card dash-recent"><h3>Последни инциденти</h3><div class="scroll"><table><thead><tr><th>ID</th><th>Дата</th><th>Зона</th><th>Тип инцидент</th><th>Риск H</th></tr></thead><tbody id="dash-recent"><tr><td colspan="5">Няма въведени инциденти.</td></tr></tbody></table></div></div>
-<div class="notice">Визуална демонстрация. Показателите отразяват само локалните записи в този браузър; автоматичната оценка на риска и управлението на мерките още не са реализирани. Не въвеждайте реални лични данни.</div>
+<div class="notice">Визуална демонстрация. Показателите отразяват само локалните записи в този браузър. „Риск“ показва предварителни изчисления; окончателният „Приоритет“ и одобрението изискват допълнителни проверки. Не въвеждайте реални лични данни.</div>
 <button class="primary" type="button" id="go-incidents">Отвори регистъра на инцидентите</button></section>
 <section id="incidents" hidden><h2>Регистър на инцидентите</h2><p class="muted">Демонстрационни записи. Формата не претендира да възпроизвежда всички полета и проверки на приетия Excel.</p>
 <div id="editing-banner" class="notice" hidden>Редактиране на <strong id="editing-id"></strong></div><form id="incident-form">
@@ -958,5 +958,5 @@ try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
 })();
 </script>
 <script src="risk_engine_browser.js"></script>
-<script src="risk_connections.js"></script>
+<script src="risk_connections.js?v=20261103-readable-results-1"></script>
 </body></html>
