@@ -157,6 +157,19 @@
      throw Error("Липсва модулът за проверка на безопасността");
    return module.evaluate(d,r,f);
  }
+ /* Protective-action order is intentionally separate from Excel L.
+    A human-safety alert must precede financial-only critical risk. */
+ function protectiveActionOrder(d,preview){
+   const items=d.risks.filter(r=>r.count>0).map(r=>{
+     const f=preview.find(x=>x.riskId===r.riskId);
+     const p=safetyFor(d,r,f);
+     const tier=p.safetyCode===2?3:p.safetyCode===1?2:p.priorityCode>0?1:0;
+     return {id:r.riskId,tier,priorityCode:p.priorityCode,score:f.score};
+   });
+   items.sort((a,b)=>b.tier-a.tier||b.priorityCode-a.priorityCode||
+     b.score-a.score||a.id.localeCompare(b.id));
+   return new Map(items.map((x,i)=>[x.id,x.tier>0?i+1:"Изисква проверка"]));
+ }
  function priorityOverview(d){
    const section=resultNode("section","lucifer-result-overview");
    section.setAttribute("aria-label","Безопасност и оперативни приоритети");
@@ -164,6 +177,7 @@
    section.append(resultNode("p","lucifer-result-intro","Въз основа на Excel се съчетават експертната категория риск, финансовият резултат и проверката на опасността за хората. Няма автоматично официално одобрение в тази DEMO версия."));
    const active=d.risks.filter(r=>r.count>0);
    const preview=financialPreview(d);
+   const actionOrder=protectiveActionOrder(d,preview);
    const assessments=active.map(r=>safetyFor(d,r,preview.find(f=>f.riskId===r.riskId)));
    const stats=resultNode("div","lucifer-result-stats");
    stats.append(resultStat("В основна оценка",d.real.length),
@@ -183,6 +197,7 @@
        ["Финансов резултат (0–1; неодобрен)",scoreText(f.score)],
        ["Предварителен финансов ред",f.rank],
        ["Изчислен оперативен приоритет (неодобрен)",p.priority],
+       ["Ред за защитни действия (условен)",actionOrder.get(r.riskId)],
        ["Защитно действие",p.action],
        ["Проверка на безопасността",p.safetyLabel],
        ["Статус на решението",p.approval],
@@ -190,7 +205,7 @@
      ]));
    }
    section.append(cards.childElementCount?cards:resultNode("p","lucifer-result-intro","Няма инциденти за оценка."));
-   section.append(note("НЕОДОБРЕНО: защитните сигнали имат предимство пред финансовия ред. Въведените в DEMO данни не удостоверяват истинността на доказателствата, самоличността или правата на експерти и проверяващи."));
+   section.append(note("НЕОДОБРЕНО: редът за защитни действия дава предимство на потвърдена и подозирана тежка опасност за хората. Той е отделен от оригиналния ред по Excel и не е официално одобрение. Въведените в DEMO данни не удостоверяват истинността на доказателствата, самоличността или правата на проверяващите."));
    return section;
  }
 
