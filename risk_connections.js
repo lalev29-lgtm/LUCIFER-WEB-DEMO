@@ -151,33 +151,46 @@
  function scoreText(value){
    return n(value)?value.toLocaleString("bg-BG",{minimumFractionDigits:3,maximumFractionDigits:3}):pending;
  }
+ function safetyFor(d,r,f){
+   const module=window.LuciferSafetyPriority;
+   if(!module||typeof module.evaluate!=="function")
+     throw Error("Липсва модулът за проверка на безопасността");
+   return module.evaluate(d,r,f);
+ }
  function priorityOverview(d){
    const section=resultNode("section","lucifer-result-overview");
-   section.setAttribute("aria-label","Обобщение на приоритетите");
-   section.append(resultNode("h3","lucifer-result-heading","Налични резултати за приоритет"));
-   section.append(resultNode("p","lucifer-result-intro","Предварително финансово сравнение по Excel (55% общи щети, 30% базов индекс, 15% максимална щета). То НЕ е оперативен приоритет и не означава одобрение."));
+   section.setAttribute("aria-label","Безопасност и оперативни приоритети");
+   section.append(resultNode("h3","lucifer-result-heading","Приоритет и защита на хората — предварителна оценка"));
+   section.append(resultNode("p","lucifer-result-intro","Въз основа на Excel се съчетават експертната категория риск, финансовият резултат и проверката на опасността за хората. Няма автоматично официално одобрение в тази DEMO версия."));
    const active=d.risks.filter(r=>r.count>0);
    const preview=financialPreview(d);
+   const assessments=active.map(r=>safetyFor(d,r,preview.find(f=>f.riskId===r.riskId)));
    const stats=resultNode("div","lucifer-result-stats");
-   stats.append(resultStat("В основна оценка",d.real.length),resultStat("Категории с инциденти",active.length),
-     resultStat("Оперативен приоритет","Не е готов"));
+   stats.append(resultStat("В основна оценка",d.real.length),
+     resultStat("Категории с инциденти",active.length),
+     resultStat("Незабавни защитни сигнали",assessments.filter(p=>p.safetyCode===2).length),
+     resultStat("Временни защитни сигнали",assessments.filter(p=>p.safetyCode===1).length));
    section.append(stats);
    const cards=resultNode("div","lucifer-category-list");
    for(const r of active){
      const f=preview.find(x=>x.riskId===r.riskId);
+     const p=safetyFor(d,r,f);
      cards.append(categorySummary(r,[
        ["Брой инциденти",r.count],
        ["Действителни щети",cash(f.loss)],
        ["Максимална щета",cash(r.maxDamage)],
-       ["Предварителна категория риск",r.finalRisk],
-       ["Финансов резултат (0–1, неодобрен)",scoreText(f.score)],
+       ["Категория риск от оценката",r.finalRisk],
+       ["Финансов резултат (0–1; неодобрен)",scoreText(f.score)],
        ["Предварителен финансов ред",f.rank],
-       ["Оперативен приоритет","Не е определен"],
-       ["Проверка на безопасността","Не е завършена"]
+       ["Изчислен оперативен приоритет (неодобрен)",p.priority],
+       ["Защитно действие",p.action],
+       ["Проверка на безопасността",p.safetyLabel],
+       ["Статус на решението",p.approval],
+       ["Следваща проверка",p.blockers.slice(0,2).join("; ")||"Независимата проверка предстои"]
      ]));
    }
-   section.append(cards.childElementCount?cards:resultNode("p","lucifer-result-intro","Няма допустими инциденти за предварителна оценка."));
-   section.append(note("НЕОДОБРЕНО: финансовият ред е само сравнителен и не определя действието. Липсва завършена проверка на безопасността; доказаната тежка опасност за живота и здравето има предимство пред финансовите интереси."));
+   section.append(cards.childElementCount?cards:resultNode("p","lucifer-result-intro","Няма инциденти за оценка."));
+   section.append(note("НЕОДОБРЕНО: защитните сигнали имат предимство пред финансовия ред. Въведените в DEMO данни не удостоверяват истинността на доказателствата, самоличността или правата на експерти и проверяващи."));
    return section;
  }
 
@@ -293,21 +306,30 @@
  const parameters=[["Тежест на общите загуби",0.55],["Тежест на базовия риск",0.30],["Тежест на максималната щета",0.15],["Праг висок приоритет",0.75],["Праг среден приоритет",0.45],["",""],["Условие","Тълкуване"],["Критичен сценарий","ДА = задължителен критичен приоритет независимо от резултата"]];
  function drawPriority(d){
    const preview=financialPreview(d);
-   const results=d.risks.map((r,i)=>{
+   const checked=d.risks.map((r,i)=>{
      const f=preview.find(x=>x.riskId===r.riskId);
+     return {r,f,p:safetyFor(d,r,f),i};
+   });
+   const results=checked.map(({r,f,p,i})=>{
+     const rank=p.priorityCode>0?1+checked.filter(x=>x.p.priorityCode>p.priorityCode).length:"Изисква проверка";
+     const flag=p.safetyCode===2?"ДА":p.safetyCode===1?"ВРЕМЕННО":p.safetyCode===0?"НЕ":"НЕПОТВЪРДЕНО";
      return [r.category,r.count,cash(f.loss),r.count?cash(r.maxDamage):"Няма случаи",
-       num(f.base),num(f.normalizedLoss),num(f.normalizedBase),num(f.normalizedMax),scoreText(f.score),"НЕПОТВЪРДЕНО",
-       "Изисква проверка","Неизчислено",
-       "ПРЕДВАРИТЕЛЕН финансово-рисков ред; безопасността на хората се оценява отделно и има предимство.",
-       r.riskId,parameters[i][0],parameters[i][1],"Проверка на безопасността не е завършена",
-       "За хората: първо проверка; при липса на потвърден критичен сценарий — балансираният модел",
-       "НЕОДОБРЕНО",pending,pending,pending,num(r.finalRiskCode),pending,pending,
-       "НЕОДОБРЕНО | липсва проверка безопасност"];
+       num(f.base),num(f.normalizedLoss),num(f.normalizedBase),num(f.normalizedMax),scoreText(f.score),flag,
+       p.priorityCode>0?p.priority+" (НЕОДОБРЕНО)":p.priority,rank,
+       "Предварително. Защитата на живота и здравето е с предимство пред финансовия ред.",
+       r.riskId,parameters[i][0],parameters[i][1],p.safetyLabel,
+       "Проверка на безопасността + категория риск + балансиран финансов резултат.",
+       p.approval,p.action,
+       p.stale?"Променени входни данни":"Няма удостоверена проверена версия",
+       p.priority,num(r.finalRiskCode),p.priorityCode||"Неизчислено",f.rank??"Няма случаи",
+       p.approval+" | "+p.blockers.slice(0,2).join("; ")];
    });
    priorityEl.replaceChildren(priorityOverview(d),fullExcelTable("Разгледай пълната Excel таблица за приоритет (26 колони)",
-     note("Колони E–I са предварително изчислени по теглата на Excel. Стойностите за оперативен приоритет и одобрение остават блокирани до проверка на безопасността, входните данни и доказателствата."),table(PRIORITY_COLS,results),
-     note("Представени са всички 26 озаглавени колони от Excel „Приоритет за третиране“. Не е определен окончателен оперативен приоритет.")));
+     note("Колони E–I: сравнение по Excel. J–L и кодът на приоритета показват само предварително изчисление, без права за одобрение. При потвърдена опасност се показва незабавно защитно действие дори при липса на документи."),
+     table(PRIORITY_COLS,results),
+     note("Системата не удостоверява самоличност, права, истинност на доказателствата или проверена версия. Окончателното одобрение остава блокирано.")));
  }
+
  function readPlan(){
    const raw=localStorage.getItem(PLAN_KEY),rows=raw===null?[]:JSON.parse(raw);
    if(!Array.isArray(rows)||rows.length>1000)throw Error("Невалидни данни за плана");
@@ -377,6 +399,7 @@
    catch(e){const message="Изчислението е блокирано: "+e.message+". Инцидентите не са променени.";riskEl.textContent=message;priorityEl.textContent=message;}
  }
  window.addEventListener("lucifer:incidents-changed",render);
+ window.addEventListener("lucifer:safety-changed",render);
  window.addEventListener("lucifer:tab-changed",e=>{if(["home","risk","priority"].includes(e.detail?.tab)){render();drawPlan()}});
  window.addEventListener("storage",e=>{if(e.key===INCIDENT_KEY||e.key===null)render();if(e.key===PLAN_KEY||e.key===null)drawPlan()});
  clearPlan();drawPlan();render();
