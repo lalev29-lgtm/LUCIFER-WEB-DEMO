@@ -116,31 +116,68 @@
    section.append(note("Оценката е предварителна и НЕОДОБРЕНА. Проверка на безопасността и останалите контроли предстоят."));
    return section;
  }
+
+ /* Excel 'Приоритет за третиране' F:I: verified arithmetic only.
+    A preliminary financial comparison is NOT an operational priority.
+    Unverified safety/document checks keep K, L, Y and Z blocked. */
+ function financialPreview(d){
+   const rows=d.risks.map(r=>{
+     const group=d.real.filter(x=>x.category===r.category);
+     const loss=group.reduce((sum,x)=>sum+x.damage,0);
+     return {riskId:r.riskId,loss,maxDamage:r.count?r.maxDamage:0,
+       base:r.count?r.financialIndex:0,active:r.count>0,
+       normalizedLoss:0,normalizedBase:0,normalizedMax:0,score:0,rank:null};
+   });
+   const valid=rows.filter(x=>x.active);
+   if(valid.some(x=>![x.loss,x.maxDamage,x.base].every(n)))
+     throw Error("Липсват данни за предварителния финансов резултат");
+   const maxLoss=Math.max(0,...valid.map(x=>x.loss));
+   const maxBase=Math.max(0,...valid.map(x=>x.base));
+   const maxDamage=Math.max(0,...valid.map(x=>x.maxDamage));
+   for(const x of valid){
+     x.normalizedLoss=maxLoss>0?x.loss/maxLoss:0;
+     x.normalizedBase=maxBase>0?x.base/maxBase:0;
+     x.normalizedMax=maxDamage>0?x.maxDamage/maxDamage:0;
+     // Excel I2: a category with zero total material losses receives 0.
+     x.score=x.loss===0?0:
+       x.normalizedLoss*0.55+x.normalizedBase*0.30+x.normalizedMax*0.15;
+   }
+   for(const x of valid){
+     // Dense-independent competition order. Identical scores share a rank.
+     x.rank=1+valid.filter(y=>y.score>x.score+1e-12).length;
+   }
+   return rows;
+ }
+ function scoreText(value){
+   return n(value)?value.toLocaleString("bg-BG",{minimumFractionDigits:3,maximumFractionDigits:3}):pending;
+ }
  function priorityOverview(d){
    const section=resultNode("section","lucifer-result-overview");
    section.setAttribute("aria-label","Обобщение на приоритетите");
    section.append(resultNode("h3","lucifer-result-heading","Налични резултати за приоритет"));
-   section.append(resultNode("p","lucifer-result-intro","Показани са проверимите данни за категориите с инциденти. Не се присвоява измислен оперативен приоритет."));
+   section.append(resultNode("p","lucifer-result-intro","Предварително финансово сравнение по Excel (55% общи щети, 30% базов индекс, 15% максимална щета). То НЕ е оперативен приоритет и не означава одобрение."));
    const active=d.risks.filter(r=>r.count>0);
+   const preview=financialPreview(d);
    const stats=resultNode("div","lucifer-result-stats");
    stats.append(resultStat("В основна оценка",d.real.length),resultStat("Категории с инциденти",active.length),
-     resultStat("Оперативен приоритет","Неизчислен"));
+     resultStat("Оперативен приоритет","Не е готов"));
    section.append(stats);
    const cards=resultNode("div","lucifer-category-list");
    for(const r of active){
-     const group=d.real.filter(x=>x.category===r.category);
-     const loss=group.reduce((sum,x)=>sum+x.damage,0);
+     const f=preview.find(x=>x.riskId===r.riskId);
      cards.append(categorySummary(r,[
        ["Брой инциденти",r.count],
-       ["Действителни щети",cash(loss)],
+       ["Действителни щети",cash(f.loss)],
        ["Максимална щета",cash(r.maxDamage)],
        ["Предварителна категория риск",r.finalRisk],
+       ["Финансов резултат (0–1, неодобрен)",scoreText(f.score)],
+       ["Предварителен финансов ред",f.rank],
        ["Оперативен приоритет","Не е определен"],
        ["Проверка на безопасността","Не е завършена"]
      ]));
    }
    section.append(cards.childElementCount?cards:resultNode("p","lucifer-result-intro","Няма допустими инциденти за предварителна оценка."));
-   section.append(note("НЕОДОБРЕНО: липсва завършена проверка на безопасността. Защитата на човешкия живот и здраве има предимство пред финансовите интереси при доказана тежка опасност."));
+   section.append(note("НЕОДОБРЕНО: финансовият ред е само сравнителен и не определя действието. Липсва завършена проверка на безопасността; доказаната тежка опасност за живота и здравето има предимство пред финансовите интереси."));
    return section;
  }
 
@@ -255,11 +292,11 @@
 
  const parameters=[["Тежест на общите загуби",0.55],["Тежест на базовия риск",0.30],["Тежест на максималната щета",0.15],["Праг висок приоритет",0.75],["Праг среден приоритет",0.45],["",""],["Условие","Тълкуване"],["Критичен сценарий","ДА = задължителен критичен приоритет независимо от резултата"]];
  function drawPriority(d){
+   const preview=financialPreview(d);
    const results=d.risks.map((r,i)=>{
-     const group=d.real.filter(x=>x.category===r.category);
-     const loss=group.reduce((sum,x)=>sum+x.damage,0);
-     return [r.category,r.count,cash(loss),r.count?cash(r.maxDamage):"Няма случаи",
-       pending,pending,pending,pending,pending,"НЕПОТВЪРДЕНО",
+     const f=preview.find(x=>x.riskId===r.riskId);
+     return [r.category,r.count,cash(f.loss),r.count?cash(r.maxDamage):"Няма случаи",
+       num(f.base),num(f.normalizedLoss),num(f.normalizedBase),num(f.normalizedMax),scoreText(f.score),"НЕПОТВЪРДЕНО",
        "Изисква проверка","Неизчислено",
        "ПРЕДВАРИТЕЛЕН финансово-рисков ред; безопасността на хората се оценява отделно и има предимство.",
        r.riskId,parameters[i][0],parameters[i][1],"Проверка на безопасността не е завършена",
@@ -268,7 +305,7 @@
        "НЕОДОБРЕНО | липсва проверка безопасност"];
    });
    priorityEl.replaceChildren(priorityOverview(d),fullExcelTable("Разгледай пълната Excel таблица за приоритет (26 колони)",
-     note("Данните са свързани по Risk ID със същите инциденти и „Оценка на риска“. Клетките, зависещи от „Балансирана оценка“ и „Проверка безопасност“, не са подменени с измислени изчисления."),table(PRIORITY_COLS,results),
+     note("Колони E–I са предварително изчислени по теглата на Excel. Стойностите за оперативен приоритет и одобрение остават блокирани до проверка на безопасността, входните данни и доказателствата."),table(PRIORITY_COLS,results),
      note("Представени са всички 26 озаглавени колони от Excel „Приоритет за третиране“. Не е определен окончателен оперативен приоритет.")));
  }
  function readPlan(){
