@@ -60,12 +60,15 @@
  function snapshot(rows,id){
   const index=riskIndex(id);
   if(index<0||!Array.isArray(rows))throw Error("Невалиден Risk ID за контрол");
-  const subset=rows.filter(r=>r.category===CATEGORIES[index]).map(r=>[
-   r.id,r.date,r.category,r.expert,r.damage,r.threatened,r.prevented,
-   r.evidence,r.reference,r.result,r.detect,r.react,r.cctv,r.access,r.sot
-  ]);
-  subset.sort((a,b)=>String(a[0]).localeCompare(String(b[0])));
-  return JSON.stringify(subset);
+  // All incident properties participate: even a changed zone or description
+  // invalidates an earlier safety assessment. This is a LOCAL change detector,
+  // not a cryptographic signature or proof of authenticity.
+  const subset=rows.filter(r=>r.category===CATEGORIES[index]).sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+  const canonical=subset.map(r=>Object.keys(r).sort().map(key=>[key,r[key]]));
+  const data=JSON.stringify(canonical);
+  let checksum=2166136261;
+  for(let i=0;i<data.length;i++)checksum=Math.imul(checksum^data.charCodeAt(i),16777619)>>>0;
+  return "v2:"+subset.length+":"+data.length+":"+checksum.toString(16).padStart(8,"0");
  }
  function localIncidents(){
   const raw=localStorage.getItem(INCIDENT_KEY);
