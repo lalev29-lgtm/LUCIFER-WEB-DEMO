@@ -720,6 +720,10 @@ body > .site-topnav{display:flex!important}
 #lucifer-mobile-auth-actions a{display:block;flex:1;text-align:center;text-decoration:none;background:#1764a3;color:#fff;border:1px solid #86b6dd;border-radius:8px;padding:13px 6px;font-weight:700;font-size:17px}
 #lucifer-mobile-auth-actions a:last-child{background:#a2d8f5;color:#10283d}
 }
+</style><style id="lucifer-menu-auth-actions-style">
+#lucifer-menu-auth-actions{display:flex;gap:10px;padding:12px 0;position:relative;z-index:25}
+#lucifer-menu-auth-actions a{display:block;flex:1;min-width:0;text-align:center;padding:14px 7px;border-radius:8px;border:1px solid #8bb8df;background:#1766a5;color:#fff;text-decoration:none;font-size:17px;font-weight:750}
+#lucifer-menu-auth-actions a:last-child{background:#a1d7f3;color:#10283d}
 </style></head>
 <body>
 <div id="lucifer-auth-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="lucifer-auth-title">
@@ -740,7 +744,7 @@ body > .site-topnav{display:flex!important}
 <div id="lucifer-mobile-auth-actions" aria-label="Достъп до LUCIFER-WEB"><a href="#lucifer-login" data-auth-mode="login">Вход</a><a href="#lucifer-register" data-auth-mode="register">Регистрация</a></div>
 <main class="wrap">
 <nav id="lucifer-mobile-work-nav" aria-label="Странично меню — работна среда"><button type="button" class="side-collapse-toggle" id="side-collapse-toggle" aria-label="Прибери страничното меню" aria-expanded="true" title="Разгъни или прибери менюто">☰</button>
-<div class="side-logo"><strong>LUCIFER-WEB</strong><small>Управление на риска</small></div>
+<div class="side-logo"><strong>LUCIFER-WEB</strong><small>Управление на риска</small></div><div id="lucifer-menu-auth-actions" aria-label="Вход и регистрация"><a href="#lucifer-login" data-auth-mode="login">Вход</a><a href="#lucifer-register" data-auth-mode="register">Регистрация</a></div>
 <button type="button" aria-selected="true" data-tab="home">⌂ Работно табло</button>
 <a href="incident_register.html" style="display:block;padding:10px 8px;background:#123653;color:#fff;border:1px solid #456b8d;border-radius:8px;text-decoration:none;font-weight:700">▤ Регистър инциденти · самостоятелен</a>
 <button type="button" aria-selected="false" data-tab="incidents">▣ Инциденти</button>
