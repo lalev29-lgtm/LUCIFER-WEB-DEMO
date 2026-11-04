@@ -664,6 +664,7 @@ header.brand-header{display:none!important}
 @media(max-width:850px){#treatment-form .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:550px){#treatment-form .grid{grid-template-columns:1fr}}
  .auth-link{display:inline-flex;align-items:center;padding:8px 12px;color:#eaf1fc;text-decoration:none;border:1px solid #49627f;border-radius:7px;margin:2px}.auth-link:hover,.auth-link:focus{background:#29466b}
+.side-auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:9px 7px}.side-auth-link{display:block;text-align:center;text-decoration:none;background:#1876c5;color:white;border:1px solid #5ca5e5;border-radius:5px;padding:10px 4px;font-size:13px;font-weight:700}.side-auth-link:hover,.side-auth-link:focus{background:#2691e3;outline:2px solid #b8dfff}
 </style>
 
 <style id="director-approved-mobile-header-2026-11-01">
@@ -761,6 +762,10 @@ body > .site-topnav{display:flex!important}
 <div class="side-group">▣ Документи и отчети <span>⌄</span></div>
 <div class="side-group">♧ Организации и обекти <span>⌄</span></div>
 <div class="side-group">♙ Потребители и достъп <span>⌄</span></div>
+<div class="side-auth-actions" aria-label="Достъп до системата">
+  <a href="#lucifer-login" data-auth-mode="login" class="side-auth-link">♙ Вход</a>
+  <a href="#lucifer-register" data-auth-mode="register" class="side-auth-link">✚ Регистрация</a>
+</div>
 <div class="side-group">⚙ Настройки <span>⌄</span></div>
 <button type="button" aria-selected="false" data-tab="contacts">✉ Контакти с нас</button>
 <div class="side-foot">Демонстрационен интерфейс · модулите се разработват поетапно</div>
