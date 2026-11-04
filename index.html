@@ -713,6 +713,13 @@ body > .site-topnav{display:flex!important}
 #lucifer-auth-panel button{padding:12px 18px;margin-top:15px;border-radius:8px;border:0;background:#9bd7f4;color:#092037;font:inherit;font-weight:700;cursor:pointer}
 #lucifer-auth-panel .auth-close{float:right;margin:0;background:transparent;color:white;border:1px solid #668}
 #lucifer-auth-message{min-height:24px;white-space:pre-wrap}
+</style><style id="lucifer-mobile-auth-actions-style">
+#lucifer-mobile-auth-actions{display:none}
+@media(max-width:760px){
+#lucifer-mobile-auth-actions{display:flex!important;gap:10px;position:relative;z-index:20;padding:8px 12px;margin:0 8px 10px;background:#102c48;border:1px solid #477ba8;border-radius:10px}
+#lucifer-mobile-auth-actions a{display:block;flex:1;text-align:center;text-decoration:none;background:#1764a3;color:#fff;border:1px solid #86b6dd;border-radius:8px;padding:13px 6px;font-weight:700;font-size:17px}
+#lucifer-mobile-auth-actions a:last-child{background:#a2d8f5;color:#10283d}
+}
 </style></head>
 <body>
 <div id="lucifer-auth-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="lucifer-auth-title">
@@ -730,6 +737,7 @@ body > .site-topnav{display:flex!important}
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><a href="#lucifer-login" data-auth-mode="login" class="auth-link">♙ Вход</a><a href="#lucifer-register" data-auth-mode="register" class="auth-link">Регистрация</a></div>
 <div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
 <button type="button" id="lucifer-mobile-menu-trigger" aria-controls="lucifer-mobile-work-nav" aria-expanded="false" aria-label="Отвори работното меню">☰ Меню</button>
+<div id="lucifer-mobile-auth-actions" aria-label="Достъп до LUCIFER-WEB"><a href="#lucifer-login" data-auth-mode="login">Вход</a><a href="#lucifer-register" data-auth-mode="register">Регистрация</a></div>
 <main class="wrap">
 <nav id="lucifer-mobile-work-nav" aria-label="Странично меню — работна среда"><button type="button" class="side-collapse-toggle" id="side-collapse-toggle" aria-label="Прибери страничното меню" aria-expanded="true" title="Разгъни или прибери менюто">☰</button>
 <div class="side-logo"><strong>LUCIFER-WEB</strong><small>Управление на риска</small></div>
