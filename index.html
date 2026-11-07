@@ -996,18 +996,24 @@ restoreFile.addEventListener("change",async()=>{
    if(!row||typeof row!=="object"||Array.isArray(row)||keys.some(k=>!Object.hasOwn(row,k))||Object.keys(row).some(k=>!keys.includes(k)))throw new Error("Неправилна структура на запис в резервното копие.");
    if(typeof row.id!=="string"||!/^INC-\d{3}$/.test(row.id)||Number(row.id.slice(4))<1||Number(row.id.slice(4))>399||ids.has(row.id))throw new Error("Невалиден или повторен идентификатор.");
    ids.add(row.id);
-   if(!validLocalDateTime(row.date)||row.weekday!==weekdayFromDate(row.date))throw new Error("Невалидна дата или ден от седмицата.");
+   if(!validLocalDateTime(row.date)||typeof row.weekday!=="string"||
+    row.weekday.toLocaleLowerCase("bg-BG")!==weekdayFromDate(row.date).toLocaleLowerCase("bg-BG"))
+    throw new Error("Невалидна дата или ден от седмицата за "+row.id+".");
    if(["guards","visitors","detect","react","damage","threatened"].some(k=>typeof row[k]!=="number"||!Number.isFinite(row[k])||row[k]<0)||!Number.isInteger(row.guards)||!Number.isInteger(row.visitors))throw new Error("Невалидни числови стойности.");
    if(keys.filter(k=>!["guards","visitors","detect","react","damage","threatened"].includes(k)).some(k=>typeof row[k]!=="string"))throw new Error("Невалидни текстови стойности.");
    if(row.prevented==="yes"&&(row.category!=="Кражба"||row.evidence!=="Проверени — потвърдено"||!row.reference.trim()))throw new Error("Невалидни доказателства за предотвратена кражба.");
   }
+  // Older exports from the standalone Register use lowercase weekday names.
+  // Validate strictly by the real date above, then normalize only the new
+  // local working copy; the user's downloaded JSON file stays untouched.
+  const normalizedIncoming=incoming.map(row=>({...row,weekday:weekdayFromDate(row.date)}));
   const existing=read();
-  if(!confirm("Възстановяване на "+incoming.length+" инцидента? Сегашните "+existing.length+" записа ще бъдат ЗАМЕНЕНИ. Преди продължаване експортирайте текущите данни, ако са необходими.")){restoreMessage.textContent="Възстановяването е отменено. Данните са запазени.";return;}
-  localStorage.setItem(KEY,JSON.stringify(incoming));
+  if(!confirm("Възстановяване на "+incoming.length+" инцидента? Сегашните "+existing.length+" записа ще бъдат ЗАМЕНЕНИ. Преди продължаване експортирайте текущите данни, ако са необходими.")){restoreMessage.textContent="Възстановяването е отменено. Данните са запазени.";restoreMessage.scrollIntoView({block:"center"});return;}
+  localStorage.setItem(KEY,JSON.stringify(normalizedIncoming));
   cancelEdit();selectIncident(null);document.getElementById("record-details").hidden=true;
   render();suggestId();
-  restoreMessage.textContent="Възстановени са "+incoming.length+" инцидента.";
- }catch(error){restoreMessage.textContent="Възстановяването е отказано: "+(error instanceof Error?error.message:"Неизвестна грешка")+". Текущите данни не са заменени.";}
+  restoreMessage.textContent="Възстановени са "+incoming.length+" инцидента.";restoreMessage.scrollIntoView({block:"center"});
+ }catch(error){restoreMessage.textContent="Възстановяването е отказано: "+(error instanceof Error?error.message:"Неизвестна грешка")+". Текущите данни не са заменени.";restoreMessage.scrollIntoView({block:"center"});}
 });
 document.getElementById("incident-date").addEventListener("input",()=>{const v=document.getElementById("incident-date").value;document.getElementById("incident-weekday").value=validLocalDateTime(v)?weekdayFromDate(v):"";});
 try{render();suggestId()}catch{/* Грешката вече е показана; оригиналните данни остават непокътнати. */}
