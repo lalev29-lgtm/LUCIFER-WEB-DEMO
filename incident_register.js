@@ -109,7 +109,47 @@ function nextId(rows){
 const days=["неделя","понеделник","вторник","сряда","четвъртък","петък","събота"];
 function weekday(){const d=$("date").value;const date=new Date(d+"T12:00:00");$("weekday").value=Number.isNaN(date.getTime())?"":days[date.getDay()]}
 $("date").addEventListener("change",weekday);
-function fresh(){for(const k of fields)if($(k))$(k).value="";$("form").dataset.edit="";$("id").readOnly=true;$("id").value=nextId(read());weekday()}
+function incidentIdAvailability(rawId,original="",rows=read(),existing=targetRows(),links=parse(LINK,{})){
+ const id=String(rawId??"").trim().toUpperCase();
+ if(!validId(id))return {ok:false,message:"Невалиден номер. Използвай INC-001 до INC-5000."};
+ if(!links||typeof links!=="object"||Array.isArray(links))return {ok:false,message:"Невалидни връзки между листовете. Записът е блокиран."};
+ if(original&&!rows.some(r=>r.id===original))return {ok:false,message:"Редактираният запис липсва. Обнови страницата."};
+ if(rows.some(r=>r.id===id&&r.id!==original))return {ok:false,message:"Зает: "+id+" вече съществува в „Регистър инциденти“."};
+ if(id!==original&&existing.some(r=>r.id===id))return {ok:false,message:"Зает: "+id+" вече съществува в „Инциденти“."};
+ if(original&&id!==original&&links[original]===original&&existing.some(r=>r.id===original))
+  return {ok:false,message:"Промяната е блокирана: "+original+" е активно свързан с „Инциденти“. Изтриване/промяна само тук не е разрешено."};
+ if(original&&id!==original&&links[original]&&links[original]!==original)
+  return {ok:false,message:"Блокирано: конфликтна история на връзката "+original+"."};
+ if(id===original)return {ok:true,message:"Текущото ID "+id+" е на редактирания запис. Няма дублиране."};
+ return {ok:true,message:"Свободен: "+id+" не присъства в нито един от двата листа към момента на проверката."};
+}
+function checkIncidentId(){
+ const el=$("id-availability");
+ try{
+  const result=incidentIdAvailability($("id").value,$("form").dataset.edit||"");
+  el.dataset.state=result.ok?"free":"busy";
+  el.textContent=result.message;
+  return result.ok;
+ }catch(error){
+  el.dataset.state="unknown";
+  el.textContent="Не може да се провери ID: "+error.message+". Няма разрешение за запис без проверка.";
+  return false;
+ }
+}
+function fresh(){
+ for(const k of fields)if($(k))$(k).value="";
+ $("form").dataset.edit="";
+ $("id").readOnly=false;
+ $("id").value=nextId(read());
+ $("form").dataset.suggestedId=$("id").value;
+ weekday();checkIncidentId();
+}
+$("check-inc-id").addEventListener("click",checkIncidentId);
+$("id").addEventListener("input",checkIncidentId);
+$("id").addEventListener("blur",()=>{
+ $("id").value=$("id").value.trim().toUpperCase();
+ checkIncidentId();
+});
 const bulkRegisterSelection=new Set();
 function updateRegisterBulkSelection(rows=read()){
  const allIds=new Set(rows.map(r=>r.id));
@@ -189,6 +229,7 @@ $("form").addEventListener("submit",e=>{
   const rows=read(),existing=targetRows(),links=parse(LINK,{}),base=parse(BASE,{});
   const original=$("form").dataset.edit;
   const r={};for(const k of fields)r[k]=$(k).value.trim();
+  r.id=r.id.toUpperCase();
   if(!validId(r.id))throw Error("ID трябва да е от INC-001 до INC-5000 (прехвърляне само до INC-399)");
   const v=validate([r])[0];
   let index=-1;
@@ -196,6 +237,8 @@ $("form").addEventListener("submit",e=>{
    index=rows.findIndex(x=>x.id===original);
    if(index<0)throw Error("Редактираният запис вече липсва. Обновете страницата");
   }
+  const availability=incidentIdAvailability(v.id,original,rows,existing,links);
+  if(!availability.ok)throw Error(availability.message);
   if(rows.some((x,i)=>i!==index&&x.id===v.id))
    throw Error(idError(v.id,"самостоятелния Регистър"));
   if(index<0&&existing.some(x=>x.id===v.id))throw Error(idError(v.id,"лист „Инциденти“"));
@@ -210,6 +253,16 @@ $("form").addEventListener("submit",e=>{
    localStorage.setItem(LINK,JSON.stringify(links));
    localStorage.setItem(BASE,JSON.stringify(base));
   }
+  if(!original&&v.id!==$("form").dataset.suggestedId){
+   if(!confirm("Ръчно избран е "+v.id+" вместо автоматично предложения "+$("form").dataset.suggestedId+".\n"+
+     "Проверено: "+v.id+" е свободен в „Регистър инциденти“ и „Инциденти“ към този момент.\n"+
+     "Внимание: номерът може да съществува в предишни JSON резервни копия.\n\nДа запишем новия инцидент с този номер?")){
+    status("Ръчната промяна на ID е отменена. Няма записани промени.");
+    return;
+   }
+  }
+  if(JSON.stringify(read())!==JSON.stringify(rows)||JSON.stringify(targetRows())!==JSON.stringify(existing))
+   throw Error("Данните в един от двата листа са се променили. Повтори проверката за ID преди запис.");
   if(index>=0)rows[index]=v;else rows.push(v);
   validate(rows);
   localStorage.setItem(ROOT,JSON.stringify(rows));
@@ -267,7 +320,7 @@ $("bulk-register-delete").addEventListener("click",()=>{
   status("Изтрити са "+selected.length+" записа само от Регистъра. В „Инциденти“ нищо не е изтрито.");
  }catch(error){status("ВНИМАНИЕ — масовото изтриване е блокирано: "+error.message,true)}
 });
-$("rows").addEventListener("click",e=>{if(e.target.closest("input[data-bulk-reg-id]"))return;const b=e.target.closest("button[data-action]");if(!b)return;try{const rows=read(),r=rows.find(x=>x.id===b.dataset.id);if(!r)return;if(b.dataset.action==="view"){const labels={id:"ID",date:"Дата",time:"Час",weekday:"Ден от седмицата",shift:"Смяна",zone:"Място / зона",category:"Тип инцидент",damage:"Щета (EUR)",threatened:"Застрашена сума (EUR)",description:"Подробно описание / хронология",actions:"Предприети действия",coordination:"Взаимодействие между звената",source:"Източник / доказателства",author:"Попълнил / дата",expert:"Експертно ниво",guards:"Брой охранители",visitors:"Посетители",detect:"Време за откриване",react:"Време за реакция",cctv:"Видеонаблюдение",access:"Контрол на достъпа",sot:"СОТ"};const dialog=document.createElement("dialog");dialog.setAttribute("aria-label","Преглед на инцидент "+r.id);dialog.style.cssText="max-width:min(760px,94vw);max-height:85vh;overflow:auto;background:#0b1728;color:#fff;border:1px solid #7991a8;border-radius:12px;padding:22px";const title=document.createElement("h2");title.textContent="Преглед на инцидент "+r.id;dialog.append(title);for(const k of fields){const p=document.createElement("p");p.style.cssText="white-space:pre-wrap;overflow-wrap:anywhere;border-bottom:1px solid #35516b;padding:5px 0";const strong=document.createElement("strong");strong.textContent=(labels[k]||k)+": ";p.append(strong,document.createTextNode(r[k]||"—"));dialog.append(p)}const close=document.createElement("button");close.textContent="Затвори";close.type="button";close.style.cssText="padding:10px 18px;background:#246a9b;color:white;border:1px solid #88b8d5;border-radius:6px";close.addEventListener("click",()=>dialog.close());dialog.addEventListener("close",()=>dialog.remove());dialog.append(close);document.body.append(dialog);dialog.showModal();return}if(b.dataset.action==="edit"){for(const k of fields)$(k).value=r[k];$("form").dataset.edit=r.id;$("id").readOnly=false;status("Редактираш "+r.id+". Можеш да коригираш ID само ако новият номер е свободен и няма активна връзка към „Инциденти“.");$("form").scrollIntoView({block:"start"});return}if(!confirm("Да изтрием "+r.id+" само от самостоятелния регистър? Вече прехвърлените записи в Инциденти остават."))return;{const links=parse(LINK,{}),baseline=parse(BASE,{});delete links[r.id];delete baseline[r.id];localStorage.setItem(LINK,JSON.stringify(links));localStorage.setItem(BASE,JSON.stringify(baseline));localStorage.setItem(ROOT,JSON.stringify(rows.filter(x=>x.id!==r.id)))}show();fresh();status("Изтрито само от самостоятелния регистър. Прехвърленият инцидент остава в „Инциденти“.")}catch(error){status(error.message)}});
+$("rows").addEventListener("click",e=>{if(e.target.closest("input[data-bulk-reg-id]"))return;const b=e.target.closest("button[data-action]");if(!b)return;try{const rows=read(),r=rows.find(x=>x.id===b.dataset.id);if(!r)return;if(b.dataset.action==="view"){const labels={id:"ID",date:"Дата",time:"Час",weekday:"Ден от седмицата",shift:"Смяна",zone:"Място / зона",category:"Тип инцидент",damage:"Щета (EUR)",threatened:"Застрашена сума (EUR)",description:"Подробно описание / хронология",actions:"Предприети действия",coordination:"Взаимодействие между звената",source:"Източник / доказателства",author:"Попълнил / дата",expert:"Експертно ниво",guards:"Брой охранители",visitors:"Посетители",detect:"Време за откриване",react:"Време за реакция",cctv:"Видеонаблюдение",access:"Контрол на достъпа",sot:"СОТ"};const dialog=document.createElement("dialog");dialog.setAttribute("aria-label","Преглед на инцидент "+r.id);dialog.style.cssText="max-width:min(760px,94vw);max-height:85vh;overflow:auto;background:#0b1728;color:#fff;border:1px solid #7991a8;border-radius:12px;padding:22px";const title=document.createElement("h2");title.textContent="Преглед на инцидент "+r.id;dialog.append(title);for(const k of fields){const p=document.createElement("p");p.style.cssText="white-space:pre-wrap;overflow-wrap:anywhere;border-bottom:1px solid #35516b;padding:5px 0";const strong=document.createElement("strong");strong.textContent=(labels[k]||k)+": ";p.append(strong,document.createTextNode(r[k]||"—"));dialog.append(p)}const close=document.createElement("button");close.textContent="Затвори";close.type="button";close.style.cssText="padding:10px 18px;background:#246a9b;color:white;border:1px solid #88b8d5;border-radius:6px";close.addEventListener("click",()=>dialog.close());dialog.addEventListener("close",()=>dialog.remove());dialog.append(close);document.body.append(dialog);dialog.showModal();return}if(b.dataset.action==="edit"){for(const k of fields)$(k).value=r[k];$("form").dataset.edit=r.id;$("id").readOnly=false;checkIncidentId();status("Редактираш "+r.id+". Можеш да коригираш ID само ако новият номер е свободен и няма активна връзка към „Инциденти“.");$("form").scrollIntoView({block:"start"});return}if(!confirm("Да изтрием "+r.id+" само от самостоятелния регистър? Вече прехвърлените записи в Инциденти остават."))return;{const links=parse(LINK,{}),baseline=parse(BASE,{});delete links[r.id];delete baseline[r.id];localStorage.setItem(LINK,JSON.stringify(links));localStorage.setItem(BASE,JSON.stringify(baseline));localStorage.setItem(ROOT,JSON.stringify(rows.filter(x=>x.id!==r.id)))}show();fresh();status("Изтрито само от самостоятелния регистър. Прехвърленият инцидент остава в „Инциденти“.")}catch(error){status(error.message)}});
 function download(name,body,type){const url=URL.createObjectURL(new Blob([body],{type}));const a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
 $("export").addEventListener("click",()=>{try{download("LUCIFER-register-backup.json",JSON.stringify({kind:"LUCIFER-INDEPENDENT-REGISTER",schema:1,exportedAt:new Date().toISOString(),rows:read()},null,2),"application/json")}catch(e){status(e.message)}});
 $("csv").addEventListener("click",()=>{try{const rows=read(),keys=["id","date","time","weekday","shift","zone","category","damage","threatened","description","actions","coordination","source","author"];const labels=["ID на инцидента","Дата","Час","Ден от седмицата","Смяна","Място / зона","Тип инцидент","Щета (EUR)","Застрашена сума (EUR)","Подробно описание / хронология","Предприети действия","Взаимодействие между звената","Източник / доказателства","Попълнил / дата"];const esc=v=>'"'+str(v).replace(/"/g,'""').replace(/^[=+@\-\t\r]/,"'")+'"';const csv=[labels.map(esc).join(";"),...rows.map(r=>keys.map(k=>esc(r[k])).join(";"))].join("\r\n");download("LUCIFER-register.csv","\uFEFF"+csv,"text/csv;charset=utf-8")}catch(e){status(e.message)}});
