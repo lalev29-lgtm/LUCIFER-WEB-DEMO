@@ -1,18 +1,19 @@
 "use strict";
 (()=>{
 const ROOT="lucifer-standalone-register-v1",LINK="lucifer-standalone-register-links-v1",SYNC="lucifer-standalone-register-sync-v1",TARGET="lucifer-web-site-001-demo-v1";
-const BASE=ROOT+"-baseline",LAST=ROOT+"-last-inc-v2",BACKUP=ROOT+"-pre-inc-migration-backup-v2",TRANSFER=ROOT+"-transfer-journal-v2",MAX_ID=399;
+const BASE=ROOT+"-baseline",LAST=ROOT+"-last-inc-v2",BACKUP=ROOT+"-pre-inc-migration-backup-v2",TRANSFER=ROOT+"-transfer-journal-v2",MAX_ID=5000,ANALYTIC_MAX=399;
 const fields=["id","date","time","weekday","shift","zone","category","damage","threatened","description","actions","coordination","source","author","expert","guards","visitors","detect","react","cctv","access","sot"];
 const $=id=>document.getElementById(id),str=v=>String(v??"");
 function status(message,warning=false){const el=$("status");el.textContent=message;el.dataset.level=warning?"warning":"normal";}
 const parse=(key,otherwise)=>{const v=localStorage.getItem(key);return v===null?otherwise:JSON.parse(v)};
-const validId=id=>/^INC-\d{3}$/.test(id)&&Number(id.slice(4))>=1&&Number(id.slice(4))<=MAX_ID;
+const validId=id=>/^INC-\d{3,4}$/.test(id)&&Number(id.slice(4))>=1&&Number(id.slice(4))<=MAX_ID&&id===fmtId(Number(id.slice(4)));
+const validAnalyticId=id=>validId(id)&&Number(id.slice(4))<=ANALYTIC_MAX;
 const legacyId=id=>/^REG-\d{4}$/.test(id)&&Number(id.slice(4))>0;
 const idNum=id=>validId(id)?Number(id.slice(4)):0;
 const fmtId=n=>"INC-"+String(n).padStart(3,"0");
 function targetRows(){
  const rows=parse(TARGET,[]);
- if(!Array.isArray(rows)||rows.length>MAX_ID||rows.some(r=>!r||!validId(r.id)))throw Error("Невалидни INC идентификатори в лист „Инциденти“");
+ if(!Array.isArray(rows)||rows.length>ANALYTIC_MAX||rows.some(r=>!r||!validAnalyticId(r.id)))throw Error("Невалидни INC идентификатори в лист „Инциденти“");
  if(new Set(rows.map(r=>r.id)).size!==rows.length)throw Error("Повтарящ се INC ID в лист „Инциденти“");
  return rows;
 }
@@ -34,7 +35,7 @@ function migrateRows(rows,sourceLinks={},sourceBaseline={},target=targetRows()){
  for(const r of rows)if(validId(r.id))newUsed.add(r.id);
  for(const r of rows)if(legacyId(r.id)&&sourceLinks[r.id]){
   const linked=sourceLinks[r.id];
-  if(!validId(linked)||newUsed.has(linked))throw Error("Конфликт при преобразуването на "+r.id+"; данните не са променени");
+  if(!validAnalyticId(linked)||newUsed.has(linked))throw Error("Конфликт при преобразуването на "+r.id+"; данните не са променени");
   newUsed.add(linked);
  }
  let high=Math.max(0,...[...occupied,...newUsed].map(idNum));
@@ -103,7 +104,7 @@ function nextId(rows){
   const max=Math.max(last,...[...used].map(idNum),0);
   if(max<MAX_ID)return fmtId(max+1);
  }
- throw Error("Лимитът INC-399 е достигнат. Не се използват повторно ID при частично изтриване");
+ throw Error("Лимитът INC-5000 е достигнат. Не се използват повторно ID при частично изтриване");
 }
 const days=["неделя","понеделник","вторник","сряда","четвъртък","петък","събота"];
 function weekday(){const d=$("date").value;const date=new Date(d+"T12:00:00");$("weekday").value=Number.isNaN(date.getTime())?"":days[date.getDay()]}
@@ -132,6 +133,7 @@ function syncAll(){
  const next=old.map(r=>({...r})),mapping={...links},baseline={...base},pending=[];
  const oldById=new Map(old.map((r,i)=>[r.id,i]));
  for(const r of rows){
+  if(!validAnalyticId(r.id)){pending.push(r.id+" — самостоятелният регистър допуска до INC-5000, но аналитичният лист „Инциденти“ допуска до INC-399");continue}
   if(!ready(r)){pending.push(r.id+" — липсват допълнителни данни за оценка");continue}
   const index=oldById.has(r.id)?oldById.get(r.id):-1;
   const linked=mapping[r.id]===r.id;
@@ -152,7 +154,7 @@ function syncAll(){
   baseline[r.id]=mapped;
  }
  if(pending.length)throw Error("Прехвърлянето е спряно. Няма заменени записи:\n"+pending.slice(0,12).join("\n")+(pending.length>12?"\n…":""));
- if(next.length>MAX_ID)throw Error("Лимитът от 399 инцидента е достигнат");
+ if(next.length>ANALYTIC_MAX)throw Error("Лимитът от 399 инцидента в аналитичния лист е достигнат");
  if(rows.length===0)return 0;
  localStorage.setItem(TRANSFER,JSON.stringify({beforeTarget:JSON.stringify(old),afterTarget:next,afterLinks:mapping,afterBaseline:baseline}));
  // The journal permits safe completion if any of the three localStorage
@@ -174,7 +176,7 @@ $("form").addEventListener("submit",e=>{
   const rows=read(),existing=targetRows(),links=parse(LINK,{}),base=parse(BASE,{});
   const original=$("form").dataset.edit;
   const r={};for(const k of fields)r[k]=$(k).value.trim();
-  if(!validId(r.id))throw Error("ID трябва да е INC-001 до INC-399");
+  if(!validId(r.id))throw Error("ID трябва да е от INC-001 до INC-5000 (прехвърляне само до INC-399)");
   const v=validate([r])[0];
   let index=-1;
   if(original){
