@@ -221,12 +221,12 @@ function syncAll(){
 }
 function transferRiskPriorityWarning(n){
  return "Прехвърлянето или добавянето на "+(n===1?"този 1 запис":"тези "+n+" записа")+
-  " към „Инциденти“ ще доведе до автоматично преизчисляване на „Оценка на риска“ и „Приоритет за третиране“ според актуалните данни.\\n"+
+  " към „Инциденти“ ще доведе до автоматично преизчисляване на „Оценка на риска“ и „Приоритет за третиране“ според актуалните данни.\n"+
   "Автоматичното преизчисляване не означава одобрение на оценката.";
 }
-function runSync(){if(!$("sync").checked)return;try{const n=syncAll();status("Успешно прехвърлени / актуализирани: "+n+" записа. INC номерата се запазват."+(n?"\\n"+transferRiskPriorityWarning(n):""))}catch(e){status("ВНИМАНИЕ — ПРЕХВЪРЛЯНЕТО Е ОТКАЗАНО: "+e.message,true)}}
+function runSync(){if(!$("sync").checked)return;try{const n=syncAll();status("Успешно прехвърлени / актуализирани: "+n+" записа. INC номерата се запазват."+(n?"\n"+transferRiskPriorityWarning(n):""))}catch(e){status("ВНИМАНИЕ — ПРЕХВЪРЛЯНЕТО Е ОТКАЗАНО: "+e.message,true)}}
 $("sync").checked=localStorage.getItem(SYNC)==="true";
-$("sync").addEventListener("change",()=>{if($("sync").checked){if(!confirm("Съгласни ли сте да прехвърлите ВСИЧКИ "+read().length+" натрупани инцидента към лист „Инциденти“?\\n"+transferRiskPriorityWarning(read().length)+"\\n\\nЩе се прехвърлят само пълните записи. Вече свързаните записи ще се актуализират без дублиране.")){ $("sync").checked=false;status("Прехвърлянето е отказано. Данните остават в самостоятелния регистър.");return;}localStorage.setItem(SYNC,"true");runSync()}else{localStorage.setItem(SYNC,"false");status("Автоматичното прехвърляне е изключено. Съществуващите записи в Инциденти остават.")}});
+$("sync").addEventListener("change",()=>{if($("sync").checked){if(!confirm("Съгласни ли сте да прехвърлите ВСИЧКИ "+read().length+" натрупани инцидента към лист „Инциденти“?\n"+transferRiskPriorityWarning(read().length)+"\n\nЩе се прехвърлят само пълните записи. Вече свързаните записи ще се актуализират без дублиране.")){ $("sync").checked=false;status("Прехвърлянето е отказано. Данните остават в самостоятелния регистър.");return;}localStorage.setItem(SYNC,"true");runSync()}else{localStorage.setItem(SYNC,"false");status("Автоматичното прехвърляне е изключено. Съществуващите записи в Инциденти остават.")}});
 $("form").addEventListener("submit",e=>{
  e.preventDefault();
  try{
