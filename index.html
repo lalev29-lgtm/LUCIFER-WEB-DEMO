@@ -1063,6 +1063,8 @@ restoreFile.addEventListener("change",async()=>{
   const existing=read();
   if(!confirm("Възстановяване на "+incoming.length+" инцидента? Сегашните "+existing.length+" записа ще бъдат ЗАМЕНЕНИ. Преди продължаване експортирайте текущите данни, ако са необходими.")){restoreMessage.textContent="Възстановяването е отменено. Данните са запазени.";restoreMessage.scrollIntoView({block:"center"});return;}
   localStorage.setItem(KEY,JSON.stringify(normalizedIncoming));
+  // An imported file replaces the list. Do not retain selection of IDs from the old dataset.
+  bulkIncidentSelection.clear();
   cancelEdit();selectIncident(null);document.getElementById("record-details").hidden=true;
   render();suggestId();
   restoreMessage.textContent="Възстановени са "+incoming.length+" инцидента.";restoreMessage.scrollIntoView({block:"center"});
