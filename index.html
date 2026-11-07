@@ -803,7 +803,7 @@ body > .site-topnav{display:flex!important}
 <div style="margin:16px 0"><label for="incident-description">Описание (само примерни данни)</label><textarea id="incident-description" maxlength="1000"></textarea></div>
 <button class="primary" type="submit" id="save-button">Запиши локално</button> <button type="button" id="cancel-edit" hidden>Откажи редакцията</button> <span id="form-message" role="status"></span>
 </form>
-<h3>Локален регистър <span id="record-count" class="muted"></span></h3><div id="register-toolbar" role="group" aria-label="Действия за избрания инцидент"><span id="selected-incident" role="status">Няма избран инцидент</span><button type="button" id="toolbar-view" disabled>Преглед</button><button type="button" id="toolbar-edit" disabled>Редактирай</button><button type="button" id="toolbar-delete" class="danger" disabled>Изтрий</button></div><button type="button" id="export-json">Експортирай резервно копие (JSON)</button> <button type="button" id="restore-json">Възстанови от резервно копие (JSON)</button><input type="file" id="restore-file" accept=".json,application/json" hidden><span id="restore-message" role="status" aria-live="polite"></span><p class="muted">Резервното копие е файл на твоето устройство. Не се изпраща автоматично в GitHub.</p><p class="muted">Преместете хоризонталния плъзгач под таблицата, за да разгледате всички полета. ID и действията остават видими.</p><div class="scroll"><table><thead><tr><th>ID</th><th>Дата и час</th><th>Смяна</th><th>Ден</th><th>Зона</th><th>Категория</th><th>H</th><th>Охранители</th><th>CCTV</th><th>Достъп</th><th>СОТ</th><th>Посетители</th><th>Откриване (мин)</th><th>Реакция (мин)</th><th>Резултат</th><th>Предотвратена</th><th>Проверка</th><th>Доказателства</th><th>Застрашена V (евро)</th><th>Щета P (евро)</th><th>Описание</th><th>Действия</th></tr></thead><tbody id="incident-rows"></tbody></table></div><div id="record-details" class="details" hidden><h3>Пълен преглед на записа</h3><div id="record-details-content" class="detail-grid"></div><button type="button" id="close-details">Затвори</button></div>
+<h3>Локален регистър <span id="record-count" class="muted"></span></h3><div id="register-toolbar" role="group" aria-label="Действия за избрания инцидент"><span id="selected-incident" role="status">Няма избран инцидент</span><button type="button" id="toolbar-view" disabled>Преглед</button><button type="button" id="toolbar-edit" disabled>Редактирай</button><button type="button" id="toolbar-delete" class="danger" disabled>Изтрий</button></div><button type="button" id="clear-both-registers" class="danger">Изтрий всички и занули двата листа</button><button type="button" id="export-json">Експортирай резервно копие (JSON)</button> <button type="button" id="restore-json">Възстанови от резервно копие (JSON)</button><input type="file" id="restore-file" accept=".json,application/json" hidden><span id="restore-message" role="status" aria-live="polite"></span><p class="muted">Резервното копие е файл на твоето устройство. Не се изпраща автоматично в GitHub.</p><p class="muted">Преместете хоризонталния плъзгач под таблицата, за да разгледате всички полета. ID и действията остават видими.</p><div class="scroll"><table><thead><tr><th>ID</th><th>Дата и час</th><th>Смяна</th><th>Ден</th><th>Зона</th><th>Категория</th><th>H</th><th>Охранители</th><th>CCTV</th><th>Достъп</th><th>СОТ</th><th>Посетители</th><th>Откриване (мин)</th><th>Реакция (мин)</th><th>Резултат</th><th>Предотвратена</th><th>Проверка</th><th>Доказателства</th><th>Застрашена V (евро)</th><th>Щета P (евро)</th><th>Описание</th><th>Действия</th></tr></thead><tbody id="incident-rows"></tbody></table></div><div id="record-details" class="details" hidden><h3>Пълен преглед на записа</h3><div id="record-details-content" class="detail-grid"></div><button type="button" id="close-details">Затвори</button></div>
 </section>
 <section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Пълният диапазон A–V от Excel „Оценка на риска“: 22 позиции (включително Q с формула, но без заглавие), плюс статистиките U/O и H под таблицата. Използват се данните от съществуващите „Инциденти“. Непроверените зависимости остават НЕИЗЧИСЛЕНИ; оценката е НЕОДОБРЕНА.</div><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
 <section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оригинални колони A–P и R–AA от Excel „Приоритет за третиране“ (Q няма заглавие). Стойностите са свързани с „Инциденти“ и „Оценка на риска“. Изчисленият оперативен приоритет е само ПРЕДВАРИТЕЛЕН. Под него има форма за тестова проверка на безопасността по Risk ID. Няма автоматично удостоверяване на доказателства, права или окончателно одобрение.</div><div id="priority-results" role="status" aria-live="polite">Зареждане…</div>
@@ -899,7 +899,74 @@ function render(){const rows=read();document.getElementById("record-count").text
 function showDetails(id){const row=read().find(x=>x.id===id);if(!row)return;const container=document.getElementById("record-details-content");container.replaceChildren();dataKeys.forEach((key,i)=>{const div=document.createElement("div"),title=document.createElement("strong"),value=document.createElement("span");title.textContent=detailLabels[i];value.textContent=String(key==="date"?formatDateBG(row[key]):key==="prevented"?(row[key]==="yes"?"Да":"Не"):(row[key]??""));div.append(title,value);container.append(div)});document.getElementById("record-details").hidden=false;document.getElementById("record-details").scrollIntoView({block:"nearest"})}
 function cancelEdit(){editingId=null;document.getElementById("incident-form").reset();document.getElementById("incident-id").readOnly=false;document.getElementById("editing-banner").hidden=true;document.getElementById("cancel-edit").hidden=true;document.getElementById("save-button").textContent="Запиши локално";suggestId()}
 function editRecord(id){const row=read().find(x=>x.id===id);if(!row)return;editingId=id;fieldIds.forEach((fid,i)=>document.getElementById(fid).value=String(row[dataKeys[i]]??""));document.getElementById("incident-weekday").value=validLocalDateTime(row.date)?weekdayFromDate(row.date):"";document.getElementById("incident-id").readOnly=true;document.getElementById("editing-id").textContent=id;document.getElementById("editing-banner").hidden=false;document.getElementById("cancel-edit").hidden=false;document.getElementById("save-button").textContent="Запази корекциите";document.getElementById("incident-form").scrollIntoView({block:"start"})}
-function deleteRecord(id){const rows=read();if(!rows.some(x=>x.id===id))return;if(!confirm("Изтриване на "+id+"? Действието е необратимо без резервно копие."))return;try{localStorage.setItem(KEY,JSON.stringify(rows.filter(x=>x.id!==id)));if(editingId===id)cancelEdit();document.getElementById("record-details").hidden=true;render();if(!editingId)suggestId();document.getElementById("form-message").textContent="Записът е изтрит."}catch{document.getElementById("form-message").textContent="Изтриването е неуспешно."}}
+/* Изрично директорско решение 07.11.2026: при приключване и изчистване
+   на аналитичния лист се изчистват и всички записи от самостоятелния
+   Регистър. Частичното изтриване не засяга останалите инциденти. */
+const SOURCE_REGISTER_KEY="lucifer-standalone-register-v1";
+const SOURCE_REGISTER_KEYS=[
+ SOURCE_REGISTER_KEY,
+ "lucifer-standalone-register-links-v1",
+ "lucifer-standalone-register-v1-baseline",
+ "lucifer-standalone-register-v1-last-inc-v2",
+ "lucifer-standalone-register-sync-v1",
+ "lucifer-standalone-register-v1-transfer-journal-v2",
+ "lucifer-standalone-register-v1-pre-inc-migration-backup-v2"
+];
+function resetBothIncidentLists(){
+ const saved=new Map([KEY,...SOURCE_REGISTER_KEYS].map(key=>[key,localStorage.getItem(key)]));
+ let sourceRows=[];
+ if(saved.get(SOURCE_REGISTER_KEY)!==null){
+  sourceRows=JSON.parse(saved.get(SOURCE_REGISTER_KEY));
+  if(!Array.isArray(sourceRows))throw Error("Невалидни данни в Регистъра. Изчистването е блокирано.");
+ }
+ const targetCount=read().length;
+ if(!targetCount&&!sourceRows.length){
+  document.getElementById("form-message").textContent="Двата листа вече са празни.";
+  return false;
+ }
+ const question="ВНИМАНИЕ! Изтриване на ВСИЧКИ инциденти от двата листа.\n"+
+  "„Инциденти“: "+targetCount+" записа.\n"+
+  "„Регистър инциденти“: "+sourceRows.length+" записа.\n"+
+  "След потвърждение всички тези записи се изтриват, а следващото ID става INC-001. "+
+  "Действието е необратимо без предварително запазено JSON резервно копие.\n\nДа продължим?";
+ if(!confirm(question))return false;
+ try{
+  localStorage.setItem(KEY,"[]");
+  for(const key of SOURCE_REGISTER_KEYS)localStorage.removeItem(key);
+ }catch(error){
+  let failed=false;
+  for(const [key,value] of saved){
+   try{if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}
+   catch{failed=true}
+  }
+  throw Error(failed?"Изчистването е прекъснато и възстановяването не е сигурно. Проверете JSON данните.":"Изчистването е отказано; предишните записи са възстановени.");
+ }
+ return true;
+}
+function afterDelete(message){
+ if(editingId)cancelEdit();
+ selectIncident(null);
+ document.getElementById("record-details").hidden=true;
+ render();suggestId();updateDashboard();
+ document.getElementById("form-message").textContent=message;
+}
+function deleteRecord(id){
+ const rows=read();if(!rows.some(x=>x.id===id))return;
+ try{
+  if(rows.length===1){
+   if(!resetBothIncidentLists())return;
+   afterDelete("Изчистени са „Инциденти“ и „Регистър инциденти“. Следващ ID: INC-001.");
+  }else{
+   if(!confirm("Изтриване на "+id+" само от „Инциденти“? Останалите записи в двата листа се запазват."))return;
+   localStorage.setItem(KEY,JSON.stringify(rows.filter(x=>x.id!==id)));
+   afterDelete("Изтрит е "+id+" само от „Инциденти“. Останалите записи са запазени.");
+  }
+ }catch(error){document.getElementById("form-message").textContent="Изтриването е блокирано: "+error.message}
+}
+document.getElementById("clear-both-registers").addEventListener("click",()=>{
+ try{if(resetBothIncidentLists())afterDelete("Двата листа са изчистени. Номерацията започва от INC-001.");}
+ catch(error){document.getElementById("form-message").textContent="Общото изчистване е блокирано: "+error.message}
+});
 document.getElementById("incident-rows").addEventListener("click",e=>{const b=e.target.closest("button[data-action]");if(!b){const tr=e.target.closest("tr[data-id]");if(tr)selectIncident(tr.dataset.id);return;}selectIncident(b.dataset.id);if(b.dataset.action==="view")showDetails(b.dataset.id);if(b.dataset.action==="edit")editRecord(b.dataset.id);if(b.dataset.action==="delete")deleteRecord(b.dataset.id)});
 document.getElementById("close-details").addEventListener("click",()=>document.getElementById("record-details").hidden=true);
 document.getElementById("cancel-edit").addEventListener("click",cancelEdit);

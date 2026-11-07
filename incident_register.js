@@ -230,6 +230,14 @@ localStorage.setItem(BASE,JSON.stringify(newBase));
 localStorage.setItem(ROOT,JSON.stringify(candidate));
 $("sync").checked=false;localStorage.setItem(SYNC,"false");
 show();fresh();status("Възстановени "+candidate.length+" записа с INC номера. Автоматичният пренос е изключен; проверете ID преди включване.");}catch(e){status("Възстановяването е отказано: "+e.message)}});
+window.addEventListener("storage",event=>{
+ // Ако отворен друг раздел изчисти аналитичния лист и Регистъра,
+ // обновяваме и тази страница, без да възстановяваме старите данни.
+ if(event.key===ROOT&&event.newValue===null){
+  try{show();fresh();status("Регистърът е изчистен заедно с лист „Инциденти“. Следващ ID: INC-001.");}
+  catch(error){status("Нужна е повторна проверка на Регистъра: "+error.message,true)}
+ }
+});
 try{const recovered=recoverTransfer(),migrated=migrateLegacy();show();fresh();if(recovered||migrated)status("Извършено безопасно възстановяване/преобразуване към единен INC формат. Оригиналните REG записи са архивирани локално.");}
 catch(e){status("ВНИМАНИЕ — РЕГИСТЪРЪТ Е БЛОКИРАН: "+e.message,true);$("id").readOnly=true;$("form").querySelector('button[type="submit"]').disabled=true;}
 })();
