@@ -931,6 +931,11 @@ const SOURCE_REGISTER_KEYS=[
  "lucifer-standalone-register-v1-transfer-journal-v2",
  "lucifer-standalone-register-v1-pre-inc-migration-backup-v2"
 ];
+function deletionImpactMessage(count,all=false){
+ const subject=all?"всички "+count+" записа":count===1?"този 1 запис":"тези "+count+" записа";
+ return "Изтриването на "+subject+" от „Инциденти“ ще доведе до автоматично преизчисляване на „Оценка на риска“ и „Приоритет за третиране“ според останалите данни.\\n"+
+  "Автоматичното преизчисляване не означава одобрение на оценката.";
+}
 function resetBothIncidentLists(){
  const saved=new Map([KEY,...SOURCE_REGISTER_KEYS].map(key=>[key,localStorage.getItem(key)]));
  let sourceRows=[];
@@ -946,6 +951,7 @@ function resetBothIncidentLists(){
  const question="ВНИМАНИЕ! Изтриване на ВСИЧКИ инциденти от двата листа.\n"+
   "„Инциденти“: "+targetCount+" записа.\n"+
   "„Регистър инциденти“: "+sourceRows.length+" записа.\n"+
+  (targetCount?deletionImpactMessage(targetCount,true)+"\n":"")+
   "След потвърждение всички тези записи се изтриват, а следващото ID става INC-001. "+
   "Действието е необратимо без предварително запазено JSON резервно копие.\n\nДа продължим?";
  if(!confirm(question))return false;
@@ -977,7 +983,7 @@ function deleteRecord(id){
    if(!resetBothIncidentLists())return;
    afterDelete("Изчистени са „Инциденти“ и „Регистър инциденти“. Следващ ID: INC-001.");
   }else{
-   if(!confirm("Изтриване на "+id+" само от „Инциденти“? Останалите записи в двата листа се запазват."))return;
+   if(!confirm("Изтриване на "+id+" само от „Инциденти“?\n"+deletionImpactMessage(1)+"\nОстаналите записи в двата листа се запазват."))return;
    localStorage.setItem(KEY,JSON.stringify(rows.filter(x=>x.id!==id)));
    afterDelete("Изтрит е "+id+" само от „Инциденти“. Останалите записи са запазени.");
   }
@@ -1013,6 +1019,7 @@ document.getElementById("bulk-incident-delete").addEventListener("click",()=>{
   const numbers=chosen.map(r=>r.id).join(", ");
   if(!confirm("Изтриване на "+chosen.length+" избрани инцидента само от лист „Инциденти“?\n"+
       "ID: "+(numbers.length>240?numbers.slice(0,240)+"…":numbers)+"\n"+
+      deletionImpactMessage(chosen.length)+"\n"+
       "Останалите "+(rows.length-chosen.length)+" в „Инциденти“ и всички записи в Регистъра се запазват.\n"+
       "За възстановяване на изтритите записи е необходимо предварително JSON резервно копие."))return;
   if(JSON.stringify(read())!==JSON.stringify(rows))throw Error("Записите са променени. Обновете списъка, преди да изтривате.");
