@@ -5,7 +5,7 @@
 <div><button id="export">Експорт — резервно копие JSON</button><button id="csv">Експорт — таблица CSV</button><button id="restore">Възстанови от резервно копие</button><input type="file" id="file" accept=".json,application/json" hidden></div>
 <p id="status" role="status" aria-live="assertive">Готово.</p>
 <form id="form"><fieldset><legend>Регистър · колони A–I</legend><div class="grid">
-<label>A · ID на инцидента (INC-001 до INC-399)<input id="id" required readonly pattern="INC-[0-9]{3}" maxlength="7" autocomplete="off" aria-describedby="id-guidance"><small id="id-guidance">При „Редактирай“ можеш да коригираш ID. Дублирането и промяната на ID с активна връзка се блокират.</small></label>
+<label>A · ID на инцидента (INC-001 до INC-5000)<input id="id" required readonly pattern="INC-(?:[0-9]{3}|[0-9]{4})" maxlength="8" autocomplete="off" aria-describedby="id-guidance"><small id="id-guidance">При „Редактирай“ можеш да коригираш ID. Дублиране и промяна на активна връзка се блокират. Аналитичният лист „Инциденти“ приема до 399 записа; Регистърът запазва история до 5000.</small></label>
 <label>B · Дата<input id="date" type="date" required></label><label>C · Час<input id="time" type="time" required></label>
 <label>D · Ден от седмицата<input id="weekday" readonly></label>
 <label>E · Смяна<select id="shift" required><option value="">Избери</option><option>дневна</option><option>нощна</option><option>редовна</option></select></label>
