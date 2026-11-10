@@ -1,0 +1,36 @@
+/* Local-only DAY demonstration; scoped to the new section, no changes to accepted INC layouts. */
+#day-journal{width:100%;max-width:none;min-width:0;background:rgba(12,30,49,.90);border:1px solid #51728f;border-radius:10px;padding:clamp(14px,2vw,25px)}
+#day-journal h2{margin:0 0 8px;color:#f1d5a6}#day-journal h3{margin:0 0 12px;color:#d9ebfb}
+#day-journal .day-demo-note{background:#243343;border-left:4px solid #ecbb54;padding:11px 14px;border-radius:5px;margin:12px 0;color:#f6e8cd}
+#day-journal .day-demo-card{border:1px solid #54728f;border-radius:10px;background:rgba(6,20,37,.70);padding:16px;margin-top:16px;min-width:0}
+#day-journal .day-demo-summary{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+#day-journal .day-demo-summary span{border:1px solid #3d789d;background:#123957;border-radius:7px;padding:10px 14px;font-weight:700}
+#day-journal .day-demo-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#day-journal label{display:block;font-size:.92rem;color:#e3edf9;margin:10px 0 5px}
+#day-journal input,#day-journal textarea{display:block;width:100%;min-width:0;background:#112f49;border:1px solid #7792ad;border-radius:7px;color:#fff;padding:10px 11px;font:inherit;margin-top:6px}
+#day-journal input[type=date],#day-journal input[type=time]{color-scheme:dark}
+#day-journal textarea{min-height:76px;resize:vertical}
+#day-journal .day-demo-actions{display:flex;flex-wrap:wrap;gap:9px;margin:13px 0}
+#day-journal .day-demo-actions button{background:#246b9d;border-color:#6ba5ce}
+#day-journal #day-demo-save{background:#1778bf;border-color:#7cc5f8;font-weight:700}
+#day-journal .day-demo-scroll{overflow-x:auto;border:1px solid #456982;border-radius:7px;max-width:100%}
+#day-journal table{border-collapse:collapse;width:100%;min-width:720px}
+#day-journal th{background:#133f65;color:white;padding:10px;white-space:nowrap;text-align:left}
+#day-journal td{padding:10px;border-top:1px solid #4b6783;vertical-align:top;overflow-wrap:anywhere;white-space:normal}
+#day-journal tr:nth-child(even){background:#142e46}
+#day-journal td button{font-size:.8rem;margin:2px;padding:7px 9px;background:#226c9b}
+#day-journal .day-demo-alert-row{background:#5b3b23!important;color:#ffebcc}
+#day-journal #day-demo-message[data-level=error]{color:#ffd3bb;font-weight:700}
+#day-journal #day-demo-message[data-level=ok]{color:#a8f1c5}
+#day-journal #day-demo-audit{white-space:pre-wrap;overflow-wrap:anywhere;max-height:390px;overflow-y:auto;background:#0a1f35;border:1px solid #476987;border-radius:7px;padding:12px}
+#day-journal .day-demo-muted{font-size:.85rem;color:#cad9e8}
+#day-demo-print-sheet{display:none}
+@media(max-width:780px){#day-journal .day-demo-fields{grid-template-columns:1fr}#day-journal{padding:12px}#day-journal .day-demo-actions button{flex:1 1 160px}}
+@media print{
+ body{background:white!important;color:black!important}
+ body > :not(#day-demo-print-sheet){display:none!important}
+ #day-demo-print-sheet{display:block!important;position:static!important;width:100%;background:white!important;color:black!important;font:12px Arial,sans-serif}
+ #day-demo-print-sheet h1{font-size:22px}
+ #day-demo-print-sheet table{border-collapse:collapse;width:100%}
+ #day-demo-print-sheet th,#day-demo-print-sheet td{border:1px solid #666;padding:6px;text-align:left;vertical-align:top}
+}
