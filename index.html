@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Луцифер- Знанието е сила · Управление на риска</title>
+<link rel="stylesheet" href="day_journal.css?v=20261110-day-demo-1">
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#eaf1fc;background:#0b1220}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(rgba(4,9,19,.18),rgba(4,9,19,.30)),url("assets/corporate-clean-background.svg") center center/cover fixed no-repeat,#0b1220}header{background:rgba(10,19,34,.91);border-bottom:1px solid #263d59;padding:24px max(20px,calc((100% - 1120px)/2))}
@@ -744,7 +745,7 @@ body > .site-topnav{display:flex!important}
 <div id="exact-header" class="exact-header" hidden aria-label="Утвърден горен панел LUCIFER-WEB"><img src="assets/approved-header-enhanced-31-10-2026.png" alt="Луцифер с червени криле и роба; пейзаж с изгрев и замък; заглавие LUCIFER-WEB; публично меню" id="exact-header-image"><div class="exact-header-clean-sky" aria-hidden="true"></div><div class="exact-header-subtitle">Управление на риска</div><div class="exact-header-profile" aria-label="Потребителски панел">♙ Димитър Лалев</div><div class="exact-header-links"><button data-exact="home" aria-label="Начало">Начало</button><button data-exact-info="За нас" aria-label="За нас">За нас</button><button data-exact-info="Услуги" aria-label="Услуги">Услуги</button><button data-exact-info="Бизнес партньори" aria-label="Бизнес партньори">Бизнес партньори</button><button data-exact="contacts" aria-label="Контакти с нас">Контакти с нас</button><button data-exact-info="Заявете консултация" aria-label="Заявете консултация">Заявете консултация</button><button data-exact="home" aria-label="Демо">Демо</button><a href="#lucifer-login" data-auth-mode="login" aria-label="Вход" class="auth-link">Вход</a><a href="#lucifer-register" data-auth-mode="register" class="auth-link">Регистрация</a></div></div>
 <header class="brand-header"><div class="brand-title"><strong>Луцифер- Знанието е сила · Управление на риска</strong><small>LUCIFER-WEB · визуална демонстрация</small></div><div class="brand-actions"><span class="badge">Визуална проверка · не е приет</span><button type="button" id="nav-drawer-toggle" aria-expanded="false" aria-controls="nav-drawer">☰ Навигация</button></div></header>
 <div class="site-topnav" aria-label="Горно меню — публичен сайт"><button type="button" data-public="home" aria-current="page">⌂ Начало</button><button type="button" data-info="За нас">⚙ За нас</button><button type="button" data-info="Услуги">▥ Услуги</button><button type="button" data-info="Бизнес партньори">♧ Бизнес партньори</button><button type="button" data-public="contacts">✉ Контакти с нас</button><button type="button" data-info="Заявете консултация" class="accent">✚ Заявете консултация</button><button type="button" data-public="home">▷ Демо</button><a href="#lucifer-login" data-auth-mode="login" class="auth-link">♙ Вход</a><a href="#lucifer-register" data-auth-mode="register" class="auth-link">Регистрация</a></div>
-<div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
+<div id="nav-drawer" hidden><h3>Лист навигация — структура на сайта</h3><div class="drawer-columns"><div><h4>Публичен сайт</h4><button data-drawer="home">Начало</button><button data-drawer="contacts">Контакти с нас</button><p>За нас · Услуги · Бизнес партньори · Консултация · Демо · Вход</p></div><div><h4>Работна среда</h4><button data-drawer="home">Работно табло</button><button data-drawer="incidents">Инциденти</button><button data-drawer="day-journal">Без инциденти · DAY</button><button data-drawer="risk">Управление на риска</button><button data-drawer="priority">Приоритет за третиране</button><p>Останалите модули — по архитектурния план.</p></div><div><h4>Административна среда</h4><p>Клиенти · Абонаменти · Финанси · Права за достъп · Системна администрация.</p><p>Достъпът предстои да бъде реализиран и защитен.</p></div></div></div>
 <button type="button" id="lucifer-mobile-menu-trigger" aria-controls="lucifer-mobile-work-nav" aria-expanded="false" aria-label="Отвори работното меню">☰ Меню</button>
 <div id="lucifer-mobile-auth-actions" aria-label="Достъп до LUCIFER-WEB"><a href="#lucifer-login" data-auth-mode="login">Вход</a><a href="#lucifer-register" data-auth-mode="register">Регистрация</a></div>
 <main class="wrap">
@@ -753,6 +754,7 @@ body > .site-topnav{display:flex!important}
 <button type="button" aria-selected="true" data-tab="home">⌂ Работно табло</button>
 <a href="incident_register.html" style="display:block;padding:10px 8px;background:#123653;color:#fff;border:1px solid #456b8d;border-radius:8px;text-decoration:none;font-weight:700">▤ Регистър инциденти · самостоятелен</a>
 <button type="button" aria-selected="false" data-tab="incidents">▣ Инциденти</button>
+<button type="button" aria-selected="false" data-tab="day-journal">▣ Без инциденти · DAY</button>
 <button type="button" aria-selected="false" data-tab="risk">⚙ Оценка на риска</button>
 <a href="prevented_theft.html" style="display:block;padding:10px 8px;background:#123653;color:#fff;border:1px solid #456b8d;border-radius:8px;text-decoration:none;font-weight:600">◈ Предотвратени кражби</a>
 
@@ -779,7 +781,7 @@ body > .site-topnav{display:flex!important}
 <div class="dashboard-charts"><div class="dash-card"><h3>Инциденти по вид</h3><div id="dash-types" class="chart-empty">Няма данни</div></div><div class="dash-card"><h3>Експертна тежест H</h3><div id="dash-risks" class="chart-empty">Няма данни</div></div></div>
 <div class="dash-card dash-recent"><h3>Последни инциденти</h3><div class="scroll"><table><thead><tr><th>ID</th><th>Дата</th><th>Зона</th><th>Тип инцидент</th><th>Риск H</th></tr></thead><tbody id="dash-recent"><tr><td colspan="5">Няма въведени инциденти.</td></tr></tbody></table></div></div>
 <div class="notice">Визуална демонстрация. Показателите отразяват само локалните записи в този браузър. „Риск“ показва предварителни изчисления; окончателният „Приоритет“ и одобрението изискват допълнителни проверки. Не въвеждайте реални лични данни.</div>
-<button class="primary" type="button" id="go-incidents">Отвори регистъра на инцидентите</button></section>
+<button class="primary" type="button" id="go-incidents">Отвори регистъра на инцидентите</button> <button class="primary" type="button" id="go-day-demo">Отвори „Без инциденти“</button></section>
 <section id="incidents" hidden><h2>Регистър на инцидентите</h2><p class="muted">Демонстрационни записи. Формата не претендира да възпроизвежда всички полета и проверки на приетия Excel.</p>
 <div id="editing-banner" class="notice" hidden>Редактиране на <strong id="editing-id"></strong></div><form id="incident-form">
 <div class="grid">
@@ -808,6 +810,40 @@ body > .site-topnav{display:flex!important}
 <button class="primary" type="submit" id="save-button">Запиши локално</button> <button type="button" id="cancel-edit" hidden>Откажи редакцията</button> <span id="form-message" role="status"></span>
 </form>
 <h3>Локален регистър <span id="record-count" class="muted"></span></h3><div id="register-toolbar" role="group" aria-label="Действия за избрания инцидент"><span id="selected-incident" role="status">Няма избран инцидент</span><button type="button" id="toolbar-view" disabled>Преглед</button><button type="button" id="toolbar-edit" disabled>Редактирай</button><button type="button" id="toolbar-delete" class="danger" disabled>Изтрий</button></div><div id="bulk-incident-controls" role="group" aria-label="Масово изтриване на инциденти"><span id="bulk-incident-count" role="status" aria-live="polite">Избрани: 0</span><button type="button" id="bulk-incident-delete" class="danger" disabled>Изтрий избраните</button></div><button type="button" id="clear-both-registers" class="danger">Изтрий всички и занули двата листа</button><button type="button" id="export-json">Експортирай резервно копие (JSON)</button> <button type="button" id="restore-json">Възстанови от резервно копие (JSON)</button><input type="file" id="restore-file" accept=".json,application/json" hidden><span id="restore-message" role="status" aria-live="polite"></span><p class="muted">Резервното копие е файл на твоето устройство. Не се изпраща автоматично в GitHub.</p><p class="muted">Преместете хоризонталния плъзгач под таблицата, за да разгледате всички полета. ID и действията остават видими.</p><div class="scroll"><table><thead><tr><th>ID</th><th class="bulk-inc-cell"><input type="checkbox" id="bulk-inc-select-all" class="bulk-inc-all" aria-label="Избери всички инциденти"></th><th>Дата и час</th><th>Смяна</th><th>Ден</th><th>Зона</th><th>Категория</th><th>H</th><th>Охранители</th><th>CCTV</th><th>Достъп</th><th>СОТ</th><th>Посетители</th><th>Откриване (мин)</th><th>Реакция (мин)</th><th>Резултат</th><th>Предотвратена</th><th>Проверка</th><th>Доказателства</th><th>Застрашена V (евро)</th><th>Щета P (евро)</th><th>Описание</th><th>Действия</th></tr></thead><tbody id="incident-rows"></tbody></table></div><div id="record-details" class="details" hidden><h3>Пълен преглед на записа</h3><div id="record-details-content" class="detail-grid"></div><button type="button" id="close-details">Затвори</button></div>
+</section>
+<section id="day-journal" hidden aria-labelledby="day-demo-title">
+<div class="page-crumb">▣ &nbsp; Без инциденти <span>Начало / Дневен регистър · DAY</span></div>
+<h2 id="day-demo-title">Без инциденти · Дневен регистър (DAY)</h2>
+<p class="day-demo-note">Това е <strong>локална демонстрация</strong> в същия интерфейс като „Инциденти“ и „Регистър“. Записите DAY се запазват <strong>само в този браузър</strong>, отделно от INC и от production PostgreSQL. Не въвеждайте лични или чувствителни данни. За действителни записи и права използвайте <a href="https://svetlonoseca-web-production.up.railway.app/login" target="_blank" rel="noopener noreferrer">защитеното LUCIFER-WEB приложение</a>.</p>
+<div class="day-demo-summary"><span id="day-demo-count">0 активни DAY</span><span id="day-demo-review-count">0 за проверка</span></div>
+<div class="day-demo-card">
+<h3>Дневен отчет „Без инциденти“</h3>
+<p class="day-demo-muted">Отделна последователна номерация: <strong id="day-demo-number">DAY-001</strong>. По една отчетна дата за DEMO обекта, включително архивирани записи. При реален инцидент на същата дата нов DAY отчет се отказва.</p>
+<form id="day-demo-form" autocomplete="off">
+<div class="day-demo-fields"><label for="day-demo-date">Дата на отчета<input id="day-demo-date" type="date" required></label><label for="day-demo-time">Час<input id="day-demo-time" type="time" required></label></div>
+<label for="day-demo-description">B · Подробно описание / хронология<textarea id="day-demo-description" maxlength="3000" rows="3" placeholder="Примерна дневна информация без регистриран инцидент"></textarea></label>
+<div class="day-demo-fields"><label for="day-demo-actions">C · Предприети действия<textarea id="day-demo-actions" maxlength="3000" rows="2"></textarea></label><label for="day-demo-coordination">D · Взаимодействие между звената<textarea id="day-demo-coordination" maxlength="3000" rows="2"></textarea></label></div>
+<div class="day-demo-fields"><label for="day-demo-source">E · Източник / доказателства<textarea id="day-demo-source" maxlength="3000" rows="2"></textarea></label><label for="day-demo-authorNote">F · Попълнил / дата (демо бележка)<textarea id="day-demo-authorNote" maxlength="3000" rows="2" placeholder="Само тестова бележка, не удостоверяване на самоличност"></textarea></label></div>
+<label id="day-demo-edit-label" for="day-demo-edit-reason" hidden>Основание за редакция — 10–500 символа<textarea id="day-demo-edit-reason" maxlength="500" rows="2"></textarea></label>
+<div class="day-demo-actions"><button class="primary" type="submit" id="day-demo-save">Запиши DAY отчет</button><button type="button" id="day-demo-new">Нов отчет / Откажи редакция</button></div>
+<p id="day-demo-message" role="status" aria-live="polite"></p>
+</form>
+</div>
+<div class="day-demo-card">
+<h3>Дневни отчети и история</h3>
+<p class="day-demo-muted">Редакция с причина и версия; архивирането не изтрива историята. Ако по-късно бъде записан реален INC на същата дата, DAY се маркира „Нужна проверка“.</p>
+<div class="day-demo-scroll"><table><thead><tr><th>DAY ID</th><th>Дата</th><th>Час</th><th>Статус</th><th>Версия</th><th>Действия</th></tr></thead><tbody id="day-demo-rows"><tr><td colspan="6">Няма въведени дневни отчети.</td></tr></tbody></table></div>
+<pre id="day-demo-audit" hidden aria-label="Преглед на DAY отчета и историята"></pre>
+<div class="day-demo-actions"><button type="button" id="day-demo-backup">Резервно копие DAY (JSON)</button><button type="button" id="day-demo-import">Възстанови DAY (JSON)</button><input type="file" id="day-demo-file" accept=".json,application/json" hidden></div>
+</div>
+<div class="day-demo-card">
+<h3>Обща хронология INC / DAY</h3>
+<p class="day-demo-muted">Общ времеви преглед; <strong>DAY не увеличава броя на инцидентите и не участва в автоматично изчисляване на риска</strong>.</p>
+<div class="day-demo-fields"><label for="day-demo-from">От дата (незадължително)<input id="day-demo-from" type="date"></label><label for="day-demo-to">До дата (незадължително)<input id="day-demo-to" type="date"></label></div>
+<div class="day-demo-actions"><button type="button" id="day-demo-timeline-refresh">Обнови хронологията</button><button type="button" id="day-demo-word">Word отчет (.doc)</button><button type="button" id="day-demo-print">Печат / Запиши като PDF</button></div>
+<p id="day-demo-timeline-count" role="status" aria-live="polite">Записи: 0.</p>
+<div class="day-demo-scroll"><table><thead><tr><th>ID</th><th>Дата</th><th>Час</th><th>Категория</th><th>Описание</th><th>Статус</th></tr></thead><tbody id="day-demo-timeline-rows"><tr><td colspan="6">Няма записи за периода.</td></tr></tbody></table></div>
+</div>
 </section>
 <section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Пълният диапазон A–V от Excel „Оценка на риска“: 22 позиции (включително Q с формула, но без заглавие), плюс статистиките U/O и H под таблицата. Използват се данните от съществуващите „Инциденти“. Непроверените зависимости остават НЕИЗЧИСЛЕНИ; оценката е НЕОДОБРЕНА.</div><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
 <section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оригинални колони A–P и R–AA от Excel „Приоритет за третиране“ (Q няма заглавие). Стойностите са свързани с „Инциденти“ и „Оценка на риска“. Изчисленият оперативен приоритет е само ПРЕДВАРИТЕЛЕН. Под него има форма за тестова проверка на безопасността по Risk ID. Няма автоматично удостоверяване на доказателства, права или окончателно одобрение.</div><div id="priority-results" role="status" aria-live="polite">Зареждане…</div>
@@ -838,7 +874,7 @@ if(v8Grid){const byId=new Map([...v8Grid.children].map(el=>[el.querySelector("in
 const KEY="lucifer-web-site-001-demo-v1"; // Запазва съвместимост с демонстрационните записи от предишния преглед.
 const tabs=[...document.querySelectorAll("[data-tab]")];
 const TAB_KEY="lucifer-web-active-tab-v1";
-const validTabs=["home","incidents","risk","priority","contacts"];
+const validTabs=["home","incidents","day-journal","risk","priority","contacts"];
 function show(tab){
  if(!validTabs.includes(tab))tab="home";
  for(const b of tabs)b.setAttribute("aria-selected",String(b.dataset.tab===tab));
@@ -853,6 +889,7 @@ drawerToggle.addEventListener("click",()=>{drawer.hidden=!drawer.hidden;drawerTo
 document.querySelectorAll("[data-drawer]").forEach(b=>b.addEventListener("click",()=>{show(b.dataset.drawer);drawer.hidden=true;drawerToggle.setAttribute("aria-expanded","false");}));
 document.querySelectorAll("[data-public]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.public)));
 document.getElementById("go-incidents").addEventListener("click",()=>show("incidents"));
+document.getElementById("go-day-demo").addEventListener("click",()=>show("day-journal"));
 function read(){
 try{
 const raw=localStorage.getItem(KEY);
@@ -1128,6 +1165,7 @@ try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
  toggle(false);
 })();
 </script>
+<script src="day_journal_browser.js?v=20261110-day-demo-1"></script>
 <script src="risk_engine_browser.js"></script>
 <script src="safety_priority_browser.js?v=20261103-safety-review-1"></script>
 <script src="risk_connections.js?v=20261103-safety-priority-3"></script>
@@ -1144,4 +1182,4 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!overlay.hidden)ove
 form.addEventListener("submit",async e=>{e.preventDefault();const submit=document.getElementById("lucifer-auth-submit");submit.disabled=true;msg.textContent="Моля, изчакайте…";try{const response=await fetch(API+"/auth/"+(mode==="register"?"register":"login"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:form.elements.email.value,password:form.elements.password.value})});const data=await response.json().catch(()=>({}));if(!response.ok)throw Error(response.status===503?"Регистрацията все още не е активирана на сървъра.":response.status===401?"Невалиден имейл или парола.":data.detail||"Грешка при заявката.");if(mode==="register"){msg.textContent="Заявката е приета. Проверете имейла си за потвърждение.";form.reset();return;}token=data.access_token;const me=await fetch(API+"/auth/me",{headers:{"Authorization":"Bearer "+token}});if(!me.ok)throw Error("Неуспешна проверка на акаунта.");const user=await me.json();msg.textContent="Успешен вход: "+user.email+"\nРоли: "+(user.platform_roles?.join(", ")||"Все още няма назначени роли.");form.reset();}catch(err){msg.textContent=err instanceof TypeError?"Няма връзка със сървъра за регистрация и вход.":String(err.message||err)}finally{submit.disabled=false;}});
 if(location.hash==="#lucifer-register")show("register");else if(location.hash==="#lucifer-login")show("login");
 })();
-</script></body></html>
+</script><div id="day-demo-print-sheet" aria-hidden="true"></div></body></html>
