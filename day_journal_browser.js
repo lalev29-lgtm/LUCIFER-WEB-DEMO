@@ -33,17 +33,17 @@
           typeof r.id !== "string" || !/^DAY-(?:\d{3}|\d{4})$/.test(r.id) ||
           +r.id.slice(4) < 1 || +r.id.slice(4) > data.lastNumber ||
           pad(+r.id.slice(4)) !== r.id || seen.has(r.id) ||
-          !validDate(r.date) || !validTime(r.time) || dates.has(r.date) ||
-          !["active", "archived"].includes(r.status) ||
+          !validDate(r.date) || !validTime(r.time) || (r.status !== "deleted" && dates.has(r.date)) ||
+          !["active", "archived", "deleted"].includes(r.status) ||
           !Number.isInteger(r.version) || r.version < 1 || r.version > 10000 ||
           !Array.isArray(r.audit) || r.audit.length < 1 || r.audit.length > 10000 ||
           typeof r.createdAt !== "string" || typeof r.updatedAt !== "string" ||
           FIELDS.some(k => typeof r[k] !== "string" || r[k].length > 3000) ||
-          r.audit.some(a => !a || !["created", "amended", "archived", "restored"].includes(a.action) ||
+          r.audit.some(a => !a || !["created", "amended", "archived", "restored", "deleted"].includes(a.action) ||
             typeof a.at !== "string" || typeof a.reason !== "string" || a.reason.length > 500 ||
             !Number.isInteger(a.version) || a.version < 1 || typeof a.before !== "string" ||
             a.before.length > 20000)) throw Error("DAY данните са повредени или невалидни.");
-      seen.add(r.id); dates.add(r.date);
+      seen.add(r.id); if (r.status !== "deleted") dates.add(r.date);
     }
     return data;
   }
@@ -57,6 +57,7 @@
     return rows;
   }
   function statusFor(row, incidents) {
+    if (row.status === "deleted") return "Изтрит (историята е запазена)";
     if (row.status === "archived") return "Архивиран";
     return incidents.some(x => x.date.slice(0, 10) === row.date)
       ? "Нужна проверка — има инцидент на същата дата" : "Без инциденти";
@@ -72,7 +73,7 @@
         description: typeof i.description === "string" ? i.description : "",
         status: "Регистриран инцидент" });
     }
-    for (const r of rows) if (eligible(r.date)) events.push({
+    for (const r of rows) if (r.status !== "deleted" && eligible(r.date)) events.push({
       id: r.id, kind: "DAY", date: r.date, time: r.time,
       category: "Без инциденти", description: r.description,
       status: statusFor(r, incidents)
@@ -116,12 +117,12 @@
         $("day-demo-review-count").textContent = db.entries.filter(r => statusFor(r, inc).startsWith("Нужна")).length + " за проверка";
         if (!editing) $("day-demo-number").textContent = db.lastNumber < MAX ? pad(db.lastNumber + 1) : "Лимит";
         list.replaceChildren();
-        if (!db.entries.length) {
+        if (!db.entries.length || !db.entries.some(r => r.status !== "deleted" || $("day-demo-show-deleted").checked)) {
           const tr = document.createElement("tr"), td = document.createElement("td");
           td.colSpan = 6; td.textContent = "Няма въведени дневни отчети.";
           tr.append(td); list.append(tr);
         }
-        const byRecent = [...db.entries].sort((a,b) =>
+        const byRecent = db.entries.filter(r => r.status !== "deleted" || $("day-demo-show-deleted").checked).sort((a,b) =>
           (b.date + "T" + b.time).localeCompare(a.date + "T" + a.time) || b.id.localeCompare(a.id));
         for (const row of byRecent) {
           const tr = document.createElement("tr"), status = statusFor(row, inc);
@@ -134,11 +135,14 @@
             button.dataset.dayAction = code; button.dataset.dayId = row.id;
             button.textContent = title; button.disabled = disabled; actions.append(button);
           };
-          action("view", "Преглед / одит");
+          action("view", "Преглед");
           if (row.status === "active") {
             action("edit", "Редактирай", status.startsWith("Нужна"));
             action("archive", "Архивирай");
-          } else action("restore", "Възстанови", inc.some(i => i.date.slice(0,10) === row.date));
+          } else if (row.status === "archived") {
+            action("restore", "Възстанови", inc.some(i => i.date.slice(0,10) === row.date));
+          }
+          if (row.status !== "deleted") action("delete", "Изтрий");
           tr.append(actions); list.append(tr);
         }
         try { paintTimeline(); }
@@ -175,7 +179,7 @@
         const db = documentState(), inc = incidents(), values = inputData();
         if (inc.some(i => i.date.slice(0,10) === values.date))
           throw Error("За тази дата има регистриран инцидент. DAY отчет „Без инциденти“ е блокиран.");
-        if (db.entries.some(r => r.date === values.date && r.id !== editing?.id))
+        if (db.entries.some(r => r.status !== "deleted" && r.date === values.date && r.id !== editing?.id))
           throw Error("За тази дата вече има DAY отчет (включително архивиран).");
         if (editing) {
           const current = db.entries.find(r => r.id === editing.id);
@@ -202,6 +206,7 @@
       } catch (err) { notify("Записът е отказан: " + err.message, true); }
     });
     $("day-demo-new").addEventListener("click", () => { fresh(); notify("Нов DAY отчет."); });
+    $("day-demo-show-deleted").addEventListener("change", render);
     list.addEventListener("click", e => {
       const btn = e.target.closest("button[data-day-action]");
       if (!btn) return;
@@ -244,6 +249,24 @@
           r.status = action === "archive" ? "archived" : "active";
           localStorage.setItem(KEY, JSON.stringify(db));
           fresh(); render(); notify("Нов статус на " + r.id + ": " + statusFor(r,inc) + ".");
+        } else if (action === "delete") {
+          if (r.status !== "active" && r.status !== "archived")
+            throw Error("Този отчет вече е изтрит.");
+          const reason = window.prompt("Основание за изтриване на " + r.id +
+            " (10–500 символа, записва се в одита):", "");
+          if (reason === null) return;
+          const explanation = reason.trim();
+          if (explanation.length < 10 || explanation.length > 500)
+            throw Error("Посочете основание от 10 до 500 символа.");
+          if (!window.confirm("Изтриване на " + r.id + "?\n" +
+            "Отчетът ще бъде скрит от активния списък и статистиката. " +
+            "Историята и номерът DAY се запазват. Продължавате ли?")) return;
+          change("deleted", r, explanation);
+          r.status = "deleted";
+          localStorage.setItem(KEY, JSON.stringify(db));
+          fresh(); render();
+          notify(r.id + " е изтрит от активните отчети. Номерът и одитната следа се пазят; " +
+            "може да го видите чрез „Покажи изтритите“.");
         }
       } catch (err) { notify("Действието е отказано: " + err.message, true); }
     });

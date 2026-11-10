@@ -72,3 +72,34 @@ test("malformed incident source is never silently accepted",()=>{
  assert.throws(()=>day.readIncidents("{not-json}"));
  assert.throws(()=>day.readIncidents(JSON.stringify([{id:"WRONG",date:"2026-11-09T12:00"}])));
 });
+
+test("deleted report is retained in backup but excluded from chronology",()=>{
+ const a=base("DAY-001","2026-11-08");
+ a.status="deleted";a.version=2;
+ a.audit.push({action:"deleted",at:"2026-11-10T10:00:00.000Z",
+   reason:"Демонстрационен отчет за изтриване",version:2,
+   before:JSON.stringify({date:a.date,status:"active"})});
+ const db=day.validated({schema:1,lastNumber:1,entries:[a]});
+ assert.equal(db.entries.length,1);
+ assert.match(day.statusFor(a,[]),/Изтрит/);
+ assert.equal(day.timeline(db.entries,[]).length,0);
+});
+test("deleted DAY date can be reused, but the original ID must remain unique",()=>{
+ const deleted=base("DAY-001","2026-11-08");
+ deleted.status="deleted";deleted.version=2;
+ deleted.audit.push({action:"deleted",at:"2026-11-10T10:00:00.000Z",
+   reason:"Потвърдено изтриване",version:2,before:"{}"});
+ const replacement=base("DAY-002","2026-11-08");
+ const db=day.validated({schema:1,lastNumber:2,entries:[deleted,replacement]});
+ assert.deepEqual(db.entries.map(x=>x.id),["DAY-001","DAY-002"]);
+ assert.equal(day.timeline(db.entries,[]).length,1);
+ assert.throws(()=>day.validated({schema:1,lastNumber:2,entries:[deleted,base("DAY-001","2026-11-09")]}));
+});
+test("deleted report cannot masquerade as a live unreported-day certificate",()=>{
+ const a=base("DAY-001","2026-11-08");
+ a.status="deleted";a.version=2;
+ a.audit.push({action:"deleted",at:"2026-11-10T10:00:00.000Z",
+  reason:"Защитено изтриване на DAY",version:2,before:"{}"});
+ assert.equal(day.statusFor(a,[]).startsWith("Без инциденти"),false);
+ assert.equal(day.timeline([a],[]).length,0);
+});

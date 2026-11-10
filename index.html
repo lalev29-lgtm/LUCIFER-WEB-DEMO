@@ -831,7 +831,8 @@ body > .site-topnav{display:flex!important}
 </div>
 <div class="day-demo-card">
 <h3>Дневни отчети и история</h3>
-<p class="day-demo-muted">Редакция с причина и версия; архивирането не изтрива историята. Ако по-късно бъде записан реален INC на същата дата, DAY се маркира „Нужна проверка“.</p>
+<p class="day-demo-muted">Всеки DAY има бутони „Преглед“, „Редактирай“ и „Изтрий“. Изтриването изисква основание и потвърждение, скрива отчета от хронологията, но съхранява неговия номер и история. Ако бъде записан INC за същата дата, активният DAY се маркира „Нужна проверка“.</p>
+<label class="day-demo-muted"><input type="checkbox" id="day-demo-show-deleted"> Покажи изтритите DAY записи (само за преглед на историята)</label>
 <div class="day-demo-scroll"><table><thead><tr><th>DAY ID</th><th>Дата</th><th>Час</th><th>Статус</th><th>Версия</th><th>Действия</th></tr></thead><tbody id="day-demo-rows"><tr><td colspan="6">Няма въведени дневни отчети.</td></tr></tbody></table></div>
 <pre id="day-demo-audit" hidden aria-label="Преглед на DAY отчета и историята"></pre>
 <div class="day-demo-actions"><button type="button" id="day-demo-backup">Резервно копие DAY (JSON)</button><button type="button" id="day-demo-import">Възстанови DAY (JSON)</button><input type="file" id="day-demo-file" accept=".json,application/json" hidden></div>
