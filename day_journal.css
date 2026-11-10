@@ -35,6 +35,15 @@
  #day-demo-print-sheet th,#day-demo-print-sheet td{border:1px solid #666;padding:6px;text-align:left;vertical-align:top}
 }
 
+/* DAY bulk delete selection; no changes to INC layouts. */
+#day-journal .day-demo-bulk{background:#10283f;border:1px solid #507b9b;border-radius:8px;padding:10px 13px;margin:12px 0}
+#day-journal #day-demo-selected-count{font-weight:700;color:#d9ecfc;margin:3px 0}
+#day-journal #day-demo-delete-selected{background:#885233;border-color:#ffc88b;color:#fff}
+#day-journal #day-demo-delete-all{background:#9e3744;border-color:#ffb4bb;color:#fff}
+#day-journal .day-demo-actions button:disabled{opacity:.48;cursor:not-allowed}
+#day-journal .day-demo-select-head{display:flex;align-items:center;gap:6px;white-space:nowrap;margin:0;cursor:pointer}
+#day-journal input[type=checkbox].day-demo-row-check,#day-journal #day-demo-select-all{width:22px;min-width:22px;height:22px;cursor:pointer;accent-color:#74c7ff}
+
 /* Hidden attributes must override form and layout declarations. */
 #day-journal [hidden]{display:none!important}
 

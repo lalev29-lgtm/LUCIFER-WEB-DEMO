@@ -80,7 +80,37 @@
     });
     return events.sort((a,b) => (b.date + "T" + b.time).localeCompare(a.date + "T" + a.time) || b.id.localeCompare(a.id));
   }
-  const api = { validDate, validTime, validated, readIncidents, statusFor, timeline, pad };
+
+  // A single localStorage write follows complete validation; history and DAY numbering survive.
+  function deleteBatch(db, snapshots, reason, at, all = false) {
+    if (!Array.isArray(snapshots) || !snapshots.length) throw Error("Няма DAY записи за изтриване.");
+    if (typeof reason !== "string" || reason.trim().length < 10 || reason.trim().length > 500)
+      throw Error("Посочете основание от 10 до 500 символа.");
+    if (typeof at !== "string" || !at) throw Error("Липсва време на действието.");
+    const rows = new Map(db.entries.map(r => [r.id, r]));
+    const ids = new Set(snapshots.map(s => s.id));
+    if (ids.size !== snapshots.length) throw Error("Повторен DAY номер в избора.");
+    const live = db.entries.filter(r => r.status !== "deleted");
+    if (all && (live.length !== snapshots.length || live.some(r => !ids.has(r.id))))
+      throw Error("Списъкът е променен. Обновете го, преди да изтриете всички.");
+    for (const s of snapshots) {
+      const r = rows.get(s.id);
+      if (!r || r.status === "deleted" || r.version !== s.version)
+        throw Error("DAY записът е променен. Обновете списъка и избора.");
+      if (r.audit.length >= 10000) throw Error("Лимитът на историята на DAY е достигнат.");
+    }
+    for (const s of snapshots) {
+      const r = rows.get(s.id);
+      const before = JSON.stringify({date:r.date,time:r.time,status:r.status,
+        description:r.description,actions:r.actions,coordination:r.coordination,
+        source:r.source,authorNote:r.authorNote});
+      r.version += 1; r.updatedAt = at;
+      r.audit.push({action:"deleted", at, reason:reason.trim(), version:r.version, before});
+      r.status = "deleted";
+    }
+    return snapshots.length;
+  }
+  const api = { validDate, validTime, validated, readIncidents, statusFor, timeline, pad, deleteBatch };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document === "undefined") return;
   function boot() {
@@ -88,7 +118,7 @@
     if (!panel) return;
     const form = $("day-demo-form"), message = $("day-demo-message");
     const list = $("day-demo-rows"), auditBox = $("day-demo-audit");
-    let editing = null;
+    let editing = null, selected = new Map();
     const stamp = () => new Date().toISOString();
     const documentState = () => validated(localStorage.getItem(KEY));
     const incidents = () => readIncidents(localStorage.getItem(INCIDENT_KEY));
@@ -109,9 +139,25 @@
       try { $("day-demo-number").textContent = pad(documentState().lastNumber + 1); }
       catch { $("day-demo-number").textContent = "—"; }
     }
+
+    function activeRows(db) { return db.entries.filter(r => r.status !== "deleted"); }
+    function selectionStatus(db) {
+      const active = activeRows(db), latest = new Map(active.map(r => [r.id, r.version]));
+      for (const [id, version] of selected) if (latest.get(id) !== version) selected.delete(id);
+      const master = $("day-demo-select-all");
+      const visible = active; // Deleted history rows are never selectable.
+      const checked = visible.filter(r => selected.get(r.id) === r.version).length;
+      master.disabled = visible.length === 0;
+      master.checked = visible.length > 0 && checked === visible.length;
+      master.indeterminate = checked > 0 && checked < visible.length;
+      $("day-demo-selected-count").textContent = "Отбелязани DAY: " + selected.size;
+      $("day-demo-delete-selected").disabled = selected.size === 0;
+      $("day-demo-delete-all").disabled = active.length === 0;
+    }
     function render() {
       try {
         const db = documentState(), inc = incidents();
+        selectionStatus(db);
         $("day-demo-save").disabled = false;
         $("day-demo-count").textContent = db.entries.filter(r => r.status === "active").length + " активни DAY";
         $("day-demo-review-count").textContent = db.entries.filter(r => statusFor(r, inc).startsWith("Нужна")).length + " за проверка";
@@ -119,7 +165,7 @@
         list.replaceChildren();
         if (!db.entries.length || !db.entries.some(r => r.status !== "deleted" || $("day-demo-show-deleted").checked)) {
           const tr = document.createElement("tr"), td = document.createElement("td");
-          td.colSpan = 6; td.textContent = "Няма въведени дневни отчети.";
+          td.colSpan = 7; td.textContent = "Няма въведени дневни отчети.";
           tr.append(td); list.append(tr);
         }
         const byRecent = db.entries.filter(r => r.status !== "deleted" || $("day-demo-show-deleted").checked).sort((a,b) =>
@@ -128,7 +174,16 @@
           const tr = document.createElement("tr"), status = statusFor(row, inc);
           if (status.startsWith("Нужна")) tr.className = "day-demo-alert-row";
           const td = value => { const el = document.createElement("td"); el.textContent = value; return el; };
-          tr.append(td(row.id), td(row.date), td(row.time), td(status), td("v" + row.version));
+          const selectCell = document.createElement("td");
+          if (row.status !== "deleted") {
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox"; checkbox.dataset.daySelect = row.id;
+            checkbox.className = "day-demo-row-check";
+            checkbox.setAttribute("aria-label", "Отбележи " + row.id + " за изтриване");
+            checkbox.checked = selected.get(row.id) === row.version;
+            selectCell.append(checkbox);
+          }
+          tr.append(selectCell, td(row.id), td(row.date), td(row.time), td(status), td("v" + row.version));
           const actions = document.createElement("td");
           const action = (code, title, disabled = false) => {
             const button = document.createElement("button"); button.type = "button";
@@ -151,6 +206,9 @@
         $("day-demo-save").disabled = true;
         notify("DAY данните не могат да бъдат прочетени: " + e.message + " Не изтривайте данните от браузъра.", true);
         $("day-demo-count").textContent = "Недостъпно"; list.replaceChildren();
+        selected.clear(); $("day-demo-selected-count").textContent = "Отбелязани DAY: 0";
+        $("day-demo-delete-selected").disabled = true; $("day-demo-delete-all").disabled = true;
+        $("day-demo-select-all").disabled = true; $("day-demo-select-all").checked = false;
       }
     }
     function inputData() {
@@ -207,6 +265,55 @@
     });
     $("day-demo-new").addEventListener("click", () => { fresh(); notify("Нов DAY отчет."); });
     $("day-demo-show-deleted").addEventListener("change", render);
+
+    list.addEventListener("change", e => {
+      const input = e.target.closest("input[data-day-select]");
+      if (!input) return;
+      try {
+        const db = documentState(), r = db.entries.find(x => x.id === input.dataset.daySelect);
+        if (!r || r.status === "deleted") throw Error("Този DAY вече не е активен.");
+        if (input.checked) selected.set(r.id, r.version);
+        else selected.delete(r.id);
+        selectionStatus(db);
+      } catch (err) { notify("Изборът е отказан: " + err.message, true); render(); }
+    });
+    $("day-demo-select-all").addEventListener("change", e => {
+      try {
+        const db = documentState(), mark = e.target.checked;
+        for (const r of activeRows(db)) {
+          if (mark) selected.set(r.id, r.version);
+          else selected.delete(r.id);
+        }
+        render();
+      } catch (err) { notify("Изборът е отказан: " + err.message, true); render(); }
+    });
+    function deleteMany(all) {
+      try {
+        const db = documentState();
+        const snapshots = all
+          ? activeRows(db).map(r => ({id:r.id,version:r.version}))
+          : [...selected].map(([id,version]) => ({id,version}));
+        if (!snapshots.length) throw Error("Няма избрани DAY записи за изтриване.");
+        const count = snapshots.length;
+        const reason = window.prompt("Основание за изтриване на " + count +
+          " DAY записа (10–500 символа, общо основание в одита на всеки):", "");
+        if (reason === null) return;
+        if (reason.trim().length < 10 || reason.trim().length > 500)
+          throw Error("Посочете основание от 10 до 500 символа.");
+        if (!window.confirm("Изтриване на " + (all ? "ВСИЧКИ " : "") + count +
+          " DAY записа?\nТова ще промени статистиката за дните без инциденти. " +
+          "Инцидентите INC, оценката на риска и приоритетът няма да се променят.\n" +
+          "DAY номерата и историята се запазват. Потвърждавате ли?")) return;
+        const latest = documentState();
+        const deleted = deleteBatch(latest, snapshots, reason, stamp(), all);
+        localStorage.setItem(KEY, JSON.stringify(latest));
+        selected.clear(); fresh(); render();
+        notify("Изтрити са " + deleted + " DAY записа. Историята е запазена; " +
+          "статистиката за дните без инциденти е актуализирана.");
+      } catch (err) { notify("Масовото изтриване е отказано: " + err.message, true); render(); }
+    }
+    $("day-demo-delete-selected").addEventListener("click", () => deleteMany(false));
+    $("day-demo-delete-all").addEventListener("click", () => deleteMany(true));
     list.addEventListener("click", e => {
       const btn = e.target.closest("button[data-day-action]");
       if (!btn) return;
@@ -355,7 +462,7 @@
         if(!confirm("Заменяне на всички локални DAY отчети с "+next.entries.length+
           " от архива? Инцидентите остават непроменени. Направете резервно копие преди операцията."))return;
         localStorage.setItem(KEY,JSON.stringify(next));
-        fresh();render();notify("Възстановени са "+next.entries.length+" DAY отчета (само в DEMO).");
+        selected.clear();fresh();render();notify("Възстановени са "+next.entries.length+" DAY отчета (само в DEMO).");
       } catch(err){notify("Възстановяването е отказано: "+err.message,true);}
     });
     window.addEventListener("lucifer:tab-changed", e => {
