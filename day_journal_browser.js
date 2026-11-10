@@ -141,7 +141,8 @@
           } else action("restore", "Възстанови", inc.some(i => i.date.slice(0,10) === row.date));
           tr.append(actions); list.append(tr);
         }
-        paintTimeline();
+        try { paintTimeline(); }
+        catch(e) { $("day-demo-timeline-count").textContent = "Проверете периода: " + e.message; }
       } catch (e) {
         $("day-demo-save").disabled = true;
         notify("DAY данните не могат да бъдат прочетени: " + e.message + " Не изтривайте данните от браузъра.", true);
@@ -300,11 +301,11 @@
         sheet.replaceChildren();
         const heading=document.createElement("h1");heading.textContent="LUCIFER-WEB · Хронология INC/DAY";sheet.append(heading);
         const note=document.createElement("p");note.textContent="Демонстрационни локални данни. Не е официален отчет.";sheet.append(note);
-        const table=document.createElement("table"), head=table.createTHead().insertRow();
+        const table=document.createElement("table"), head=table.createTHead().insertRow(), tbody=table.createTBody();
         for (const label of ["ID","Дата","Час","Категория","Описание","Статус"]) {
           const th=document.createElement("th");th.textContent=label;head.append(th);
         }
-        for(const entry of events){const tr=table.createTBody().insertRow();
+        for(const entry of events){const tr=tbody.insertRow();
           for(const v of [entry.id,entry.date,entry.time,entry.category,entry.description,entry.status]){
             const td=tr.insertCell();td.textContent=v||"—";
           }

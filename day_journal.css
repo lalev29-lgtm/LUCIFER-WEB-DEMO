@@ -34,3 +34,6 @@
  #day-demo-print-sheet table{border-collapse:collapse;width:100%}
  #day-demo-print-sheet th,#day-demo-print-sheet td{border:1px solid #666;padding:6px;text-align:left;vertical-align:top}
 }
+
+/* Hidden attributes must override form and layout declarations. */
+#day-journal [hidden]{display:none!important}
