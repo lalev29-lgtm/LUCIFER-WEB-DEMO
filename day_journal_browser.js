@@ -79,7 +79,7 @@
       category: "Без инциденти", description: r.description,
       status: statusFor(r, incidents)
     });
-    return events.sort((a,b) => (b.date + "T" + b.time).localeCompare(a.date + "T" + a.time) || b.id.localeCompare(a.id));
+    return events.sort((a,b) => (a.date + "T" + a.time).localeCompare(b.date + "T" + b.time) || a.id.localeCompare(b.id));
   }
 
   // A single localStorage write follows complete validation; history and DAY numbering survive.
