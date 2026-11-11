@@ -730,7 +730,28 @@ body > .site-topnav{display:flex!important}
 #lucifer-menu-auth-actions{display:flex;gap:10px;padding:12px 0;position:relative;z-index:25}
 #lucifer-menu-auth-actions a{display:block;flex:1;min-width:0;text-align:center;padding:14px 7px;border-radius:8px;border:1px solid #8bb8df;background:#1766a5;color:#fff;text-decoration:none;font-size:17px;font-weight:750}
 #lucifer-menu-auth-actions a:last-child{background:#a1d7f3;color:#10283d}
-</style></head>
+</style>
+<style id="lucifer-compact-two-menu-items-20261111">
+/* Compact only incident register and risk assessment menu entries — 2026-11-11. */
+main.wrap > nav#lucifer-mobile-work-nav > a[href="incident_register.html"],
+main.wrap > nav#lucifer-mobile-work-nav > button[data-tab="risk"]{
+  box-sizing:border-box!important;
+  min-height:29px!important;
+  height:auto!important;
+  padding:5px 7px!important;
+  font-size:12px!important;
+  line-height:1.25!important;
+  border-radius:5px!important;
+}
+@media(max-width:760px){
+ main.wrap > nav#lucifer-mobile-work-nav.lucifer-mobile-open > a[href="incident_register.html"],
+ main.wrap > nav#lucifer-mobile-work-nav.lucifer-mobile-open > button[data-tab="risk"]{
+  min-height:32px!important;
+  padding:6px 8px!important;
+ }
+}
+</style>
+</head>
 <body>
 <div id="lucifer-auth-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="lucifer-auth-title">
 <section id="lucifer-auth-panel"><button class="auth-close" type="button" id="lucifer-auth-close" aria-label="Затвори">✕</button>
