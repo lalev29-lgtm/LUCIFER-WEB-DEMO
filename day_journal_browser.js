@@ -7,7 +7,10 @@
   const KEY = "lucifer-web-day-journal-demo-v1";
   const INCIDENT_KEY = "lucifer-web-site-001-demo-v1";
   const MAX = 5000;
+  // Keep legacy fields for old backups and audit, but do not ask for C/D/E again.
   const FIELDS = ["description", "actions", "coordination", "source", "authorNote"];
+  const FORM_FIELDS = ["description", "authorNote"];
+  const DELETE_NOTE = "Изтриване на DAY след потвърждение от потребителя";
   const $ = (id) => document.getElementById(id);
   const pad = (n) => "DAY-" + String(n).padStart(3, "0");
   const nowLocal = () => {
@@ -216,7 +219,7 @@
       if (!validDate(date) || date > nowLocal().date || !validTime(time))
         throw Error("Изберете валидна дата (не бъдеща) и час.");
       const fields = {};
-      for (const k of FIELDS) {
+      for (const k of FORM_FIELDS) {
         const el = $("day-demo-" + k);
         fields[k] = el.value.trim();
         if (fields[k].length > 3000) throw Error("Превишена дължина на поле.");
@@ -254,7 +257,7 @@
           if (db.lastNumber >= MAX) throw Error("Достигнат е лимитът DAY-5000.");
           const id = pad(db.lastNumber + 1), at = stamp();
           db.lastNumber++;
-          db.entries.push({...values, id, status:"active", version:1,
+          db.entries.push({...values, actions:"", coordination:"", source:"", id, status:"active", version:1,
             createdAt:at, updatedAt:at,
             audit:[{action:"created", at, reason:"Нов дневен отчет", version:1, before:""}]});
           localStorage.setItem(KEY, JSON.stringify(db));
@@ -295,17 +298,12 @@
           : [...selected].map(([id,version]) => ({id,version}));
         if (!snapshots.length) throw Error("Няма избрани DAY записи за изтриване.");
         const count = snapshots.length;
-        const reason = window.prompt("Основание за изтриване на " + count +
-          " DAY записа (10–500 символа, общо основание в одита на всеки):", "");
-        if (reason === null) return;
-        if (reason.trim().length < 10 || reason.trim().length > 500)
-          throw Error("Посочете основание от 10 до 500 символа.");
         if (!window.confirm("Изтриване на " + (all ? "ВСИЧКИ " : "") + count +
           " DAY записа?\nТова ще промени статистиката за дните без инциденти. " +
           "Инцидентите INC, оценката на риска и приоритетът няма да се променят.\n" +
           "DAY номерата и историята се запазват. Потвърждавате ли?")) return;
         const latest = documentState();
-        const deleted = deleteBatch(latest, snapshots, reason, stamp(), all);
+        const deleted = deleteBatch(latest, snapshots, DELETE_NOTE, stamp(), all);
         localStorage.setItem(KEY, JSON.stringify(latest));
         selected.clear(); fresh(); render();
         notify("Изтрити са " + deleted + " DAY записа. Историята е запазена; " +
@@ -338,7 +336,7 @@
           editing = {id:r.id,version:r.version};
           $("day-demo-number").textContent = r.id + " · v" + r.version;
           $("day-demo-date").value = r.date; $("day-demo-time").value = r.time;
-          for (const k of FIELDS) $("day-demo-" + k).value = r[k];
+          for (const k of FORM_FIELDS) $("day-demo-" + k).value = r[k];
           $("day-demo-edit-label").hidden = false;
           $("day-demo-edit-reason").required = true;
           $("day-demo-save").textContent = "Запази корекцията";
@@ -359,16 +357,10 @@
         } else if (action === "delete") {
           if (r.status !== "active" && r.status !== "archived")
             throw Error("Този отчет вече е изтрит.");
-          const reason = window.prompt("Основание за изтриване на " + r.id +
-            " (10–500 символа, записва се в одита):", "");
-          if (reason === null) return;
-          const explanation = reason.trim();
-          if (explanation.length < 10 || explanation.length > 500)
-            throw Error("Посочете основание от 10 до 500 символа.");
           if (!window.confirm("Изтриване на " + r.id + "?\n" +
             "Отчетът ще бъде скрит от активния списък и статистиката. " +
             "Историята и номерът DAY се запазват. Продължавате ли?")) return;
-          change("deleted", r, explanation);
+          change("deleted", r, DELETE_NOTE);
           r.status = "deleted";
           localStorage.setItem(KEY, JSON.stringify(db));
           fresh(); render();
