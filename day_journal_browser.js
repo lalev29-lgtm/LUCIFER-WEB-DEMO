@@ -67,7 +67,7 @@
     const ids = new Set();
     return rows.map(r => {
       if (!r || typeof r !== "object" || Array.isArray(r) ||
-          !/^INC-(?:\\d{3}|\\d{4})$/.test(r.id) ||
+          !/^INC-(?:\d{3}|\d{4})$/.test(r.id) ||
           +r.id.slice(4) < 1 || +r.id.slice(4) > MAX ||
           r.id !== "INC-" + String(+r.id.slice(4)).padStart(3, "0") ||
           ids.has(r.id) || !validDate(r.date) || !validTime(r.time) ||
