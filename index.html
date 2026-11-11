@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Луцифер- Знанието е сила · Управление на риска</title>
-<link rel="stylesheet" href="day_journal.css?v=20261111-day-bulk-1">
+<link rel="stylesheet" href="day_journal.css?v=20261111-day-simple-delete-1">
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#eaf1fc;background:#0b1220}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(rgba(4,9,19,.18),rgba(4,9,19,.30)),url("assets/corporate-clean-background.svg") center center/cover fixed no-repeat,#0b1220}header{background:rgba(10,19,34,.91);border-bottom:1px solid #263d59;padding:24px max(20px,calc((100% - 1120px)/2))}
@@ -822,8 +822,11 @@ body > .site-topnav{display:flex!important}
 <form id="day-demo-form" autocomplete="off">
 <div class="day-demo-fields"><label for="day-demo-date">Дата на отчета<input id="day-demo-date" type="date" required></label><label for="day-demo-time">Час<input id="day-demo-time" type="time" required></label></div>
 <label for="day-demo-description">B · Подробно описание / хронология<textarea id="day-demo-description" maxlength="3000" rows="3" placeholder="Примерна дневна информация без регистриран инцидент"></textarea></label>
-<div class="day-demo-fields"><label for="day-demo-actions">C · Предприети действия<textarea id="day-demo-actions" maxlength="3000" rows="2"></textarea></label><label for="day-demo-coordination">D · Взаимодействие между звената<textarea id="day-demo-coordination" maxlength="3000" rows="2"></textarea></label></div>
-<div class="day-demo-fields"><label for="day-demo-source">E · Източник / доказателства<textarea id="day-demo-source" maxlength="3000" rows="2"></textarea></label><label for="day-demo-authorNote">F · Попълнил / дата (демо бележка)<textarea id="day-demo-authorNote" maxlength="3000" rows="2" placeholder="Само тестова бележка, не удостоверяване на самоличност"></textarea></label></div>
+<!-- Legacy C/D/E values are kept for existing DAY records; there are no entry controls. -->
+<input type="hidden" id="day-demo-actions" value="">
+<input type="hidden" id="day-demo-coordination" value="">
+<input type="hidden" id="day-demo-source" value="">
+<label for="day-demo-authorNote">Попълнил / дата (демо бележка)<textarea id="day-demo-authorNote" maxlength="3000" rows="2" placeholder="Само тестова бележка, не удостоверяване на самоличност"></textarea></label>
 <label id="day-demo-edit-label" for="day-demo-edit-reason" hidden>Основание за редакция — 10–500 символа<textarea id="day-demo-edit-reason" maxlength="500" rows="2"></textarea></label>
 <div class="day-demo-actions"><button class="primary" type="submit" id="day-demo-save">Запиши DAY отчет</button><button type="button" id="day-demo-new">Нов отчет / Откажи редакция</button></div>
 <p id="day-demo-message" role="status" aria-live="polite"></p>
@@ -831,7 +834,7 @@ body > .site-topnav{display:flex!important}
 </div>
 <div class="day-demo-card">
 <h3>Дневни отчети и история</h3>
-<p class="day-demo-muted">Всеки DAY има бутони „Преглед“, „Редактирай“ и „Изтрий“. Може да отбележите няколко или всички DAY записа и да ги изтриете наведнъж. Изтриването изисква основание и потвърждение, скрива отчетите от хронологията, но съхранява номерата и историята. Ако бъде записан INC за същата дата, активният DAY се маркира „Нужна проверка“.</p>
+<p class="day-demo-muted">Всеки DAY има бутони „Преглед“, „Редактирай“ и „Изтрий“. Може да отбележите няколко или всички DAY записа и да ги изтриете наведнъж. Изтриването изисква само потвърждение, скрива отчетите от хронологията, но съхранява номерата и историята. Ако бъде записан INC за същата дата, активният DAY се маркира „Нужна проверка“.</p>
 <label class="day-demo-muted"><input type="checkbox" id="day-demo-show-deleted"> Покажи изтритите DAY записи (само за преглед на историята)</label>
 <div id="day-demo-bulk" class="day-demo-bulk" role="group" aria-label="Масово изтриване на DAY записи">
   <p id="day-demo-selected-count" role="status" aria-live="polite">Отбелязани DAY: 0</p>
@@ -1171,7 +1174,7 @@ try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
  toggle(false);
 })();
 </script>
-<script src="day_journal_browser.js?v=20261111-day-bulk-1"></script>
+<script src="day_journal_browser.js?v=20261111-day-simple-delete-1"></script>
 <script src="risk_engine_browser.js"></script>
 <script src="safety_priority_browser.js?v=20261103-safety-review-1"></script>
 <script src="risk_connections.js?v=20261103-safety-priority-3"></script>
