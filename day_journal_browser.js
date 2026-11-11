@@ -6,6 +6,7 @@
 (() => {
   const KEY = "lucifer-web-day-journal-demo-v1";
   const INCIDENT_KEY = "lucifer-web-site-001-demo-v1";
+  const REGISTER_KEY = "lucifer-standalone-register-v1";
   const MAX = 5000;
   const FIELDS = ["description", "actions", "coordination", "source", "authorNote"];
   const DELETE_AUDIT_NOTE = "Автоматичен запис: изтриване след потвърждение";
@@ -56,6 +57,34 @@
           !/^INC-\d{3}$/.test(x.id) || typeof x.date !== "string" ||
           !/^\d{4}-\d{2}-\d{2}T/.test(x.date))) throw Error("Невалиден регистър на инцидентите.");
     return rows;
+  }
+  // Direct, read-only view of the standalone Incident Register. The transfer
+  // switch remains exclusively responsible for writes to the Incidents sheet.
+  function readRegisterIncidents(raw) {
+    if (raw === null) return [];
+    const rows = typeof raw === "string" ? JSON.parse(raw) : raw;
+    if (!Array.isArray(rows) || rows.length > MAX) throw Error("Невалиден Регистър инциденти.");
+    const ids = new Set();
+    return rows.map(r => {
+      if (!r || typeof r !== "object" || Array.isArray(r) ||
+          !/^INC-(?:\\d{3}|\\d{4})$/.test(r.id) ||
+          +r.id.slice(4) < 1 || +r.id.slice(4) > MAX ||
+          r.id !== "INC-" + String(+r.id.slice(4)).padStart(3, "0") ||
+          ids.has(r.id) || !validDate(r.date) || !validTime(r.time) ||
+          typeof r.category !== "string" || typeof r.description !== "string" ||
+          r.category.length > 3000 || r.description.length > 3000)
+        throw Error("Невалиден запис в Регистър инциденти.");
+      ids.add(r.id);
+      return {id:r.id, date:r.date+"T"+r.time+":00",
+        category:r.category, description:r.description};
+    });
+  }
+  function combinedIncidents(analytic, registered) {
+    // One INC ID = one chronology row. Registered data is authoritative for
+    // an existing source entry, including edits made before any transfer.
+    const byId = new Map(analytic.map(r => [r.id, r]));
+    for (const row of registered) byId.set(row.id, row);
+    return [...byId.values()];
   }
   function statusFor(row, incidents) {
     if (row.status === "deleted") return "Изтрит (историята е запазена)";
@@ -111,7 +140,7 @@
     }
     return snapshots.length;
   }
-  const api = { validDate, validTime, validated, readIncidents, statusFor, timeline, pad, deleteBatch };
+  const api = { validDate, validTime, validated, readIncidents, readRegisterIncidents, combinedIncidents, statusFor, timeline, pad, deleteBatch };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document === "undefined") return;
   function boot() {
@@ -122,7 +151,8 @@
     let editing = null, selected = new Map();
     const stamp = () => new Date().toISOString();
     const documentState = () => validated(localStorage.getItem(KEY));
-    const incidents = () => readIncidents(localStorage.getItem(INCIDENT_KEY));
+    const incidents = () => combinedIncidents(readIncidents(localStorage.getItem(INCIDENT_KEY)),
+      readRegisterIncidents(localStorage.getItem(REGISTER_KEY)));
     function notify(text, error = false) {
       message.textContent = text;
       message.dataset.level = error ? "error" : "ok";
@@ -458,7 +488,13 @@
     window.addEventListener("lucifer:tab-changed", e => {
       if(e.detail?.tab==="day-journal") {render();if(editing)notify("Редакция на "+editing.id+" — довършете или изберете „Нов отчет“.");}
     });
-    window.addEventListener("storage", e => {if(e.key===KEY||e.key===INCIDENT_KEY)render();});
+    window.addEventListener("storage", e => {
+      if (e.key===KEY || e.key===INCIDENT_KEY || e.key===REGISTER_KEY || e.key===null) render();
+    });
+    // A register opened in another tab may have changed while this tab was idle.
+    window.addEventListener("focus", () => {
+      if (!panel.hidden) render();
+    });
     fresh();render();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot,{once:true});
