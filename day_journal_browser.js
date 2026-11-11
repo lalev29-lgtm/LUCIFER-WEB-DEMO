@@ -8,6 +8,7 @@
   const INCIDENT_KEY = "lucifer-web-site-001-demo-v1";
   const MAX = 5000;
   const FIELDS = ["description", "actions", "coordination", "source", "authorNote"];
+  const DELETE_AUDIT_NOTE = "Автоматичен запис: изтриване след потвърждение";
   const $ = (id) => document.getElementById(id);
   const pad = (n) => "DAY-" + String(n).padStart(3, "0");
   const nowLocal = () => {
@@ -295,17 +296,12 @@
           : [...selected].map(([id,version]) => ({id,version}));
         if (!snapshots.length) throw Error("Няма избрани DAY записи за изтриване.");
         const count = snapshots.length;
-        const reason = window.prompt("Основание за изтриване на " + count +
-          " DAY записа (10–500 символа, общо основание в одита на всеки):", "");
-        if (reason === null) return;
-        if (reason.trim().length < 10 || reason.trim().length > 500)
-          throw Error("Посочете основание от 10 до 500 символа.");
         if (!window.confirm("Изтриване на " + (all ? "ВСИЧКИ " : "") + count +
           " DAY записа?\nТова ще промени статистиката за дните без инциденти. " +
           "Инцидентите INC, оценката на риска и приоритетът няма да се променят.\n" +
           "DAY номерата и историята се запазват. Потвърждавате ли?")) return;
         const latest = documentState();
-        const deleted = deleteBatch(latest, snapshots, reason, stamp(), all);
+        const deleted = deleteBatch(latest, snapshots, DELETE_AUDIT_NOTE, stamp(), all);
         localStorage.setItem(KEY, JSON.stringify(latest));
         selected.clear(); fresh(); render();
         notify("Изтрити са " + deleted + " DAY записа. Историята е запазена; " +
@@ -359,16 +355,10 @@
         } else if (action === "delete") {
           if (r.status !== "active" && r.status !== "archived")
             throw Error("Този отчет вече е изтрит.");
-          const reason = window.prompt("Основание за изтриване на " + r.id +
-            " (10–500 символа, записва се в одита):", "");
-          if (reason === null) return;
-          const explanation = reason.trim();
-          if (explanation.length < 10 || explanation.length > 500)
-            throw Error("Посочете основание от 10 до 500 символа.");
           if (!window.confirm("Изтриване на " + r.id + "?\n" +
             "Отчетът ще бъде скрит от активния списък и статистиката. " +
             "Историята и номерът DAY се запазват. Продължавате ли?")) return;
-          change("deleted", r, explanation);
+          change("deleted", r, DELETE_AUDIT_NOTE);
           r.status = "deleted";
           localStorage.setItem(KEY, JSON.stringify(db));
           fresh(); render();
