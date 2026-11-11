@@ -2,8 +2,10 @@
 (()=>{
 const ROOT="lucifer-standalone-register-v1",LINK="lucifer-standalone-register-links-v1",SYNC="lucifer-standalone-register-sync-v1",TARGET="lucifer-web-site-001-demo-v1";
 const BASE=ROOT+"-baseline",LAST=ROOT+"-last-inc-v2",BACKUP=ROOT+"-pre-inc-migration-backup-v2",TRANSFER=ROOT+"-transfer-journal-v2",MAX_ID=5000,ANALYTIC_MAX=399;
-const fields=["id","date","time","weekday","shift","zone","category","damage","threatened","description","actions","coordination","source","author","expert","guards","visitors","detect","react","cctv","access","sot"];
+const fields=["id","date","time","weekday","shift","zone","category","damage","threatened","description","actions","coordination","source","author","expert","guards","visitors","detect","react","cctv","access","sot","result","prevented","evidence","reference"];
 const $=id=>document.getElementById(id),str=v=>String(v??"");
+const NEW_FIELDS=["result","prevented","evidence","reference"];
+const NEW_DEFAULTS={result:"В процес на проверка",prevented:"no",evidence:"Не са проверени",reference:""};
 function status(message,warning=false){const el=$("status");el.textContent=message;el.dataset.level=warning?"warning":"normal";}
 const parse=(key,otherwise)=>{const v=localStorage.getItem(key);return v===null?otherwise:JSON.parse(v)};
 const validId=id=>/^INC-\d{3,4}$/.test(id)&&Number(id.slice(4))>=1&&Number(id.slice(4))<=MAX_ID&&id===fmtId(Number(id.slice(4)));
@@ -24,7 +26,7 @@ function legacyCheck(rows){
  for(const r of rows){
   if(!r||typeof r!=="object"||Array.isArray(r)||!(legacyId(r.id)||validId(r.id))||used.has(r.id))throw Error("Повтарящ се или невалиден архивен ID");
   used.add(r.id);
-  for(const k of fields)if(typeof r[k]!=="string"||r[k].length>3000)throw Error("Невалидно архивно поле "+k);
+  for(const k of fields)if((typeof r[k]!=="string" && !(NEW_FIELDS.includes(k)&&r[k]===undefined)) || (typeof r[k]==="string"&&r[k].length>3000))throw Error("Невалидно архивно поле "+k);
  }
 }
 function migrateRows(rows,sourceLinks={},sourceBaseline={},target=targetRows()){
@@ -85,7 +87,7 @@ function validate(rows){
   if(!r||typeof r!=="object"||Array.isArray(r)||!validId(r.id)||seen.has(r.id))throw Error("Невалиден или дублиран ID");
   seen.add(r.id);
   if(Object.keys(r).some(k=>!fields.includes(k)))throw Error("Непознато поле в регистъра");
-  const out={};for(const k of fields){if(typeof r[k]!=="string"||r[k].length>3000)throw Error("Невалидно поле: "+k);out[k]=r[k]}
+  const out={};for(const k of fields){const v=r[k]===undefined&&NEW_FIELDS.includes(k)?NEW_DEFAULTS[k]:r[k];if(typeof v!=="string"||v.length>3000)throw Error("Невалидно поле: "+k);out[k]=v}
   if(!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^\d{2}:\d{2}$/.test(r.time)||!r.zone||!r.category||!r.shift)throw Error("Липсват основни данни");
   for(const k of ["damage","threatened"])if(r[k].trim()===""||!Number.isFinite(+r[k])||+r[k]<0)throw Error("Невалидна сума");
   return out;
@@ -165,7 +167,7 @@ function show(){const rows=read();$("count").textContent=rows.length+" запи�
  const cbCell=document.createElement("td");cbCell.className="bulk-reg-cell";const cb=document.createElement("input");cb.type="checkbox";cb.className="bulk-reg-check";cb.dataset.bulkRegId=r.id;cb.setAttribute("aria-label","Избери "+r.id);cb.checked=bulkRegisterSelection.has(r.id);cbCell.append(cb);tr.append(cbCell);
  for(const k of ["date","time","shift","zone","category","damage","threatened"]){const td=document.createElement("td");td.textContent=r[k];tr.append(td)}const td=document.createElement("td");for(const [name,action] of [["Преглед","view"],["Редактирай","edit"],["Изтрий","delete"]]){const b=document.createElement("button");b.type="button";b.textContent=name;b.dataset.action=action;b.dataset.id=r.id;td.append(b)}tr.append(td);$("rows").append(tr)}updateRegisterBulkSelection(rows)}
 function ready(r){const required=["expert","guards","visitors","detect","react","cctv","access","sot"];if(required.some(k=>!r[k].trim()))return false;return ["guards","visitors","detect","react"].every(k=>Number.isFinite(+r[k])&&+r[k]>=0)&&["guards","visitors"].every(k=>Number.isInteger(+r[k]))}
-function project(r,id){return {id,date:r.date+"T"+r.time,weekday:r.weekday,shift:r.shift,guards:+r.guards,cctv:r.cctv,access:r.access,sot:r.sot,visitors:+r.visitors,detect:+r.detect,react:+r.react,zone:r.zone,category:r.category,expert:r.expert,damage:+r.damage,threatened:+r.threatened,prevented:"no",evidence:"Не са проверени",reference:"",result:"В процес на проверка",description:r.description}}
+function project(r,id){return {id,date:r.date+"T"+r.time,weekday:r.weekday,shift:r.shift,guards:+r.guards,cctv:r.cctv,access:r.access,sot:r.sot,visitors:+r.visitors,detect:+r.detect,react:+r.react,zone:r.zone,category:r.category,expert:r.expert,damage:+r.damage,threatened:+r.threatened,prevented:r.prevented||"no",evidence:r.evidence||"Не са проверени",reference:r.reference||"",result:r.result||"В процес на проверка",description:r.description}}
 function recoverTransfer(){
  const journal=parse(TRANSFER,null);if(!journal)return false;
  if(!journal||typeof journal!=="object"||!Array.isArray(journal.afterTarget))throw Error("Невалиден прекъснат пренос");
