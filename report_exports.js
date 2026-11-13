@@ -5,6 +5,8 @@
  */
 (function () {
   const INCIDENT_KEY = "lucifer-web-site-001-demo-v1";
+  const REGISTER_KEY = "lucifer-standalone-register-v1";
+  const REGISTER_LINK_KEY = "lucifer-standalone-register-links-v1";
   const REVIEW_KEY = "lucifer-web-safety-review-demo-v1";
   const LABELS = [
     ["id","ID"],["date","Дата и час (оригинална стойност)"],
@@ -36,7 +38,9 @@
   const PAGE = {
     incidents:["Инциденти","Incidents"],
     risk:["Оценка на риска","Risk"],
-    priority:["Приоритет на третиране и 02 План третиране","Priority"]
+    priority:["Приоритет на третиране и 02 План третиране","Priority"],
+    register:["Регистър на инцидентите","Register"],
+    prevented:["Предотвратени кражби","Prevented_Thefts"]
   };
   function esc(value) {
     return String(value === null || value === undefined ? "" : value)
@@ -179,12 +183,118 @@
     });
     return result;
   }
+
+  // Export all rows from the independent source register (up to 5000 records),
+  // not the shortened on-screen 10-column table or the analytic target list.
+  function registerReport() {
+    const rows = safeRead(REGISTER_KEY,12000000) || [];
+    if (!Array.isArray(rows) || rows.length > 5000)
+      throw new Error("Невалиден брой записи в Регистъра.");
+    const keys = [
+      ["id","INC номер (A)"],["date","Дата (B)"],["time","Час (C)"],
+      ["weekday","Ден от седмицата (D)"],["shift","Смяна (E)"],
+      ["zone","Място / зона (F)"],["category","Категория (G)"],
+      ["expert","Експертно ниво H"],["guards","Брой охранители (I)"],
+      ["cctv","CCTV (J)"],["access","Контрол на достъпа (K)"],
+      ["sot","СОТ (L)"],["visitors","Посетители (M)"],
+      ["detect","Време за откриване (N)"],["react","Време за реакция (O)"],
+      ["damage","Действителна щета P (EUR)"],
+      ["threatened","Застрашена стойност V (EUR)"],["result","Резултат (S)"],
+      ["prevented","Предотвратена кражба"],
+      ["evidence","Статус на проверката"],
+      ["reference","Препратка към доказателства (W)"],
+      ["description","Описание / хронология"],["actions","Предприети действия"],
+      ["coordination","Взаимодействие между звената"],
+      ["source","Източник / доказателства"],["author","Попълнил / дата"]
+    ];
+    const used = new Set(), known = new Set(keys.map(function(pair){return pair[0];}));
+    const links = safeRead(REGISTER_LINK_KEY,2000000) || {};
+    if (!links || typeof links !== "object" || Array.isArray(links))
+      throw new Error("Повредени данни за свързаните INC записи.");
+    let result = "<p><strong>Записи в Регистъра: " + rows.length +
+      "</strong>. Изнесени са всички, не само видимите или избраните.</p>";
+    if (!rows.length) return result + "<p>Няма записани инциденти.</p>";
+    rows.forEach(function(row,index){
+      if (!row || typeof row !== "object" || Array.isArray(row) ||
+          !/^INC-\d{3,4}$/.test(row.id) ||
+          Number(row.id.slice(4)) < 1 || Number(row.id.slice(4)) > 5000 ||
+          used.has(row.id))
+        throw new Error("Невалиден или повторен INC номер в Регистъра.");
+      used.add(row.id);
+      const values = keys.map(function(pair) {
+        if (pair[0] === "prevented")
+          return [pair[1],row.prevented==="yes"?"Да":row.prevented==="no"?"Не":row.prevented];
+        return [pair[1],row[pair[0]]];
+      });
+      values.push(["Свързан запис в „Инциденти“",
+        Object.prototype.hasOwnProperty.call(links,row.id)?links[row.id]:"Не е отбелязан"]);
+      Object.keys(row).filter(function(k){return !known.has(k);}).sort()
+        .forEach(function(k){values.push([k,row[k]]);});
+      result += "<h2>Запис " + (index+1) + ": " + esc(row.id) +
+        "</h2>" + kvTable(values);
+    });
+    return result;
+  }
+  function preventedReport() {
+    const rows = incidentRows();
+    const engine = window.LuciferPreventedTheft;
+    if (!engine || typeof engine.classifyIncidents !== "function" ||
+        typeof engine.preventedTheftStatistics !== "function")
+      throw new Error("Модулът „Предотвратени кражби“ не е зареден.");
+    const groups = engine.classifyIncidents(rows);
+    const stats = engine.preventedTheftStatistics(rows);
+    const isAttempt = function(row){
+      return row.category === "Кражба" &&
+        (row.prevented === "yes" || row.theftType === "Доказан предотвратен опит");
+    };
+    const notConfirmed = groups.pending.filter(isAttempt);
+    let result = "<p>Предварителна отделна статистика. Непотвърдените опити " +
+      "не се прибавят към доказаните предотвратени кражби.</p>";
+    result += "<h2>Всички показатели на предварителната оценка</h2>";
+    const names = {
+      declared:"Общо заявени опити",confirmed:"Потвърдени предотвратени",
+      unconfirmed:"Непотвърдени опити",pendingTheftRecords:"Всички кражби за проверка",
+      threatenedAmount:"Обща известна застрашена стойност V / U (EUR)",
+      knownU:"Известни V",unknownU:"Неизвестни V",invalidU:"Невалидни V",
+      meanU:"Средна застрашена стойност V / U",maxU:"Максимална V / U",
+      actualLossKnown:"Известни действителни щети P",
+      actualLossUnknown:"Неизвестни действителни щети P",
+      share:"Дял на предотвратените опити",likelihood:"Вероятност",
+      impact:"Последствия",financialIndex:"Финансов индекс",
+      expertMax:"Максимална експертна H",expertStatus:"Статус на H",
+      finalRiskCode:"Код на крайната категория",finalRisk:"Крайна категория",
+      independentStatistics:"Отделна статистика",
+      approved:"Официално одобрение",status:"Статус"
+    };
+    result += kvTable(Object.keys(stats).map(function(key){
+      return [names[key] || key,stats[key]];
+    }));
+    function records(title,data) {
+      result += "<h2>" + esc(title) + " — " + data.length + "</h2>";
+      if (!data.length) {result += "<p>Няма записи.</p>";return;}
+      const known = new Set(LABELS.map(function(f){return f[0];}));
+      data.forEach(function(row,index){
+        const pairs = LABELS.map(function(f){return [f[1],row[f[0]]];});
+        Object.keys(row).filter(function(k){return !known.has(k);}).sort()
+          .forEach(function(k){pairs.push([k,row[k]]);});
+        result += "<h3>Запис " + (index+1) + ": " + esc(row.id) +
+          "</h3>" + kvTable(pairs);
+      });
+    }
+    records("Доказани предотвратени кражби",groups.prevented);
+    records("Непотвърдени опити — отделно, без участие в доказаните",notConfirmed);
+    return result;
+  }
+
   function buildReport(page) {
     if (!PAGE[page]) throw new Error("Неизвестна страница.");
-    // Verify local incident data even when an old calculation remains visible.
-    incidentRows();
+    // Never silently export corrupt data. The standalone register has its
+    // own independent 5000-record format and must not depend on the analytic list.
+    if (page !== "register") incidentRows();
     let body;
-    if (page === "incidents") body = incidentReport();
+    if (page === "register") body = registerReport();
+    else if (page === "prevented") body = preventedReport();
+    else if (page === "incidents") body = incidentReport();
     else if (page === "risk") {
       const notice = document.querySelector("#risk > .notice");
       body = "<p>" + esc(notice ? notice.textContent.trim() : "Предварителна оценка.") +
