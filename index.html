@@ -672,6 +672,12 @@ header.brand-header{display:none!important}
 @media(max-width:550px){#treatment-form .grid{grid-template-columns:1fr}}
  .auth-link{display:inline-flex;align-items:center;padding:8px 12px;color:#eaf1fc;text-decoration:none;border:1px solid #49627f;border-radius:7px;margin:2px}.auth-link:hover,.auth-link:focus{background:#29466b}
 .side-auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:9px 7px}.side-auth-link{display:block;text-align:center;text-decoration:none;background:#1876c5;color:white;border:1px solid #5ca5e5;border-radius:5px;padding:10px 4px;font-size:13px;font-weight:700}.side-auth-link:hover,.side-auth-link:focus{background:#2691e3;outline:2px solid #b8dfff}
+/* PDF и Word експорт — четимост и на мобилни екрани. */
+.report-export-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 16px;padding:10px;border:1px solid #607f9d;border-radius:10px;background:rgba(15,39,63,.92)}
+.report-export-toolbar button{padding:9px 13px;border-color:#94b4d2;background:#245a82;color:#fff;font-weight:700}
+.report-export-toolbar button:focus-visible{outline:3px solid #9bd5ff;outline-offset:2px}
+.report-export-status{font-size:.87rem;color:#deebf9;flex-basis:100%;min-height:1em}
+@media(max-width:480px){.report-export-toolbar button{flex:1 1 130px}}
 </style>
 
 <style id="director-approved-mobile-header-2026-11-01">
@@ -876,6 +882,7 @@ main.wrap > nav#lucifer-mobile-work-nav > button[data-tab="home"][aria-selected=
 <div class="notice">Визуална демонстрация. Показателите отразяват само локалните записи в този браузър. „Риск“ показва предварителни изчисления; окончателният „Приоритет“ и одобрението изискват допълнителни проверки. Не въвеждайте реални лични данни.</div>
 <button class="primary" type="button" id="go-incidents">Отвори регистъра на инцидентите</button> <button class="primary" type="button" id="go-day-demo">Отвори „Без инциденти“</button></section>
 <section id="incidents" hidden><h2>Регистър на инцидентите</h2><p class="muted">Демонстрационни записи. Формата не претендира да възпроизвежда всички полета и проверки на приетия Excel.</p>
+<div class="report-export-toolbar" role="group" aria-label="Експорт на цялата информация от Инциденти"><button type="button" data-report-export="incidents" data-report-format="word">Word · цял отчет (.doc)</button><button type="button" data-report-export="incidents" data-report-format="pdf">PDF · печат / запази</button><span class="report-export-status" id="report-export-status-incidents" role="status" aria-live="polite"></span></div>
 <div id="editing-banner" class="notice" hidden>Редактиране на <strong id="editing-id"></strong></div><form id="incident-form">
 <div class="grid">
 <div><label for="incident-id">Идентификатор</label><input id="incident-id" required pattern="INC-[0-9]{3}" placeholder="INC-001" maxlength="7"><small>Автоматично предложение за следващ свободен ID; допустими INC-001 … INC-399.</small></div>
@@ -947,8 +954,8 @@ main.wrap > nav#lucifer-mobile-work-nav > button[data-tab="home"][aria-selected=
 <div class="day-demo-scroll"><table><thead><tr><th>ID</th><th>Дата</th><th>Час</th><th>Категория</th><th>Описание</th><th>Статус</th></tr></thead><tbody id="day-demo-timeline-rows"><tr><td colspan="6">Няма записи за периода.</td></tr></tbody></table></div>
 </div>
 </section>
-<section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Пълният диапазон A–V от Excel „Оценка на риска“: 22 позиции (включително Q с формула, но без заглавие), плюс статистиките U/O и H под таблицата. Използват се данните от съществуващите „Инциденти“. Непроверените зависимости остават НЕИЗЧИСЛЕНИ; оценката е НЕОДОБРЕНА.</div><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
-<section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оригинални колони A–P и R–AA от Excel „Приоритет за третиране“ (Q няма заглавие). Стойностите са свързани с „Инциденти“ и „Оценка на риска“. Изчисленият оперативен приоритет е само ПРЕДВАРИТЕЛЕН. Под него има форма за тестова проверка на безопасността по Risk ID. Няма автоматично удостоверяване на доказателства, права или окончателно одобрение.</div><div id="priority-results" role="status" aria-live="polite">Зареждане…</div>
+<section id="risk" hidden><h2>Оценка на риска</h2><div class="notice">Пълният диапазон A–V от Excel „Оценка на риска“: 22 позиции (включително Q с формула, но без заглавие), плюс статистиките U/O и H под таблицата. Използват се данните от съществуващите „Инциденти“. Непроверените зависимости остават НЕИЗЧИСЛЕНИ; оценката е НЕОДОБРЕНА.</div><div class="report-export-toolbar" role="group" aria-label="Експорт на цялата информация от Оценка на риска"><button type="button" data-report-export="risk" data-report-format="word">Word · цял отчет (.doc)</button><button type="button" data-report-export="risk" data-report-format="pdf">PDF · печат / запази</button><span class="report-export-status" id="report-export-status-risk" role="status" aria-live="polite"></span></div><div id="risk-results" role="status" aria-live="polite">Зареждане…</div></section>
+<section id="priority" hidden><h2>Приоритет за третиране</h2><div class="notice">Оригинални колони A–P и R–AA от Excel „Приоритет за третиране“ (Q няма заглавие). Стойностите са свързани с „Инциденти“ и „Оценка на риска“. Изчисленият оперативен приоритет е само ПРЕДВАРИТЕЛЕН. Под него има форма за тестова проверка на безопасността по Risk ID. Няма автоматично удостоверяване на доказателства, права или окончателно одобрение.</div><div class="report-export-toolbar" role="group" aria-label="Експорт на цялата информация от Приоритет на третиране"><button type="button" data-report-export="priority" data-report-format="word">Word · цял отчет (.doc)</button><button type="button" data-report-export="priority" data-report-format="pdf">PDF · печат / запази</button><span class="report-export-status" id="report-export-status-priority" role="status" aria-live="polite"></span></div><div id="priority-results" role="status" aria-live="polite">Зареждане…</div>
 <h2 id="treatment-heading">02 План третиране</h2><div class="notice">Оригинални колони A–M от Excel „02 План третиране“. Експертните мерки се въвеждат ръчно. Запис само в този браузър; без автоматично одобрение и без промени в инцидентите.</div><div id="treatment-results" role="status" aria-live="polite"></div>
 <form id="treatment-form"><h3>Добавяне / редакция на мярка</h3><label for="plan-row-picker">Избери мярка за редакция</label><select id="plan-row-picker"><option value="">Нова мярка</option></select><div class="grid"><div><label for="plan-risk-id">A · Risk ID</label><select id="plan-risk-id" required></select></div>
 <div><label for="plan-risk">B · Риск</label><input id="plan-risk" type="text" maxlength="500" required></div>
@@ -1271,6 +1278,7 @@ try{show(sessionStorage.getItem(TAB_KEY)||"home");}catch(error){show("home");}
 <script src="risk_engine_browser.js"></script>
 <script src="safety_priority_browser.js?v=20261103-safety-review-1"></script>
 <script src="risk_connections.js?v=20261103-safety-priority-3"></script>
+<script src="report_exports.js?v=20261113-word-pdf-1"></script>
 <script id="lucifer-inline-auth-script">
 (function(){
 const API="https://svetlonoseca-web-production.up.railway.app";
